@@ -148,6 +148,27 @@ box-shadow: inset -1px -1px 5px black;
 	-ms-touch-action: none;
 }
 
+.map_options{
+    position: absolute;
+    padding: 5px;
+    bottom: 30px;
+    right: 10px;
+    width: 250px;
+    height: 40px;
+    background: rgba(0,0,0,0.5);
+}
+.map_zoom{
+    margin: 5px 10px;
+}
+.map_zoom_pop1{
+    float: left;
+    margin-right: 73px;
+}.map_zoom_pop2{
+     float: left;
+     margin-right: 73px;
+ }.map_zoom_pop3{
+      float: left;
+  }
 #logo{
 float: left;
 }
