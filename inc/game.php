@@ -206,35 +206,68 @@
     });
 	
 	
+		
 	function zoom(z,na){
 		var sirka = parseInt($("#back").css("width").replace("px",""));
 		var vyska = parseInt($("#back").css("height").replace("px",""));
 		mapX = mapX*(na/z)+(sirka/2)*(1-na/z);
 		mapY = mapY*(na/z)+(vyska/2)*(1-na/z);
-		$("#move").animate({
+		$("#move").stop().animate({
 			width: velikost,
 			height: velikost,
 			left: mapX,
 			top: mapY
-			}, 1);
-		$("#pozxmove").animate({
+			}, 500);
+		$("#pozxmove").stop().animate({
 			width: velikost,
 			left: mapX
 			}, 1);
-		$("#pozymove").animate({
+		$("#pozymove").stop().animate({
 			height: velikost,
 			top: mapY
 		}, 1);
 		mapa_load();
 	}
+
 	$('.map_zoom').slider({
-        min: 500,
+        min: 400,
         max: 1000,
+        step: 25,
         value: velikost,
-        change: function(){
-            zoom(1000, value, false);
+        slide: function(event, ui){
+            var orig = velikost;
+            velikost = ui.value;
+            zoom(orig, ui.value);
+        },
+        change: function(event, ui){
+            velikost = ui.value;
+            zoom(velikost, velikost);
         }
     });
+    $('.map_zoom_pop1').click(function(){
+        var orig= velikost;
+        velikost = 400;
+        zoom(orig,400);
+        $('.map_zoom').slider('value', 400);
+
+    });
+
+    $('.map_zoom_pop2').click(function(){
+        var orig= velikost;
+        velikost = 600;
+        zoom(orig,600);
+        $('.map_zoom').slider('value', 600);
+
+    });
+    
+    $('.map_zoom_pop3').click(function(){
+        var orig= velikost;
+        velikost = 1000;
+        zoom(orig,1000);
+        $('.map_zoom').slider('value', 1000);
+
+    });
+
 	$("#back").mousedown(function(event){
 		tahni(event,1);
 	});
