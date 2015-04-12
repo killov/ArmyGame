@@ -4,7 +4,7 @@
 		<title>Armygame</title>
 		<link href="jquery-ui.css" rel="stylesheet">
 		<link rel="stylesheet" href="styleg.css" type="text/css">
-		<script src="js/jquery-2.1.3.min.js"></script>
+		<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
 		<script src="js/jquery-ui.min.js"></script>
 		<script src="js/jquery.mousewheel.min.js"></script>
 		
@@ -149,18 +149,26 @@
 	</div>
 	<div id="back">
 		<div id="move" style="position:absolute;top:20px;left:20px;width:1000px;height:1000px;">
-			<canvas id="myCanvas" width="200" height="100" style="border:1px solid #d3d3d3;position: absolute;">
-Your browser does not support the HTML5 canvas tag.</canvas>
 
-<script>
-var c = document.getElementById("myCanvas");
-var ctx = c.getContext("2d");
-ctx.moveTo(0,0);
-ctx.lineTo(200,100);
-ctx.stroke();
-</script>
+			<canvas id="myCanvas" width="200" height="100" style="border:1px solid #d3d3d3;position: absolute;">
+            Your browser does not support the HTML5 canvas tag.</canvas>
+
+            <script>
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext("2d");
+            ctx.moveTo(0,0);
+            ctx.lineTo(200,100);
+            ctx.stroke();
+            </script>
 		</div>
 	</div>
+
+    <div class="map_options">
+        <div class="map_zoom"></div>
+        <div class="map_zoom_pop1">0.4x</div>
+        <div class="map_zoom_pop2">0.6x</div>
+        <div class="map_zoom_pop3">1x</div>
+    </div>
 <script type="text/javascript">
 
 	var mesto = <?php echo $mesto["id"];?>;
@@ -181,45 +189,89 @@ ctx.stroke();
 	var dotykX, dotykY;
 	
 	 $('#back').mousewheel(function(e){
+		 var sirka = parseInt($("#back").css("width").replace("px",""));
+		var vyska = parseInt($("#back").css("height").replace("px",""))
         if(e.deltaY > 0) {
 			if(velikost < 1000){
 				var ve = velikost;
 				velikost = velikost+50;
-				zoom(ve,velikost);
+				zoom(ve,velikost,(sirka/2)-e.pageX,(vyska/2)-e.pageY);
+
+        		$('.map_zoom').slider('value', velikost);
 			}
         }
         else{
-			if(velikost > 350){
+			if(velikost > 400){
 				var ve = velikost;
 				velikost = velikost-50;
-				zoom(ve,velikost);
+				zoom(ve,velikost,(sirka/2)-e.pageX,(vyska/2)-e.pageY);
+        		$('.map_zoom').slider('value', velikost);
 			}
 		}
     });
 	
-	
-	function zoom(z,na){
+	function zoom(z,na,zx,zy){
 		var sirka = parseInt($("#back").css("width").replace("px",""));
 		var vyska = parseInt($("#back").css("height").replace("px",""));
-		mapX = mapX*(na/z)+(sirka/2)*(1-na/z);
-		mapY = mapY*(na/z)+(vyska/2)*(1-na/z);
-		$("#move").animate({
+		mapX = mapX*(na/z)+(sirka/2)*(1-na/z)+zx*0.1;
+		mapY = mapY*(na/z)+(vyska/2)*(1-na/z)+zy*0.1;
+		$("#move").stop().animate({
 			width: velikost,
 			height: velikost,
 			left: mapX,
 			top: mapY
 			}, 1);
-		$("#pozxmove").animate({
+		$("#pozxmove").stop().animate({
 			width: velikost,
 			left: mapX
 			}, 1);
-		$("#pozymove").animate({
+		$("#pozymove").stop().animate({
 			height: velikost,
 			top: mapY
 		}, 1);
 		mapa_load();
 	}
-	
+
+	$('.map_zoom').slider({
+        min: 400,
+        max: 1000,
+        step: 50,
+        value: velikost,
+        slide: function(event, ui){
+            var orig = velikost;
+            velikost = ui.value;
+            zoom(orig, ui.value);
+        },
+        change: function(event, ui){
+			var orig = velikost;
+            velikost = ui.value;
+            zoom(orig, velikost,0,0);
+        }
+    });
+    $('.map_zoom_pop1').click(function(){
+        var orig= velikost;
+        velikost = 400;
+        zoom(orig,400,0,0);
+        $('.map_zoom').slider('value', 400);
+
+    });
+
+    $('.map_zoom_pop2').click(function(){
+        var orig= velikost;
+        velikost = 600;
+        zoom(orig,600,0,0);
+        $('.map_zoom').slider('value', 600);
+
+    });
+    
+    $('.map_zoom_pop3').click(function(){
+        var orig= velikost;
+        velikost = 1000;
+        zoom(orig,1000,0,0);
+        $('.map_zoom').slider('value', 1000);
+
+    });
+
 	$("#back").mousedown(function(event){
 		tahni(event,1);
 	});
@@ -243,8 +295,7 @@ ctx.stroke();
 	$("#back").on('touchend',function(){
 		pust();
 	});
-	
-	
+		
 	function tahni(event,zo){
 		if(document.selection && document.selection.empty){
 			document.selection.empty();
