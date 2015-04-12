@@ -4,7 +4,7 @@
 		<title>Armygame</title>
 		<link href="jquery-ui.css" rel="stylesheet">
 		<link rel="stylesheet" href="styleg.css" type="text/css">
-		<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+		<script src="js/jquery-2.1.3.min.js"></script>
 		<script src="js/jquery-ui.min.js"></script>
 		<script src="js/jquery.mousewheel.min.js"></script>
 		
@@ -149,26 +149,18 @@
 	</div>
 	<div id="back">
 		<div id="move" style="position:absolute;top:20px;left:20px;width:1000px;height:1000px;">
-
 			<canvas id="myCanvas" width="200" height="100" style="border:1px solid #d3d3d3;position: absolute;">
-            Your browser does not support the HTML5 canvas tag.</canvas>
+Your browser does not support the HTML5 canvas tag.</canvas>
 
-            <script>
-            var c = document.getElementById("myCanvas");
-            var ctx = c.getContext("2d");
-            ctx.moveTo(0,0);
-            ctx.lineTo(200,100);
-            ctx.stroke();
-            </script>
+<script>
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+ctx.moveTo(0,0);
+ctx.lineTo(200,100);
+ctx.stroke();
+</script>
 		</div>
 	</div>
-
-    <div class="map_options">
-        <div class="map_zoom"></div>
-        <div class="map_zoom_pop1">1x</div>
-        <div class="map_zoom_pop2">0.75x</div>
-        <div class="map_zoom_pop3">0.5x</div>
-    </div>
 <script type="text/javascript">
 
 	var mesto = <?php echo $mesto["id"];?>;
@@ -227,14 +219,7 @@
 		}, 1);
 		mapa_load();
 	}
-	$('.map_zoom').slider({
-        min: 500,
-        max: 1000,
-        value: velikost,
-        change: function(){
-            zoom(1000, value, false);
-        }
-    });
+	
 	$("#back").mousedown(function(event){
 		tahni(event,1);
 	});
