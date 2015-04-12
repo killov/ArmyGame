@@ -167,7 +167,7 @@
         <div class="map_zoom"></div>
         <div class="map_zoom_pop1">1x</div>
         <div class="map_zoom_pop2">0.75x</div>
-        <div class="map_zoom_pop3">0.5x</div>
+        <div class="map_zoom_pop3">0.55x</div>
     </div>
 <script type="text/javascript">
 
