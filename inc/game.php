@@ -137,6 +137,9 @@
 			</ul>
 		</div>
 	</div>
+	<div id="pravej">
+	
+	</div>
 	<div id="pozx">
 		<div id="pozxmove">
 		
