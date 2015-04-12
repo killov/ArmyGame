@@ -252,6 +252,7 @@
         $('.map_zoom').slider('value', 400);
 
     });
+
     $('.map_zoom_pop2').click(function(){
         var orig= velikost;
         velikost = 600;
@@ -259,6 +260,7 @@
         $('.map_zoom').slider('value', 600);
 
     });
+    
     $('.map_zoom_pop3').click(function(){
         var orig= velikost;
         velikost = 1000;
