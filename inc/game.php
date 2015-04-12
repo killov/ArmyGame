@@ -165,9 +165,9 @@
 
     <div class="map_options">
         <div class="map_zoom"></div>
-        <div class="map_zoom_pop1">1x</div>
-        <div class="map_zoom_pop2">0.75x</div>
-        <div class="map_zoom_pop3">0.55x</div>
+        <div class="map_zoom_pop1">0.4x</div>
+        <div class="map_zoom_pop2">0.6x</div>
+        <div class="map_zoom_pop3">1x</div>
     </div>
 <script type="text/javascript">
 
@@ -192,15 +192,17 @@
         if(e.deltaY > 0) {
 			if(velikost < 1000){
 				var ve = velikost;
-				velikost = velikost+50;
+				velikost = velikost+100;
 				zoom(ve,velikost);
+                $('.map_zoom').slider('value', velikost);
 			}
         }
         else{
-			if(velikost > 350){
+			if(velikost > 400){
 				var ve = velikost;
-				velikost = velikost-50;
+				velikost = velikost-100;
 				zoom(ve,velikost);
+                $('.map_zoom').slider('value', velikost);
 			}
 		}
     });
@@ -211,30 +213,60 @@
 		var vyska = parseInt($("#back").css("height").replace("px",""));
 		mapX = mapX*(na/z)+(sirka/2)*(1-na/z);
 		mapY = mapY*(na/z)+(vyska/2)*(1-na/z);
-		$("#move").animate({
+		$("#move").stop().animate({
 			width: velikost,
 			height: velikost,
 			left: mapX,
 			top: mapY
-			}, 1);
-		$("#pozxmove").animate({
+			}, 500);
+		$("#pozxmove").stop().animate({
 			width: velikost,
 			left: mapX
 			}, 1);
-		$("#pozymove").animate({
+		$("#pozymove").stop().animate({
 			height: velikost,
 			top: mapY
 		}, 1);
 		mapa_load();
 	}
+
 	$('.map_zoom').slider({
-        min: 500,
+        min: 400,
         max: 1000,
+        step: 25,
         value: velikost,
-        change: function(){
-            zoom(1000, value, false);
+        slide: function(event, ui){
+            var orig = velikost;
+            velikost = ui.value;
+            zoom(orig, ui.value);
+        },
+        change: function(event, ui){
+            velikost = ui.value;
+            zoom(velikost, velikost);
         }
     });
+    $('.map_zoom_pop1').click(function(){
+        var orig= velikost;
+        velikost = 400;
+        zoom(orig,400);
+        $('.map_zoom').slider('value', 400);
+
+    });
+    $('.map_zoom_pop2').click(function(){
+        var orig= velikost;
+        velikost = 600;
+        zoom(orig,600);
+        $('.map_zoom').slider('value', 600);
+
+    });
+    $('.map_zoom_pop3').click(function(){
+        var orig= velikost;
+        velikost = 1000;
+        zoom(orig,1000);
+        $('.map_zoom').slider('value', 1000);
+
+    });
+
 	$("#back").mousedown(function(event){
 		tahni(event,1);
 	});
