@@ -165,9 +165,9 @@
 
     <div class="map_options">
         <div class="map_zoom"></div>
-        <div class="map_zoom_pop1">1x</div>
-        <div class="map_zoom_pop2">0.75x</div>
-        <div class="map_zoom_pop3">0.5x</div>
+        <div class="map_zoom_pop1">0.4x</div>
+        <div class="map_zoom_pop2">0.6x</div>
+        <div class="map_zoom_pop3">1x</div>
     </div>
 <script type="text/javascript">
 
@@ -194,6 +194,8 @@
 				var ve = velikost;
 				velikost = velikost+50;
 				zoom(ve,velikost);
+
+        		$('.map_zoom').slider('value', velikost);
 			}
         }
         else{
@@ -201,6 +203,7 @@
 				var ve = velikost;
 				velikost = velikost-50;
 				zoom(ve,velikost);
+        		$('.map_zoom').slider('value', velikost);
 			}
 		}
     });
@@ -217,7 +220,7 @@
 			height: velikost,
 			left: mapX,
 			top: mapY
-			}, 500);
+			}, 1);
 		$("#pozxmove").stop().animate({
 			width: velikost,
 			left: mapX
