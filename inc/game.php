@@ -235,7 +235,7 @@
 	$('.map_zoom').slider({
         min: 400,
         max: 1000,
-        step: 25,
+        step: 50,
         value: velikost,
         slide: function(event, ui){
             var orig = velikost;

@@ -156,18 +156,25 @@ box-shadow: inset -1px -1px 5px black;
     width: 250px;
     height: 40px;
     background: rgba(0,0,0,0.5);
+    border-radius: 5px;
 }
 .map_zoom{
     margin: 5px 10px;
 }
 .map_zoom_pop1{
     float: left;
-    margin-right: 73px;
+    margin-right: 40px;
+    color: white;
+    cursor: pointer;
 }.map_zoom_pop2{
      float: left;
-     margin-right: 73px;
+     margin-right: 120px;
+     color: white;
+     cursor: pointer;
  }.map_zoom_pop3{
       float: left;
+       color: white;
+       cursor: pointer;
   }
 #logo{
 float: left;
