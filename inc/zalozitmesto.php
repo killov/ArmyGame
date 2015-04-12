@@ -8,7 +8,6 @@
 		<meta charset="UTF-8">
 	</head>
 	<body>
-
 		<div id="celek">
 			<div id="menu">
 				<menu>

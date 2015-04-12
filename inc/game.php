@@ -137,6 +137,9 @@
 			</ul>
 		</div>
 	</div>
+	<div id="pravej">
+	
+	</div>
 	<div id="pozx">
 		<div id="pozxmove">
 		
@@ -295,8 +298,7 @@
 	$("#back").on('touchend',function(){
 		pust();
 	});
-	
-	
+		
 	function tahni(event,zo){
 		if(document.selection && document.selection.empty){
 			document.selection.empty();

@@ -579,4 +579,20 @@ function mapa_nacti($x,$y){
 		return $data;
 	}
 }
+
+function suroviny_posli($od,$komu,$delka,$cas,$drevo,$kamen,$zelezo,$obili){
+	global $db;
+
+	$d = array(
+		"cas" => $cas,
+		"delka" => $delka,
+		"mesto" => $od,
+		"typ" => 2,
+		"drevo" => $drevo,
+		"kamen" => $kamen,
+		"zelezo" => $zelezo,
+		"obili" => $obili
+	);
+	$id = db_insert("akce",$d);
+}
 ?>
