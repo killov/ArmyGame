@@ -1,0 +1,149 @@
+<NotepadPlus>
+    <Project name="ag">
+        <Folder name="ajax">
+            <Folder name="hra">
+                <Folder name="budovy">
+                    <File name="budovy\1.php" />
+                    <File name="budovy\2.php" />
+                    <File name="budovy\3.php" />
+                    <File name="budovy\4.php" />
+                    <File name="budovy\5.php" />
+                </Folder>
+                <Folder name="zpravy">
+                    <File name="zpravy\2.php" />
+                    <File name="zpravy\3.php" />
+                    <File name="zpravy\dorucene.php" />
+                    <File name="zpravy\napsat.php" />
+                    <File name="zpravy\zprava.php" />
+                </Folder>
+                <File name="budovy.php" />
+                <File name="hra.php" />
+                <File name="mesto.php" />
+                <File name="profil.php" />
+                <File name="statistika.php" />
+                <File name="zpravy.php" />
+                <File name="mapa.php" />
+            </Folder>
+            <Folder name="login">
+                <File name="D:\www\ajax\login\login.php" />
+                <File name="D:\www\ajax\login\register.php" />
+            </Folder>
+            <Folder name="zpracuj">
+                <File name="D:\www\ajax\zpracuj\login.php" />
+                <File name="D:\www\ajax\zpracuj\odpovedet.php" />
+                <File name="D:\www\ajax\zpracuj\poslatzpravu.php" />
+                <File name="D:\www\ajax\zpracuj\postav.php" />
+                <File name="D:\www\ajax\zpracuj\register.php" />
+                <File name="D:\www\ajax\zpracuj\rename.php" />
+                <File name="D:\www\ajax\zpracuj\zalozitmesto.php" />
+            </Folder>
+            <File name="D:\www\ajax\login.php" />
+            <File name=".php" />
+            <File name="D:\www\ajax\mestodata.php" />
+            <File name="D:\www\ajax\mapa.php" />
+        </Folder>
+        <Folder name="img">
+            <File name="D:\www\img\8F6pc6b.png" />
+            <File name="D:\www\img\c28rCvT.png" />
+            <File name="D:\www\img\drevo.png" />
+            <File name="D:\www\img\headpoz.png" />
+            <File name="D:\www\img\hodiny.png" />
+            <File name="D:\www\img\kamen.png" />
+            <File name="D:\www\img\logo &#x2013; kopie.png" />
+            <File name="D:\www\img\logo.png" />
+            <File name="D:\www\img\obili.png" />
+            <File name="D:\www\img\SB7pQ7C.png" />
+            <File name="D:\www\img\spotreba.png" />
+            <File name="D:\www\img\zelezo.png" />
+        </Folder>
+        <Folder name="inc">
+            <File name="D:\www\inc\akce.php" />
+            <File name="D:\www\inc\data.php" />
+            <File name="D:\www\inc\fce.php" />
+            <File name="D:\www\inc\game.php" />
+            <File name="D:\www\inc\mysql.php" />
+            <File name="D:\www\inc\mysqli.php" />
+            <File name="D:\www\inc\zalozitmesto.php" />
+        </Folder>
+        <Folder name="lang">
+            <File name="D:\www\lang\cz.php" />
+        </Folder>
+        <Folder name="src">
+            <Folder name="Bridges">
+                <Folder name="Nette">
+                    <File name="D:\www\src\Bridges\Nette\TracyExtension.php" />
+                </Folder>
+            </Folder>
+            <Folder name="handlers">
+                <File name="D:\www\src\handlers\DibiHandler.php" />
+                <File name="D:\www\src\handlers\NetteDatabaseHandler.php" />
+            </Folder>
+            <Folder name="Tracy">
+                <Folder name="assets">
+                    <Folder name="Bar">
+                        <File name="D:\www\src\Tracy\assets\Bar\bar.css" />
+                        <File name="D:\www\src\Tracy\assets\Bar\bar.js" />
+                        <File name="D:\www\src\Tracy\assets\Bar\bar.phtml" />
+                        <File name="D:\www\src\Tracy\assets\Bar\dumps.panel.phtml" />
+                        <File name="D:\www\src\Tracy\assets\Bar\dumps.tab.phtml" />
+                        <File name="D:\www\src\Tracy\assets\Bar\errors.panel.phtml" />
+                        <File name="D:\www\src\Tracy\assets\Bar\errors.tab.phtml" />
+                        <File name="D:\www\src\Tracy\assets\Bar\info.panel.phtml" />
+                        <File name="D:\www\src\Tracy\assets\Bar\info.tab.phtml" />
+                    </Folder>
+                    <Folder name="BlueScreen">
+                        <File name="D:\www\src\Tracy\assets\BlueScreen\bluescreen.css" />
+                        <File name="D:\www\src\Tracy\assets\BlueScreen\bluescreen.js" />
+                        <File name="D:\www\src\Tracy\assets\BlueScreen\bluescreen.phtml" />
+                    </Folder>
+                    <Folder name="Debugger">
+                        <File name="D:\www\src\Tracy\assets\Debugger\error.500.phtml" />
+                    </Folder>
+                    <Folder name="Dumper">
+                        <File name="D:\www\src\Tracy\assets\Dumper\dumper.css" />
+                        <File name="D:\www\src\Tracy\assets\Dumper\dumper.js" />
+                    </Folder>
+                </Folder>
+                <Folder name="templates">
+                    <File name="D:\www\src\Tracy\templates\bar.css" />
+                    <File name="D:\www\src\Tracy\templates\bar.dumps.panel.phtml" />
+                    <File name="D:\www\src\Tracy\templates\bar.dumps.tab.phtml" />
+                    <File name="D:\www\src\Tracy\templates\bar.errors.panel.phtml" />
+                    <File name="D:\www\src\Tracy\templates\bar.errors.tab.phtml" />
+                    <File name="D:\www\src\Tracy\templates\bar.info.panel.phtml" />
+                    <File name="D:\www\src\Tracy\templates\bar.info.tab.phtml" />
+                    <File name="D:\www\src\Tracy\templates\bar.js" />
+                    <File name="D:\www\src\Tracy\templates\bar.phtml" />
+                    <File name="D:\www\src\Tracy\templates\bluescreen.css" />
+                    <File name="D:\www\src\Tracy\templates\bluescreen.js" />
+                    <File name="D:\www\src\Tracy\templates\bluescreen.phtml" />
+                    <File name="D:\www\src\Tracy\templates\dumper.css" />
+                    <File name="D:\www\src\Tracy\templates\dumper.js" />
+                    <File name="D:\www\src\Tracy\templates\error.phtml" />
+                </Folder>
+                <File name="D:\www\src\Tracy\Bar.php" />
+                <File name="D:\www\src\Tracy\BlueScreen.php" />
+                <File name="D:\www\src\Tracy\Debugger.php" />
+                <File name="D:\www\src\Tracy\DefaultBarPanel.php" />
+                <File name="D:\www\src\Tracy\Dumper.php" />
+                <File name="D:\www\src\Tracy\FireLogger.php" />
+                <File name="D:\www\src\Tracy\Helpers.php" />
+                <File name="D:\www\src\Tracy\IBarPanel.php" />
+                <File name="D:\www\src\Tracy\ILogger.php" />
+                <File name="D:\www\src\Tracy\Logger.php" />
+                <File name="D:\www\src\Tracy\OutputDebugger.php" />
+            </Folder>
+            <File name="D:\www\src\shortcuts.php" />
+            <File name="D:\www\src\tracy.php" />
+        </Folder>
+        <File name="D:\www\army.php" />
+        <File name="D:\www\config.php" />
+        <File name="D:\www\game.php" />
+        <File name="D:\www\index.php" />
+        <File name="D:\www\jquery-2.1.3.min.js" />
+        <File name="D:\www\script.js" />
+        <File name="D:\www\style.css" />
+        <File name="D:\www\styleg.css" />
+        <File name="D:\www\gen.php" />
+    </Project>
+</NotepadPlus>

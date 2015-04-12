@@ -1,0 +1,576 @@
+body, html{
+	padding: 0;
+	margin: 0;
+
+}
+
+a{
+text-decoration: none;
+color: #FF6600;
+}
+
+a:hover{
+color: gray;
+}
+.profil{
+width: 100%;
+}
+.profil  th{
+background-color: #DDDDDD;
+
+width: 50%;
+border-radius: 8px;
+height: 20px;
+padding: 5px 2%;
+}
+
+.profil1 td{
+padding: 5px;
+}
+
+.profil3{
+width: 100%;
+}
+
+.profil3 td{
+padding: 5px;
+}
+
+.profil3  th{
+background-color: #DDDDDD;
+
+width: 33%;
+border-radius: 3px;
+height: 20px;
+padding: 2px 2%;
+text-align: left;
+}
+
+.dorucene{
+width: 100%;
+}
+
+.dorucene td{
+padding: 5px;
+}
+
+.dorucene  th{
+background-color: #DDDDDD;
+
+border-radius: 3px;
+height: 20px;
+padding: 2px 2%;
+text-align: left;
+}
+
+h2{
+display: block;
+padding: 5px 2%;
+width: 96%;
+margin: 0 0 10px 0;
+border-radius: 5px;
+background-color: #DDDDDD;
+height: 30px;
+}
+
+#celek{
+	width: 900px;
+	background: rgba(20,20,20,0.7);
+	border-radius: 3px;
+	z-index: 1;
+	position: absolute;
+	left: calc(50% - 450px);
+	top: 80px;
+	box-shadow: 1px 1px 5px black;
+}
+
+#header{
+	width: 100%;
+	height: 70px;
+	background: rgba(20,20,20,0.7);
+	box-shadow:  0px 5px 15px -5px black;
+	position: fixed;
+	z-index:2;
+	
+}
+
+#menu{
+width: 200px;
+float: left;
+}
+
+#menu menu{
+margin: 5px;
+margin-top: 10px;
+padding: 3px;
+}
+
+#menu menu li{
+list-style: none;
+padding: 3px 5px;
+margin-top: 2px;
+border-radius: 3px;
+}
+
+#menu menu li a{
+display: block;
+background-color: #fff;
+color: #000000;
+text-decoration: none;
+padding: 3px;
+padding-left: 5px;
+}
+
+#menu menu li a:hover{
+background-color: #FF9966;
+}
+
+#obsah{
+width: 865px;
+margin: 15px auto;
+padding: 5px;
+background-color: white;
+border-radius: 3px;
+min-height: 300px;
+box-shadow: inset -1px -1px 5px black;
+}
+
+#back{
+	position: fixed;
+	top: 0PX;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: #bbb;
+	z-index: -1;
+	overflow: hidden;
+	background-color: rgb(101, 136, 0);
+	-ms-touch-action: none;
+}
+
+#logo{
+float: left;
+}
+
+#h{
+position: relative;
+margin: 5px auto;
+width: 800px;
+}
+
+#p{
+position: absolute;
+right: 0;
+}
+
+#p ul{
+margin: 0px;
+padding: 0px;
+}
+
+#p ul li{
+list-style:none;
+display: block;
+float: left;
+margin: 0px;
+margin-top:5px;
+margin-right: 10px;
+padding: 0px;
+width: 30px;
+height: 30px;
+border: solid 0px black;
+}
+
+#p ul li.logout a{
+display: block;
+height: 100%;
+background-image: url("img/logout.png");
+}
+
+#p ul li.logout a:hover{
+background-image: url("img/logouth.png");
+}
+
+#h2{
+float:right;
+margin-right: 50px;
+width: 400px;
+}
+
+#hornimenu{
+float:left;
+margin-left: 50px;
+width: 350px;
+height: 60px;
+padding: 0px;
+}
+
+#hornimenu ul{
+margin: 0px;
+padding: 0px;
+}
+
+#hornimenu ul li{
+list-style:none;
+display: block;
+float: left;
+margin: 0px;
+margin-left: 5px;
+padding: 0px;
+width: 60px;
+height: 60px;
+border: solid 0px black;
+}
+
+#hornimenu ul li.mesto a{
+display: block;
+height: 100%;
+background-image: url("img/mesto.png");
+}
+
+#hornimenu ul li.mesto a:hover{
+background-image: url("img/mestoh.png");
+}
+
+#hornimenu ul li.mapa a{
+display: block;
+height: 100%;
+background-image: url("img/mapa.png");
+}
+
+#hornimenu ul li.mapa a:hover{
+background-image: url("img/mapah.png");
+}
+
+#hornimenu ul li.stat a{
+display: block;
+height: 100%;
+background-image: url("img/stat.png");
+}
+
+#hornimenu ul li.stat a:hover{
+background-image: url("img/stath.png");
+}
+
+#hornimenu ul li.zpravy a{
+display: block;
+height: 100%;
+background-image: url("img/zpravy.png");
+}
+
+#hornimenu ul li.zpravy a:hover{
+background-image: url("img/zpravyh.png");
+}
+
+#hornimenu ul li.zpravyn a{
+background-image: url("img/zpravyn.png");
+}
+
+#hornimenu ul li.profil a{
+display: block;
+height: 100%;
+background-image: url("img/profil.png");
+}
+
+#hornimenu ul li.profil a:hover{
+background-image: url("img/profilh.png");
+}
+
+
+#suroviny{
+position: absolute;
+top: 0px;
+right: 50px;
+width: 330px;
+padding: 2px;
+margin-top: 3px;
+}
+
+.surovina{
+width: 60px;
+float: left;
+margin: 3px;
+background-color: rgba(200,200,200,0.5);
+border-radius: 5px;
+}
+
+.surovina div{
+margin: 3px;
+text-align: center;
+}
+
+.surovina img{
+display: block;
+margin-left: 20px;
+height: 20px;
+}
+
+.hlaska{
+border: solid 3px #339900;
+background-color: #99CC33;
+margin: 5px;
+padding: 5px;
+}
+
+.zp{
+float: right;
+}
+
+.zp a{
+border: solid 1px #bbb;
+font-size: 18px;
+text-align: center;
+display: block;
+width: 160px;
+background-color: #eee;
+padding: 3px;
+margin: 0px;
+border-radius: 10px;
+color: #000;
+margin-left: 5px;
+}
+
+.zp a:hover{
+background-color: #CCCCFF;
+}
+
+.drevo {
+  display: block;
+  height: 30px;
+  width: 50px;
+  padding-left: 45px;
+  background-image: url("img/drevo.png");
+  border: solid 3px #bbb;
+  border-radius: 5px;
+  padding-top: 10px;
+  background-repeat: no-repeat;
+  background-position-x: 5px;
+  background-position-y: 5px;
+  background-color: #cccfff;
+  float: left;
+  margin-left:5px;
+}
+
+.kamen {
+  display: block;
+  height: 30px;
+  width: 50px;
+  padding-left: 45px;
+  background-image: url("img/kamen.png");
+  border: solid 3px #bbb;
+  border-radius: 5px;
+  padding-top: 10px;
+  background-repeat: no-repeat;
+  background-position-x: 5px;
+  background-position-y: 5px;
+  background-color: #cccfff;
+  float: left;
+  margin-left:5px;
+}
+
+.zelezo {
+  display: block;
+  height: 30px;
+  width: 50px;
+  padding-left: 45px;
+  background-image: url("img/zelezo.png");
+  border: solid 3px #bbb;
+  border-radius: 5px;
+  padding-top: 10px;
+  background-repeat: no-repeat;
+  background-position-x: 5px;
+  background-position-y: 5px;
+  background-color: #cccfff;
+  float: left;
+  margin-left:5px;
+}
+
+.obili {
+  display: block;
+  height: 30px;
+  width: 50px;
+  padding-left: 45px;
+  background-image: url("img/obili.png");
+  border: solid 3px #bbb;
+  border-radius: 5px;
+  padding-top: 10px;
+  background-repeat: no-repeat;
+  background-position-x: 5px;
+  background-position-y: 5px;
+  background-color: #cccfff;
+  float: left;
+  margin-left:5px;
+}
+
+.cas {
+  display: block;
+  height: 30px;
+  width: 60px;
+  padding-left: 45px;
+  background-image: url("img/hodiny.png");
+  border: solid 3px #bbb;
+  border-radius: 5px;
+  padding-top: 10px;
+  background-repeat: no-repeat;
+  background-position-x: 5px;
+  background-position-y: 5px;
+  background-color: #cccfff;
+  float: left;
+  margin-left:5px;
+}
+
+.spotreba{
+  display: block;
+  height: 30px;
+  width: 30px;
+  padding-left: 45px;
+  background-image: url("img/spotreba.png");
+  border: solid 3px #bbb;
+  border-radius: 5px;
+  padding-top: 10px;
+  background-repeat: no-repeat;
+  background-position-x: 5px;
+  background-position-y: 5px;
+  background-color: #cccfff;
+  float: left;
+  margin-left:5px;
+}
+
+.postav{
+  display: block;
+  border: 1px solid black;
+  width: 200px;
+  float: left;
+  margin-left: 5px;
+  text-align: center;
+  height: 40px;
+  font-size: 35px;
+  border-radius: 20px;
+  background-color: forestgreen;
+  color: cornsilk;
+}
+
+.postav:hover{
+background-color: goldenrod;
+color: black;
+}
+#move{
+overflow: visible !important;
+}
+
+.mapblok{
+position: absolute;
+border: 1px solid green;
+width: 100%;
+height: 100%;
+}
+
+.mapblok div{
+margin: 0px;
+padding: 0px;
+width: 10%;
+height: 10%;
+float: left;
+background-size: auto 100%;
+}
+
+.mapblok div a{
+display: block;
+height:100px;
+}
+
+.mapblok div.nic{
+background-color: #63903D;
+}
+
+.mapblok div.mesto{
+  background-image: url("img/mapa/city_mini.png");
+  background-position: -0px 0;
+}
+
+.mapblok div.les{
+  background-image: url("img/mapa/forest_mini.png");
+}
+
+.mapblok div.kopec{
+  background-image: url("img/mapa/hills_mini.png");
+}
+
+#pozx{
+height: 20px;
+position: fixed;
+text-shadow: 1px 1px 5px black;
+left:0px;
+right:0px;
+bottom: 0px;
+}
+
+#pozxmove{
+position:absolute;
+width:1000px;
+}
+#pozxmove div.poz{
+margin: 0px;
+padding: 0px;
+width: 100%;
+}
+
+#pozxmove div.poz div{
+margin: 0px;
+padding: 0px;
+width: 10%;
+float: left;
+text-align: center;
+font-weight: bold;
+color: white;
+}
+
+#pozy{
+width: 40px;
+position: fixed;
+text-shadow: 1px 1px 5px black;
+top:0px;
+bottom:20px;
+left:0px;
+overflow: hidden;
+}
+
+#pozymove{
+position:absolute;
+height:1000px;
+}
+#pozymove div.poz{
+margin: 0px;
+padding: 0px;
+height: 100%;
+}
+
+#pozymove div.poz div{
+margin: 0px;
+padding: 0px;
+height: 10%;
+font-weight: bold;
+color: white;
+padding-left: 5px;
+width: 35px;
+display: table;
+}
+
+#pozymove div.poz div span{
+ display: table-cell;
+  vertical-align: middle;
+  text-align: left;
+
+}
+
+.hidden{
+	display: none;
+}
+
+.ui-tooltip{
+	background: rgba(20,20,20,0.4);
+	border: 0px;
+}
+
+
+
