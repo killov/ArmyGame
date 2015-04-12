@@ -189,32 +189,32 @@
 	var dotykX, dotykY;
 	
 	 $('#back').mousewheel(function(e){
+		 var sirka = parseInt($("#back").css("width").replace("px",""));
+		var vyska = parseInt($("#back").css("height").replace("px",""))
         if(e.deltaY > 0) {
 			if(velikost < 1000){
 				var ve = velikost;
 				velikost = velikost+50;
-				zoom(ve,velikost);
+				zoom(ve,velikost,(sirka/2)-e.pageX,(vyska/2)-e.pageY);
 
         		$('.map_zoom').slider('value', velikost);
 			}
         }
         else{
-			if(velikost > 350){
+			if(velikost > 400){
 				var ve = velikost;
 				velikost = velikost-50;
-				zoom(ve,velikost);
+				zoom(ve,velikost,(sirka/2)-e.pageX,(vyska/2)-e.pageY);
         		$('.map_zoom').slider('value', velikost);
 			}
 		}
     });
 	
-	
-		
-	function zoom(z,na){
+	function zoom(z,na,zx,zy){
 		var sirka = parseInt($("#back").css("width").replace("px",""));
 		var vyska = parseInt($("#back").css("height").replace("px",""));
-		mapX = mapX*(na/z)+(sirka/2)*(1-na/z);
-		mapY = mapY*(na/z)+(vyska/2)*(1-na/z);
+		mapX = mapX*(na/z)+(sirka/2)*(1-na/z)+zx*0.1;
+		mapY = mapY*(na/z)+(vyska/2)*(1-na/z)+zy*0.1;
 		$("#move").stop().animate({
 			width: velikost,
 			height: velikost,
@@ -243,14 +243,15 @@
             zoom(orig, ui.value);
         },
         change: function(event, ui){
+			var orig = velikost;
             velikost = ui.value;
-            zoom(velikost, velikost);
+            zoom(orig, velikost,0,0);
         }
     });
     $('.map_zoom_pop1').click(function(){
         var orig= velikost;
         velikost = 400;
-        zoom(orig,400);
+        zoom(orig,400,0,0);
         $('.map_zoom').slider('value', 400);
 
     });
@@ -258,7 +259,7 @@
     $('.map_zoom_pop2').click(function(){
         var orig= velikost;
         velikost = 600;
-        zoom(orig,600);
+        zoom(orig,600,0,0);
         $('.map_zoom').slider('value', 600);
 
     });
@@ -266,7 +267,7 @@
     $('.map_zoom_pop3').click(function(){
         var orig= velikost;
         velikost = 1000;
-        zoom(orig,1000);
+        zoom(orig,1000,0,0);
         $('.map_zoom').slider('value', 1000);
 
     });
