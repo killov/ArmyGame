@@ -33,26 +33,46 @@ $drevo = surovina($mesto["drevo"],$mesto["drevo_produkce"],$mesto["suroviny_time
 $kamen = surovina($mesto["kamen"],$mesto["kamen_produkce"],$mesto["suroviny_time"],$mesto["sklad"],time());
 $zelezo = surovina($mesto["zelezo"],$mesto["zelezo_produkce"],$mesto["suroviny_time"],$mesto["sklad"],time());
 $obili = surovina($mesto["obili"],$mesto["obili_produkce"],$mesto["suroviny_time"],$mesto["sklad"],time());
-
+$jo = false;
 foreach($urovne as $key => $uroven){
-	if(pozadavky($key,$mesto) and $hodnoty["budovy"][$key]["maximum"] >= $uroven){
-		echo "<tr><th>".lang_budova($key)." (".$lang[31].": ".$uroven.")</th></tr>";
-		echo "<tr><td>";
-		echo "<span class=\"drevo\">".$hodnoty["budovy"][$key]["drevo"][$uroven]."</span> ";
-		echo "<span class=\"kamen\">".$hodnoty["budovy"][$key]["kamen"][$uroven]."</span> ";
-		echo "<span class=\"zelezo\">".$hodnoty["budovy"][$key]["zelezo"][$uroven]."</span> ";
-		echo "<span class=\"obili\">".$hodnoty["budovy"][$key]["obili"][$uroven]."</span> ";
-		echo "<span class=\"cas\">".cas(budovy_cas($mesto["b1"],$key,$uroven))."</span>";
-		echo "<span class=\"spotreba\">".budovy_spotreba($key,$uroven)."</span>";
-		if($hodnoty["budovy"][$key]["drevo"][$uroven] <= $drevo and
-			$hodnoty["budovy"][$key]["kamen"][$uroven] <= $kamen and
-			$hodnoty["budovy"][$key]["zelezo"][$uroven] <= $zelezo and
-			$hodnoty["budovy"][$key]["obili"][$uroven] <= $obili){
-			echo "<a href=\"#\" class=\"postav\" onclick=\"postav(".$key.")\">".$lang[62]."</a>";
+	if(pozadavky($key,$mesto)){
+		if($hodnoty["budovy"][$key]["maximum"] >= $uroven){
+			echo "<tr><th>".lang_budova($key)." (".$lang[31].": ".$uroven.")</th></tr>";
+			echo "<tr><td>";
+			echo "<span class=\"drevo\">".$hodnoty["budovy"][$key]["drevo"][$uroven]."</span> ";
+			echo "<span class=\"kamen\">".$hodnoty["budovy"][$key]["kamen"][$uroven]."</span> ";
+			echo "<span class=\"zelezo\">".$hodnoty["budovy"][$key]["zelezo"][$uroven]."</span> ";
+			echo "<span class=\"obili\">".$hodnoty["budovy"][$key]["obili"][$uroven]."</span> ";
+			echo "<span class=\"cas\">".cas(budovy_cas($mesto["b1"],$key,$uroven))."</span>";
+			echo "<span class=\"spotreba\">".budovy_spotreba($key,$uroven)."</span>";
+			if($hodnoty["budovy"][$key]["drevo"][$uroven] <= $drevo and
+				$hodnoty["budovy"][$key]["kamen"][$uroven] <= $kamen and
+				$hodnoty["budovy"][$key]["zelezo"][$uroven] <= $zelezo and
+				$hodnoty["budovy"][$key]["obili"][$uroven] <= $obili){
+				echo "<a href=\"#\" class=\"postav\" onclick=\"postav(".$key.")\">".$lang[62]."</a>";
+			}
+			echo "</td></tr>";
 		}
-		echo "</td></tr>";
+	}else{
+		$jo = true;
 	}
 }
 echo "</table>";
+
+if($jo){
+	echo "<h2>".$lang[69]."</h2>";
+	echo "<table class=\"dorucene\">";
+	foreach($urovne as $key => $uroven){
+		if(!pozadavky($key,$mesto)){
+			echo "<tr><th>".lang_budova($key)."</th></tr>";
+			echo "<tr><td>";
+			foreach($hodnoty["budovy"][$key]["pozadavky"] as $keyy => $valuey){
+				echo lang_budova($keyy)." (".$lang[31].": ".$valuey.")<br>";
+		}
+			echo "</td></tr>";
+		}
+	}
+	echo "</table>";
+}
 
 ?>

@@ -3,8 +3,8 @@
 	<head>
 		<title>Armygame</title>
 		<link rel="stylesheet" href="style.css" type="text/css">
-		<script type="text/javascript" src="jquery-2.1.3.min.js"></script>
-		<script type="text/javascript" src="script.js"></script>
+		<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+		<script type="text/javascript" src="js/script.js"></script>
 		<meta charset="UTF-8">
 	</head>
 	<body>

@@ -4,9 +4,11 @@
 		<title>Armygame</title>
 		<link href="jquery-ui.css" rel="stylesheet">
 		<link rel="stylesheet" href="styleg.css" type="text/css">
-		<script type="text/javascript" src="jquery-2.1.3.min.js"></script>
-		<script src="jquery-ui.min.js"></script>
-		<script type="text/javascript" src="script.js"></script>
+		<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+		<script src="js/jquery-ui.min.js"></script>
+		<script src="js/jquery.mousewheel.min.js"></script>
+		
+		<script type="text/javascript" src="js/script.js"></script>
 		<meta charset="UTF-8">
 		  <script>
 		$(function() {
@@ -147,7 +149,16 @@
 	</div>
 	<div id="back">
 		<div id="move" style="position:absolute;top:20px;left:20px;width:1000px;height:1000px;">
-		
+			<canvas id="myCanvas" width="200" height="100" style="border:1px solid #d3d3d3;position: absolute;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+<script>
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+ctx.moveTo(0,0);
+ctx.lineTo(200,100);
+ctx.stroke();
+</script>
 		</div>
 	</div>
 <script type="text/javascript">
@@ -169,28 +180,29 @@
 	var velikost = 1000;
 	var dotykX, dotykY;
 	
-	 $('#back').bind('mousewheel', function(e){
-        if(e.originalEvent.wheelDelta /120 > 0) {
+	 $('#back').mousewheel(function(e){
+        if(e.deltaY > 0) {
 			if(velikost < 1000){
 				var ve = velikost;
 				velikost = velikost+50;
-				zoom(ve,velikost,e);
+				zoom(ve,velikost);
 			}
         }
         else{
 			if(velikost > 350){
 				var ve = velikost;
 				velikost = velikost-50;
-				zoom(ve,velikost,e);
+				zoom(ve,velikost);
 			}
 		}
     });
 	
-	function zoom(z,na,e){
+	
+	function zoom(z,na){
 		var sirka = parseInt($("#back").css("width").replace("px",""));
 		var vyska = parseInt($("#back").css("height").replace("px",""));
-		mapX = mapX*(na/z)+(sirka/2)*(1-na/z)+((sirka/2)-e.pageX)*0.1;
-		mapY = mapY*(na/z)+(vyska/2)*(1-na/z)+((vyska/2)-e.pageY)*0.1;
+		mapX = mapX*(na/z)+(sirka/2)*(1-na/z);
+		mapY = mapY*(na/z)+(vyska/2)*(1-na/z);
 		$("#move").animate({
 			width: velikost,
 			height: velikost,
@@ -255,6 +267,9 @@
 	
 	function pohyb(event){
 		if(move){
+			if(event.pageX-mysX > 5 || event.pageY-mysY > 5){
+				klik = 0;
+			}
 			x = mapX+(event.pageX-mysX);
 			y = mapY+(event.pageY-mysY);
 			document.getElementById("move").style.left = x.toString()+"px";
@@ -314,7 +329,7 @@
 						var cl= "kopec";
 					}
 					poleinfo[json[z][3]] = json[z];
-					$("#m"+x.toString()+"_"+y.toString()).append("<div id='m"+json[z][3].toString()+"' title='' class='"+cl+"'></div>");
+					$("#m"+x.toString()+"_"+y.toString()).append("<div class='"+cl+"'><span class='klik' id='m"+json[z][3].toString()+"' title=''></span></div>");
 						if(json[z][2] == 1){
 							$("#m"+json[z][3].toString()).on('touchend click', function(){
 								if(klik == 1){
@@ -400,7 +415,6 @@
 	}
 	
 	function mapa_pozice(sx,sy){
-
 		var sirka = parseInt($("#back").css("width").replace("px",""));
 		var vyska = parseInt($("#back").css("height").replace("px",""));
 		mapX = sirka/2-velikost/10*sx-velikost/10/2;

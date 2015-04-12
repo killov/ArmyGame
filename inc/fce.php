@@ -236,6 +236,7 @@ function lang_budova($x){
 	$budova[4] = $lang[29];
 	$budova[5] = $lang[30];
 	$budova[6] = $lang[59];
+	$budova[7] = $lang[68];
 	return $budova[$x];
 }
 
@@ -445,7 +446,7 @@ function spotreba_budov($mesto){
 	global $hodnoty;
 	$sp = 0;
 	$x = 1;
-	while($x <= 6){
+	while($x <= 7){
 		$sp = $sp+$hodnoty["budovy"][$x]["spotreba"][$mesto["b".$x]];
 		$x++;
 	}
@@ -455,7 +456,7 @@ function spotreba_budov($mesto){
 function budovy_urovne($mesto){
 	global $db;
 	$x = 1;
-	while($x <= 6){
+	while($x <= 7){
 		$budova[$x] = $mesto["b".$x]+1;
 		$x++;
 	}
@@ -544,7 +545,7 @@ function zvys_level($id,$budova){
 function budovy_stavba($mesto){
 	global $db;
 	$x = 1;
-	while($x <= 6){
+	while($x <= 7){
 		$budova[$x] = $mesto["b".$x]+1;
 		$x++;
 	}

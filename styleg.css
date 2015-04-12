@@ -496,6 +496,13 @@ background-color: #63903D;
   background-image: url("img/mapa/hills_mini.png");
 }
 
+.mapblok div span{
+display: block;
+height:100%;
+position: relative;
+z-index:10;
+}
+
 #pozx{
 height: 20px;
 position: fixed;

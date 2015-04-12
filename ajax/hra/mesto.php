@@ -58,6 +58,10 @@ if($mesto["b6"]){
 ?>
 <a href="#" onMouseDown="page_load('budovy&b=6')" onMouseUp="page_draw()"><?php echo lang_budova(6)." (".$lang[31].": ".$mesto["b6"].")"; ?></a><br>
 <?php
+}if($mesto["b7"]){
+?>
+<a href="#" onMouseDown="page_load('budovy&b=7')" onMouseUp="page_draw()"><?php echo lang_budova(7)." (".$lang[31].": ".$mesto["b7"].")"; ?></a><br>
+<?php
 }
 
 $stavba = budovy_stavba($mesto);

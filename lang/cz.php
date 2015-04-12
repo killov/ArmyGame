@@ -67,6 +67,8 @@ $lang = array(
 "Doba",
 "Hotovo",
 "Mapa",
-"Centrovat na mapě"
+"Centrovat na mapě",
+"Tržiště",
+"Další budovy"
 )
 ?>
