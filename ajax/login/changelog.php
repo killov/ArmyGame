@@ -1,5 +1,26 @@
 <h2>Changelog</h2>
 <table class="dorucene">
+
+<tr><th>21.4.2015 [0.1.0]</th></tr>
+<tr><td>
+<h3>Mapa</h3>
+<ul>
+<li>Přidán slider pro oddalování mapy
+<li>Opraveno oddalování mapy kolečkem
+<li>Opravena chyba při kliku na města na mapě
+</ul>
+<h3>Tržiště</h3>
+<ul>
+<li>Přidáno tržiště
+<li>Přidáno základní posílání surovin
+</ul>
+<h3>UI</h3>
+<ul>
+<li>Přidán pravý ovládací panel
+<li>Přidána notifikace
+</ul>
+</td></tr>
+
 <tr><th>10.4.2015</th></tr>
 <tr><td>
 <h3>Mapa</h3>

@@ -5,7 +5,7 @@ include "../../lang/".$cfg["lang"].".php";
 include "../../inc/mysql.php";
 include "../../inc/fce.php";
 
-if(!empty($_POST)){
+if(isset($_POST["jmeno"]) and isset($_POST["heslo"])){
 	$errors = [0];
 	$userid = login($_POST["jmeno"],$_POST["heslo"]);
 	if(empty($_POST["jmeno"])){

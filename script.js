@@ -173,6 +173,30 @@ function hidemap(){
 	}
 }	
 
+var pravo;
+function showpravo(){
+	$("#pravo").fadeIn(500);
+	pravo = 1;
+}
+
+function hidepravo(){
+	if(map){
+		$("#pravo").fadeOut(500);
+		pravo = 0;
+	}
+}	
+
+function pravo_go(x){
+	url = x;
+	$.ajax({url: "ajax/pravo.php?p="+x, success: function(result){
+		g_odpocitavac = -1;
+		clearTimeout(g_odp);
+		$("#pravo").hide();
+		$("#pravo").html(result);
+		$("#pravo").fadeIn(500);
+	}});
+}
+
 function mapa(){
 	if(map){
 		mapa_pozice(mesto_x,mesto_y);

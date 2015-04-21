@@ -69,6 +69,25 @@ $lang = array(
 "Mapa",
 "Centrovat na mapě",
 "Tržiště",
-"Další budovy"
+"Další budovy",
+"Poslat suroviny",
+"Vzdálenost",
+"Dostupných obchodníků",
+"Odeslat",
+"Obchodníků potřeba",
+"Suroviny odeslány",
+"Suroviny nevyplněny",
+"Nedostatek surovin",
+"Nedostatek obchodníků",
+"Doba trvání",
+"Příchod v",
+"Aktuální počet obchodníků",
+"Počet obchodníků na další úrovni",
+"Počet dostupných obchodníků",
+"Transport do",
+"Čas",
+"Zbývá",
+"Transport od",
+"Návrat z"
 )
 ?>

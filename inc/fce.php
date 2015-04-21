@@ -124,6 +124,17 @@ function mesto_data($id){
 	}
 }
 
+function mesto_data_xy($x,$y){
+	global $db;
+	$dotaz = mysqli_query($db,"SELECT * FROM `mesto` WHERE `x` = '".mysqli_real_escape_string($db,$x)."' AND `y` = '".mysqli_real_escape_string($db,$y)."'");
+	if(mysqli_num_rows($dotaz) == 0){
+		return false;
+	}else{
+		$data = mysqli_fetch_array($dotaz);
+		return $data;
+	}
+}
+
 function mesto_exist($x,$y){
 	global $db;
 	$dotaz = mysqli_query($db,"SELECT * FROM `mesto` WHERE `x` = '".$x."' AND `y` = '".$y."'");
@@ -159,13 +170,13 @@ function vytvor_mesto($jmeno,$user,$smer,$userjmeno){
 		$dotaz = mysqli_query($db,"SELECT COUNT(*) as `pocet` FROM `mesto` WHERE `x` >= 0 AND `y` >= 0 AND `typ` = 1");
 	}
 	elseif($smer == 1){
-		$dotaz = mysqli_query($db,"SELECT COUNT(*) as `pocet` FROM `mesto` WHERE `x` >= 0 AND `y` <= 0 AND `typ` = 1");
+		$dotaz = mysqli_query($db,"SELECT COUNT(*) as `pocet` FROM `mesto` WHERE `x` > 0 AND `y` < 0 AND `typ` = 1");
 	}
 	elseif($smer == 2){
-		$dotaz = mysqli_query($db,"SELECT COUNT(*) as `pocet` FROM `mesto` WHERE `x` <= 0 AND `y` <= 0 AND `typ` = 1");
+		$dotaz = mysqli_query($db,"SELECT COUNT(*) as `pocet` FROM `mesto` WHERE `x` < 0 AND `y` < 0 AND `typ` = 1");
 	}
 	elseif($smer == 3){
-		$dotaz = mysqli_query($db,"SELECT COUNT(*) as `pocet` FROM `mesto` WHERE `x` <= 0 AND `y` >= 0 AND `typ` = 1");
+		$dotaz = mysqli_query($db,"SELECT COUNT(*) as `pocet` FROM `mesto` WHERE `x` < 0 AND `y` > 0 AND `typ` = 1");
 	}else{
 		$dotaz = mysqli_query($db,"SELECT COUNT(*) as `pocet` FROM `mesto` WHERE `x` >= 0 AND `y` >= 0 AND `typ` = 1");
 		$smer = rand(0,3);
@@ -441,6 +452,11 @@ function suroviny_odecti($id,$drevo,$kamen,$zelezo,$obili){
 	$dotaz = mysqli_query($db,"UPDATE `mesto` SET `drevo` = `drevo`-".$drevo.", `kamen` = `kamen`-".$kamen.", `zelezo` = `zelezo`-".$zelezo.", `obili` = `obili`-".$obili." WHERE `id` = '".$id."'");
 }
 
+function suroviny_pricti($id,$drevo,$kamen,$zelezo,$obili){
+	global $db;
+	$dotaz = mysqli_query($db,"UPDATE `mesto` SET `drevo` = `drevo`+".$drevo.", `kamen` = `kamen`+".$kamen.", `zelezo` = `zelezo`+".$zelezo.", `obili` = `obili`+".$obili." WHERE `id` = '".$id."'");
+}
+
 function spotreba_budov($mesto){
 	global $db;
 	global $hodnoty;
@@ -580,9 +596,8 @@ function mapa_nacti($x,$y){
 	}
 }
 
-function suroviny_posli($od,$komu,$delka,$cas,$drevo,$kamen,$zelezo,$obili){
+function suroviny_posli($od,$komu,$delka,$cas,$drevo,$kamen,$zelezo,$obili,$obchodniku,$mestojmeno,$komujmeno){
 	global $db;
-
 	$d = array(
 		"cas" => $cas,
 		"delka" => $delka,
@@ -591,8 +606,64 @@ function suroviny_posli($od,$komu,$delka,$cas,$drevo,$kamen,$zelezo,$obili){
 		"drevo" => $drevo,
 		"kamen" => $kamen,
 		"zelezo" => $zelezo,
-		"obili" => $obili
+		"obili" => $obili,
+		"obchodniku" => $obchodniku,
+		"komu" => $komu,
+		"mestojmeno" => $mestojmeno,
+		"komujmeno" => $komujmeno
 	);
 	$id = db_insert("akce",$d);
+}
+
+function obchod_vrat($od,$cas,$obchodniku,$komu,$komujmeno){
+	global $db;
+	$d = array(
+		"cas" => $cas,
+		"mesto" => $od,
+		"typ" => 3,
+		"obchodniku" => $obchodniku,
+		"komu" => $komu,
+		"komujmeno" => $komujmeno
+	);
+	$id = db_insert("akce",$d);
+}
+
+function obchodnici($mesto){
+	global $db,$hodnoty;
+	$dotaz = mysqli_query($db,"SELECT SUM(obchodniku) as `obchodnici` FROM `akce` WHERE mesto = '".$mesto["id"]."'");
+	if(mysqli_num_rows($dotaz) == 0){
+		$obchod = 0;
+	}else{
+		$data = mysqli_fetch_array($dotaz);
+		$obchod = $data["obchodnici"];
+	}
+	return $hodnoty["obchodnici"][$mesto["b7"]]-$obchod;
+}
+
+function obchod_transporty($id){
+	global $db;
+	$dotaz = mysqli_query($db,"SELECT * FROM `akce`where (typ = 2 and mesto = ".$id.") or (typ = 2 and komu = ".$id.") or (typ = 3 and mesto = ".$id.") ORDER by `cas` ASC");
+	if(mysqli_num_rows($dotaz) == 0){
+		return false;
+	}else{
+		$data = array(array(),array(),array());
+		while($p = mysqli_fetch_array($dotaz)){
+			if($p["typ"] == 2 and $p["mesto"] == $id){
+				$data[0][] = $p;
+			}
+			if($p["typ"] == 3 and $p["mesto"] == $id){
+				$data[2][] = $p;
+			}
+			if($p["typ"] == 2 and $p["komu"] == $id){
+				$data[1][] = $p;
+			}
+		}
+		foreach($data as $key => $value){
+			if(empty($value)){
+				$data[$key] = false;
+			}
+		}
+		return $data;
+	}
 }
 ?>

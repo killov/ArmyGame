@@ -1,7 +1,9 @@
 <?php
 echo "<p>";
 echo $lang[60].": ".$hodnoty["stavba"][$mesto["b1"]]."%<br>";
-echo $lang[61].": ".$hodnoty["stavba"][$mesto["b1"]+1]."%";
+if($mesto["b1"] < $hodnoty["budovy"][1]["maximum"]){
+	echo $lang[61].": ".$hodnoty["stavba"][$mesto["b1"]+1]."%";
+}
 echo "</p>";
 $stavba = budovy_stavba($mesto);
 if($stavba){

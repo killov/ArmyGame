@@ -12,6 +12,7 @@ color: #FF6600;
 a:hover{
 color: gray;
 }
+
 .profil{
 width: 100%;
 }
@@ -63,6 +64,10 @@ padding: 2px 2%;
 text-align: left;
 }
 
+.dorucene  img{
+width: 20px;
+}
+
 h2{
 display: block;
 padding: 5px 2%;
@@ -71,6 +76,23 @@ margin: 0 0 10px 0;
 border-radius: 5px;
 background-color: #DDDDDD;
 height: 30px;
+}
+
+#hlaska{
+	width: 900px;
+	background: green;
+	border-radius: 3px;
+	z-index: 5;
+	position: absolute;
+	left: calc(50% - 450px);
+	top: 70px;
+	box-shadow: 1px 1px 5px black;
+	padding: 5px;
+	text-align: center;
+	font-size: 28px;
+	color: white;
+	display: none;
+	
 }
 
 #celek{
@@ -144,7 +166,7 @@ box-shadow: inset -1px -1px 5px black;
 	background: #bbb;
 	z-index: -1;
 	overflow: hidden;
-	background-color: rgb(101, 136, 0);
+	background-color: #63903D;
 	-ms-touch-action: none;
 }
 
@@ -366,7 +388,7 @@ background-color: #CCCCFF;
 .drevo {
   display: block;
   height: 30px;
-  width: 50px;
+  padding-right: 5px;
   padding-left: 45px;
   background-image: url("img/drevo.png");
   border: solid 3px #bbb;
@@ -383,7 +405,7 @@ background-color: #CCCCFF;
 .kamen {
   display: block;
   height: 30px;
-  width: 50px;
+  padding-right: 5px;
   padding-left: 45px;
   background-image: url("img/kamen.png");
   border: solid 3px #bbb;
@@ -400,7 +422,7 @@ background-color: #CCCCFF;
 .zelezo {
   display: block;
   height: 30px;
-  width: 50px;
+  padding-right: 5px;
   padding-left: 45px;
   background-image: url("img/zelezo.png");
   border: solid 3px #bbb;
@@ -417,7 +439,7 @@ background-color: #CCCCFF;
 .obili {
   display: block;
   height: 30px;
-  width: 50px;
+  padding-right: 5px;
   padding-left: 45px;
   background-image: url("img/obili.png");
   border: solid 3px #bbb;
@@ -434,7 +456,7 @@ background-color: #CCCCFF;
 .cas {
   display: block;
   height: 30px;
-  width: 60px;
+  padding-right: 5px;
   padding-left: 45px;
   background-image: url("img/hodiny.png");
   border: solid 3px #bbb;
@@ -451,7 +473,7 @@ background-color: #CCCCFF;
 .spotreba{
   display: block;
   height: 30px;
-  width: 30px;
+  padding-right: 5px;
   padding-left: 45px;
   background-image: url("img/spotreba.png");
   border: solid 3px #bbb;
@@ -482,6 +504,7 @@ background-color: #CCCCFF;
 .postav:hover{
 background-color: goldenrod;
 color: black;
+cursor:pointer;
 }
 #move{
 overflow: visible !important;
@@ -614,11 +637,33 @@ display: table;
 	top: 70px;
 	bottom:0px;
 	right:0px;
-	background: rgba(20,20,20,0.7);
+	background: rgba(20,20,20,0.6);
 	box-shadow:  0px 5px 15px -5px black;
 	position: fixed;
 	z-index:20;
 	display:none;
+}
+
+#pravej div{
+  margin: 15px;
+  background: rgba(255,255,255,0.5);  
+  padding: 5px;
+  height: 95%;
+  border-radius: 10px;
+  min-height: 300px;
+  box-shadow: inset -1px -1px 5px black;
+}
+
+#pravej div h2{
+	background: rgba(100,100,100,0.8);
+}
+
+#pravej div h2 .zp a{
+	width: 15px;
+}
+
+canvas{
+	z-index: 5;
 }
 
 
