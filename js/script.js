@@ -19,6 +19,8 @@ var map = 0;
 	var move = 0;
 	var mysX, mysY, mapX, mapY, x, y
 	var nacteno = new Array();
+	var mapasez = new Array();
+	var mapacache = new Array();
 	var nactenovi = new Array();
 	var nactenoi = 0;
 	var nactenox = new Array();
@@ -290,7 +292,7 @@ function draw_trziste_cesta(x0,y0,x1,y1){
 	}
 	if(y0>y1){
 		var top = -(y0+1)*10;
-		y1=y1+y0;
+		y1=y0-y1;
 		y0 = 0;
 	}else{
 		var top = -(y1+1)*10;
@@ -410,14 +412,17 @@ function zoom(z,na,zx,zy){
 			if(event.pageX-mysX > 5 || event.pageY-mysY > 5){
 				klik = 0;
 			}
+			var sirka = parseInt($("#back").css("width").replace("px",""));
+			var vyska = parseInt($("#back").css("height").replace("px",""));
 			x = mapX+(event.pageX-mysX);
 			y = mapY+(event.pageY-mysY);
-			document.getElementById("move").style.left = x.toString()+"px";
-			document.getElementById("move").style.top = y.toString()+"px";
-			document.getElementById("pozxmove").style.left = x.toString()+"px";
-			document.getElementById("pozymove").style.top = y.toString()+"px";
-			console.log(1);
+			if(20*velikost>=x && -20*velikost+sirka <= x){
+				document.getElementById("move").style.left = x.toString()+"px";
+				document.getElementById("pozxmove").style.left = x.toString()+"px";	
 			}
+			document.getElementById("move").style.top = y.toString()+"px";
+			document.getElementById("pozymove").style.top = y.toString()+"px";
+		}
 	}
 	
 	function pust(){
@@ -432,7 +437,8 @@ function zoom(z,na,zx,zy){
 	}
 	
 	function mapa_clear(){
-		while(nactenoi>30){
+		console.log(nactenoi);
+		while(nactenoi>40){
 			var c = nacteno.shift();
 			if(nactenovi.indexOf(c) != -1){
 				nacteno.push(c);
@@ -443,12 +449,7 @@ function zoom(z,na,zx,zy){
 		}
 	}
 	
-	function mapa_nacti(x,y){
-		if(nacteno.indexOf(x.toString()+"_"+y.toString()) == -1){
-			nacteno.push(x.toString()+"_"+y.toString());
-			nactenoi=nactenoi+1;
-			$.ajax({url: "ajax/mapa.php?x="+x+"&y="+y, success: function(data){ 
-			var json = eval("(" + data + ")");
+	function mapa_nacti(json,x,y){
 				var left = x*100;
 				var top = (-y-1)*100;
 				$("#move").append("<div id='m"+x.toString()+"_"+y.toString()+"' class='mapblok' style='position: absolute;left: "+left.toString()+"%;top:"+top.toString()+"%'></div>")
@@ -460,16 +461,20 @@ function zoom(z,na,zx,zy){
 						var cl = "nic";
 					}
 					if(json[z][2] == 1){
-						var cl= "mesto";
+						var pop = json[z][6];
+						var pop_size = Math.floor(pop/36);
+						var cl= "mesto mesto-"+pop_size;
 					}
 					if(json[z][2] == 2){
-						var cl = "les";
+						var cl = "les-"+json[z][7];
 					}
 					if(json[z][2] == 3){
-						var cl= "kopec";
+						var cl= "kopec-"+json[z][7];
 					}
 					poleinfo[json[z][3]] = json[z];
-					$("#m"+x.toString()+"_"+y.toString()).append("<div class='"+cl+"'><span class='klik' id='m"+json[z][3].toString()+"' title=''></span></div>");
+					var lleft = (z%10)*10;
+					var ttop = Math.floor(z/10)*10-5;
+					$("#m"+x.toString()+"_"+y.toString()).append("<div class='"+cl+"' style='left: "+lleft+"%;top:"+ttop+"%;'><span class='klik' id='m"+json[z][3].toString()+"' title=''></span></div>");
 						if(json[z][2] == 1){
 							$("#m"+json[z][3].toString()).on('touchend click', function(){
 								if(klik == 1){
@@ -490,11 +495,8 @@ function zoom(z,na,zx,zy){
 					return "<b>"+poleinfo[id][4]+" ("+poleinfo[id][0]+"/"+poleinfo[id][1]+")</b><br>Hráč: "+poleinfo[id][5]+"<br>Počet obyvatel: "+poleinfo[id][6];
 				},
 				hide: { effect: "blind", duration: 0 }
-			});
-				
-				
-			}});
-		}
+			});	
+
 	}
 	
 		function mapa_poz(x,y){
@@ -520,7 +522,7 @@ function zoom(z,na,zx,zy){
 			}
 		}
 
-
+var xf,yf,f;
 	function mapa_load(){
 		mapa_clear();
 		var sirka = parseInt($("#back").css("width").replace("px",""));
@@ -542,15 +544,39 @@ function zoom(z,na,zx,zy){
 		var x = levo;
 		var y = dole;
 		nactenovi = new Array();
+		f = Array(); 
+		var g = false;
 		while(x<=pravo){
 			y = dole;
 			while(y<=nahore){
-				mapa_nacti(x,y);
+				if(nacteno.indexOf(x.toString()+"_"+y.toString()) == -1){
+					nacteno.push(x.toString()+"_"+y.toString());
+					nactenoi = nactenoi+1;
+					if(mapasez.indexOf(x.toString()+"_"+y.toString()) == -1){
+						f.push(Array(x,y));
+						g = true;
+					}else{
+						mapa_nacti(mapacache[x.toString()+"_"+y.toString()],x,y);
+					}				
+				}
 				nactenovi.push(x.toString()+"_"+y.toString());
 				mapa_poz(x,y);
 				y++;
 			}
 			x++;
+		}
+		if(g){
+			$.ajax({url: "ajax/mapa.php?x="+JSON.stringify(f), success: function(data){ 
+				var json = eval("(" + data + ")");
+				for(var x in json){
+					for(var y in json[x]){
+						mapa_nacti(json[x][y],x,y);
+						mapasez.push(x.toString()+"_"+y.toString());
+						mapacache[x.toString()+"_"+y.toString()] = json[x][y];
+					}
+				}				
+			}
+			});
 		}
 	}
 	
@@ -571,6 +597,7 @@ function zoom(z,na,zx,zy){
 		$("#pozymove").animate({
 			top: mapY
 		}, 1000);
+		mapa_load();
 	}
 	
 	function mapa_pozices(sx,sy,sir){
@@ -582,10 +609,9 @@ function zoom(z,na,zx,zy){
 		mapY = vyska/2+velikost/10*sy+velikost/10/2+35;
 		document.getElementById("move").style.left = mapX.toString()+"px";
 		document.getElementById("move").style.top = mapY.toString()+"px";
-		
 		document.getElementById("pozxmove").style.left = mapX.toString()+"px";
 		document.getElementById("pozymove").style.top = mapY.toString()+"px";
-			mapa_load();
+		mapa_load();
 	}
 	
 	function hlaska(x,typ){

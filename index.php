@@ -14,6 +14,7 @@ include "lang/".$cfg["lang"].".php"
 		<meta charset="UTF-8">
 		<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
 		<script type="text/javascript" src="js/script.js"></script>
+
 	</head>
 	<body>
 		<div id="header">

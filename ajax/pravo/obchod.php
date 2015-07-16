@@ -44,7 +44,7 @@ if(isset($_GET["x"]) and isset($_GET["y"])){
 						$("#obchod").keyup(function(){
 							obchod_obchodnici()
 						});
-						g_odpocitavacp = <?php echo Date("H",time())*3600+Date("i",time())*60+Date("s",time())+$delka;?>;
+						g_odpocitavacp = <?php echo round(Date("H",time())*3600+Date("i",time())*60+Date("s",time())+$delka);?>;
 						odpocitejp();
 						formular_upload("#obchod","ajax/zpracuj/obchod.php",function(data){
 							if(data[0] == 1)

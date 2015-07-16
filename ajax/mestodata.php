@@ -17,12 +17,12 @@ if(1){
 					"kamen" => surovina($mesto["kamen"],$mesto["kamen_produkce"],$mesto["suroviny_time"],$mesto["sklad"],time()),
 					"zelezo" => surovina($mesto["zelezo"],$mesto["zelezo_produkce"],$mesto["suroviny_time"],$mesto["sklad"],time()),
 					"obili" => surovina($mesto["obili"],$mesto["obili_produkce"],$mesto["suroviny_time"],$mesto["sklad"],time()),
-					"drevo_produkce" => $mesto["drevo_produkce"],
-					"kamen_produkce" => $mesto["kamen_produkce"],
-					"zelezo_produkce" => $mesto["zelezo_produkce"],
-					"obili_produkce" => $mesto["obili_produkce"],
-					"sklad" => $mesto["sklad"],
-					"zpravy" => $user["zprava"]
+					"drevo_produkce" => intval($mesto["drevo_produkce"]),
+					"kamen_produkce" => intval($mesto["kamen_produkce"]),
+					"zelezo_produkce" => intval($mesto["zelezo_produkce"]),
+					"obili_produkce" => intval($mesto["obili_produkce"]),
+					"sklad" => intval($mesto["sklad"]),
+					"zpravy" => intval($user["zprava"])
 				);
 				echo json_encode($data);
 			}

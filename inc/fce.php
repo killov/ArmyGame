@@ -582,17 +582,32 @@ function budovy_stavba($mesto){
 	return $vystup;
 }
 
-function mapa_nacti($x,$y){
+function mapa_nacti($x){
 	global $db;
-	$dotaz = mysqli_query($db,"SELECT * FROM `mesto` where blokx = '".mysqli_real_escape_string($db,$x)."' and bloky =  '".mysqli_real_escape_string($db,$y)."'");
-	if(mysqli_num_rows($dotaz) == 0){
-		return false;
-	}else{
-		$data = array();
-		while($p = mysqli_fetch_array($dotaz)){
-			$data[] = $p;
+	$sql = "";
+	
+	$k = array();
+	if(is_array($x)){
+		foreach($x as $a){
+			if(is_array($a)){
+				$k[] = "(blokx = ".mysqli_real_escape_string($db,$a[0])." AND bloky = ".mysqli_real_escape_string($db,$a[1]).")";
+			}
 		}
-		return $data;
+		if(!empty($k)){
+			$sql = implode(" OR ",$k);
+			$dotaz = mysqli_query($db,"SELECT * FROM `mesto` where ".$sql);
+			if(mysqli_num_rows($dotaz) == 0){
+				return false;
+			}else{
+				$data = array();
+				while($p = mysqli_fetch_array($dotaz)){
+					$data[] = $p;
+				}
+				return $data;
+			}
+		}else{
+			return false;
+		}
 	}
 }
 
