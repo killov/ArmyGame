@@ -122,7 +122,7 @@
 		    vNormal = mn * normal;
 			vec3 vPosition = m * position;
 			float koef = 0.12;
-		    if(color.g > 0.15){
+		    if(color.g > 0.25){
 		        vPosition.y += koef * sin(time*(rand(position.xz) * 1.0));
 		        vPosition.x += koef * sin(time*(rand(position.yz) * 1.0));
 		        vPosition.z += koef * sin(time*(rand(position.yx) * 1.0));
@@ -130,7 +130,7 @@
 		    light2 = light;
 		    light2 = normalize(light);
 		    float d = clamp(dot(light2, vNormal), 0.0, 1.0);
-		    d = d * 0.5 + 0.3;
+		    d = d * 0.6 + 0.4;
             col = vec3(d) * color;
             vPosition = offset + (vPosition);
 			vColor = vec4(col, 0.5);
@@ -406,8 +406,8 @@ discard;
     dotaz2 = JSON.parse(dotaz2);
 
     var renderer, camera, scene, controls, dirLight, pointLight, mapOn, camPosition, animation, animationBack;
-    var treeCld, buildCld;
-    var groundGeo, groundList = {}, blokx, bloky, blokHills, treesForInstance = [], forestObject;
+    var tt1, tt2, tt1i, tt2i, buildCld;
+    var groundGeo, groundList = {}, blokx, bloky, blokHills, treesForInstance = [];
     mapOn = true;
     var raycaster, mouse;
     var objects = [];
@@ -540,10 +540,25 @@ discard;
 
         loader.load(
                 // resource URL
-                'models/tree19.dae',
+                'models/tt2_7.dae',
                 // Function when resource is loaded
                 function (collada) {
-                    treeCld = collada;
+                    tt2 = collada;
+
+                },
+                // Function called when download progresses
+                function (xhr) {
+                    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+                }
+        );
+
+
+        loader.load(
+                // resource URL
+                'models/tt1_4.dae',
+                // Function when resource is loaded
+                function (collada) {
+                    tt1 = collada;
 
                 },
                 // Function called when download progresses
@@ -559,7 +574,9 @@ discard;
                 // Function when resource is loaded
                 function (collada) {
                     buildCld = collada;
-                    //placeObjects();
+
+                    dotaz = dotaz2;
+                    loadBlocks(dotaz);
                 },
                 // Function called when download progresses
                 function (xhr) {
@@ -576,7 +593,8 @@ discard;
                 makeBlock(xs[i], xy[j]);
             }
         }
-        makeForest();
+        makeForest(tt1);
+        makeForest(tt2);
         treesForInstance = [];
     }
 
@@ -653,10 +671,9 @@ discard;
     }
 
     function placeTree() {
-        var object = treeCld.scene.children[0].children[0];
+        var object = tt1.scene.children[0].children[0];
 
         var faceMaterial = new THREE.MeshStandardMaterial();
-        console.log(object);
         var scale = 0.8 + (0.25 * Math.random());
         //faceMaterial.materials[0].shininess = 5;
         //faceMaterial.materials[1].shininess = 0;
@@ -672,15 +689,14 @@ discard;
     }
 
 
-    function makeForest() {
-        var object = treeCld.scene.children[0].children[0];
-        console.log(object);
+    function makeForest(tree) {
+        var object = tree.scene.children[0].children[0];
         var vlength = object.geometry.vertices.length;
         var faces = object.geometry.faces;
         var cvertices = object.geometry.vertices;
         var flength = object.geometry.faces.length;
         //var instances = treesForInstance.length;
-        var instances = 100000;
+        var instances = 2500;
 
         var geometry = new THREE.InstancedBufferGeometry();
         geometry.maxInstancedCount = instances;
@@ -703,28 +719,18 @@ discard;
             color.setXYZ(i * 3 + 2, materials[faces[i].materialIndex].color.r, materials[faces[i].materialIndex].color.g,materials[faces[i].materialIndex].color.b);
         }
         geometry.addAttribute('color', color);
+        console.log(color);
 
         var offsets = new THREE.InstancedBufferAttribute(new Float32Array(instances * 3), 3, 1);
         for (var i = 0, ul = offsets.count; i < ul; i++) {
             offsets.setXYZ(i, Math.random() * 150 - 51, -0.2 * Math.random() - 1.9, Math.random() * 100 - 51);
         }
-        console.log(offsets);
         geometry.addAttribute('offset', offsets);
 
 
         geometry.computeFaceNormals();
         geometry.computeVertexNormals();
 
-        console.log(object.geometry);
-        console.log(geometry);
-
-        var material1 = new THREE.MeshStandardMaterial(
-                {
-                    side: THREE.DoubleSide
-                });
-        console.log(object.material.materials);
-        console.log(dirLight);
-        console.log(new Date().getTime());
         material = new THREE.RawShaderMaterial({
             uniforms: {
                 light: {value: dirLight.position},
@@ -733,13 +739,16 @@ discard;
             vertexShader: document.getElementById('vertexShader').textContent,
             fragmentShader: document.getElementById('fragmentShader').textContent,
             depthTest: true,
-            depthWrite: true,
+            depthWrite: true
         });
         var mesh = new THREE.Mesh(geometry, material);
         mesh.frustumCulled = false;
-
-        forestObject = mesh;
-        scene.add(forestObject);
+        if(tree == tt1){
+            tt1i = mesh;
+        } else if(tree == tt2){
+            tt2i = mesh;
+        }
+        scene.add(mesh);
     }
 
 
@@ -999,7 +1008,8 @@ discard;
         requestAnimationFrame(animate);
 
         var t = performance.now();
-        forestObject.material.uniforms.time.value = t * 0.0033;
+        tt1i.material.uniforms.time.value = t * 0.0033;
+        tt2i.material.uniforms.time.value = t * 0.0033;
 
         //var time = Date.now() / 6000;
         //var time2 = Date.now() / 1000;
