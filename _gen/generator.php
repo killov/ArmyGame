@@ -1,25 +1,17 @@
 <?php
-require 'src/tracy.php';
-use Tracy\Debugger;
+$cfg = array(
+"lang" => "cz",
+"mysqlserver" => "armygame.eu",
+"mysqluser" => "c2alfa",
+"mysqlpw" => "fwMSptO@7",
+"mysqldb" => "c2alfa"
+);
 
-Debugger::enable("localhost",__DIR__. '/errors');
-include "config.php";
-include "inc/mysql.php";
-include "inc/fce.php";
-?>
-<head>
-	<style>
-		td{
-			display: block;
-			height: 20px;
-			width: 20px;
-			text-align: center;
-			margin: 3px;
-		}
-	</style>
-</head>
+include "D://www/inc/mysql.php";
+include "D://www/inc/fce.php";
 
-<?php
+
+echo "Zahajuji výpočet\n";
 $xmin = -200;
 $xmax = 199;
 $ymin = -200;
@@ -31,8 +23,9 @@ $y = $ymax;
 while($y>=$ymin){
 	$x = $xmin;
 	while($x<=$xmax){
-		$r = rand(0,15);
-		$r2 = rand(0,50);
+		$pole[$x][$y]["typ"] = 0;
+		$r = rand(0,20);
+		$r2 = rand(0,70);
 		if($r == 0){
 			$h = 2;
 		}elseif($r2 == 0){
@@ -42,7 +35,7 @@ while($y>=$ymin){
 		}
 
 		if($h == 0){
-			$pole[$x][$y]["typ"] = $h;
+			
 		}else{
 			$r = rand(0,3);
 			if($r == 0){
@@ -76,6 +69,10 @@ while($y>=$ymin){
 				$pole[$x-1][$y+4]["typ"] = $h;
 			}
 		}
+		$pole[$x][$y]["levo"] = 0;
+		$pole[$x][$y]["pravo"] = 0;
+		$pole[$x][$y]["nahore"] = 0;
+		$pole[$x][$y]["dole"] = 0;
 		$x++;
 	}
 	$y--;
@@ -124,7 +121,9 @@ while($x<=$xmax){
 	$x++;
 }
 
-$sql .="INSERT INTO `mesto` (`x`,`y`,`typ`,`hrana`,`blokx`,`bloky`) VALUES ";
+echo "Zahajuji UPLOAD\n";
+
+$sql="INSERT INTO `mesto` (`x`,`y`,`typ`,`hrana`,`blokx`,`bloky`) VALUES ";
 
 $y = $ymax;
 while($y>=$ymin){
@@ -151,6 +150,7 @@ while($y>=$ymin){
 		$x++;
 	}
 	mysqli_query($db,$sql.implode(",",$values));
+	echo $y." | ";
 	$y--;
 }
 

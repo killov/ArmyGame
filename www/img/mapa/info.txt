@@ -1,0 +1,11 @@
+pomìr stran 1:1
+
+rozmìry
+-fullres 1080px
+-mid 432px 
+-mini 100px
+-nano 50px
+
+
+barva trávy: #63903D
+
