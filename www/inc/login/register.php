@@ -61,4 +61,12 @@
             if (data[3] == 2)				
                 chyba3 = "<?php echo $lang[14]; ?>"; 
             if (data[0] == 0 && data[1] == 0 && data[2] == 0 && data[3] == 0){				
-                login_load('login&s=1')			}			$("#chyba0").text(chyba0); $("#chyba1").text(chyba1); $("#chyba2").text(chyba2); $("#chyba3").text(chyba3); });</script></form>
+                window.location.href = "index.php";		
+            }			
+            $("#chyba0").text(chyba0); 
+            $("#chyba1").text(chyba1); 
+            $("#chyba2").text(chyba2); 
+            $("#chyba3").text(chyba3); 
+        });
+            </script>
+</form>

@@ -11,7 +11,7 @@
     <link rel="icon" type="image/ico" href="favicon.ico">
     <link rel="apple-touch-icon" href="img/armygame-monogram-bw.png">
     <link rel="shortcut icon" href="img/armygame-monogram-bw.png">
-    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
     <link rel="stylesheet" type="text/css" href="font/style.css">
 
     <script src="http://www.armygame.eu/js/jquery-2.2.0.min.js"></script>

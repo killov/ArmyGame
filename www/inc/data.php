@@ -398,8 +398,8 @@ $hodnoty = array(
         5 => [
             "vyzkum_surovina1" => 0,
             "vyzkum_surovina2" => 100,
-            "vyzkum_surovina3" => 0,
-            "vyzkum_surovina4" => 100,
+            "vyzkum_surovina3" => 100,
+            "vyzkum_surovina4" => 0,
             "vyzkum_cas" => 100,
             "vyzkum_pozadavky_budovy" => [
                 

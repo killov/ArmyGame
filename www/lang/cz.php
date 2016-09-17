@@ -122,7 +122,15 @@
 "Stavební materiál",
 "Železo",
 "Palivo",
-"Jídlo"
+"Jídlo",
+"Fronta plná!",
+"Nedostatek peněz!",
+"Požadavky nejsou splněny!",
+"Výzkum dokončen",
+"Prodat suroviny",
+"Koupit suroviny",
+"Dovoz surovina za",
+"Prodej surovina za"
 );
 $lang_budova = [
     "Hlavní budova",

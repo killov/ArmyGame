@@ -230,7 +230,10 @@ function page_gog(x){
 }
 
 function setlinks(){
-    $(".link").mousedown(function(e){
+    $(".link").click(function(e){
+        e.preventDefault();
+    })
+    .mousedown(function(e){
         e.preventDefault();
         page_load($(this).attr("h"));
     }).mouseup(function(e){

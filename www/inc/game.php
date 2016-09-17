@@ -2,16 +2,14 @@
 <html>
 <head>
     <title>Armygame</title>
-    <link href="<?=$cfg["dir"]?>jquery-ui.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?=$cfg["dir"]?>styleg.css?v001" type="text/css">
+    <link href="<?=$cfg["dir"]?>css/jquery-ui.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?=$cfg["dir"]?>css/styleg.css" type="text/css">
     <script type="text/javascript" src="<?=$cfg["dir"]?>js/jquery-2.1.3.min.js"></script>
     <script src="<?=$cfg["dir"]?>js/jquery-ui.min.js"></script>
     <script src="<?=$cfg["dir"]?>js/jquery.mousewheel.min.js"></script>
     <script src="<?=$cfg["dir"]?>js/jquery.waitforimages.js"></script>
-    <script type="text/javascript" src="<?=$cfg["dir"]?>js/hammer.min.js"></script>
-    <script type="text/javascript" src="<?=$cfg["dir"]?>js/jquery.hammer.js"></script>
-    <script type="text/javascript" src="<?=$cfg["dir"]?>js/script.js?v001"></script>
-    <script type="text/javascript" src="<?=$cfg["dir"]?>js/mapa2.js?v001"></script>
+    <script type="text/javascript" src="<?=$cfg["dir"]?>js/script.js"></script>
+    <script type="text/javascript" src="<?=$cfg["dir"]?>js/mapa.js"></script>
     <meta charset="UTF-8">
     <script>
         d = new Date();
@@ -203,31 +201,25 @@
                             </div>
 			</div>
 			<div class="surovina" id="surovina3c" title="">
-
-
-				<div>
-					<span
-						id="surovina3"><?=$mesto->surovina3?></span>
-				</div>
-				<div class="hidden">
-                                    <b><?=$lang[123]?></b><br>
-                                    <?=$lang[120]?>: <span id="surovina3_p"><?=$mesto->data["surovina3_produkce"]?></span><br>
-                                    <?=$lang[59]?>: <?=$mesto->data["sklad"]?>
+                            <div>
+                                <span id="surovina3"><?=$mesto->surovina3?></span>
+                            </div>
+                            <div class="hidden">
+                                <b><?=$lang[123]?></b><br>
+                                <?=$lang[120]?>: <span id="surovina3_p"><?=$mesto->data["surovina3_produkce"]?></span><br>
+                                <?=$lang[59]?>: <?=$mesto->data["sklad"]?>
                             </div>
 			</div>
 			<div class="surovina" id="surovina4c" title="">
-
-
-				<div>
-					<span id="surovina4"><?=$mesto->surovina4?></span>
-				</div>
-				<div class="hidden">
-                                    <b><?=$lang[124]?></b><br>
-                                    <?=$lang[120]?>: <span id="surovina4_p"><?=$mesto->data["surovina4_produkce"]?></span><br>
-                                    <?=$lang[59]?>: <?=$mesto->data["sklad"]?>
+                            <div>
+                                    <span id="surovina4"><?=$mesto->surovina4?></span>
+                            </div>
+                            <div class="hidden">
+                                <b><?=$lang[124]?></b><br>
+                                <?=$lang[120]?>: <span id="surovina4_p"><?=$mesto->data["surovina4_produkce"]?></span><br>
+                                <?=$lang[59]?>: <?=$mesto->data["sklad"]?>
                             </div>
 			</div>
-
 		</div>
     <div class="but-out-s but-7" onClick="page_go('stat')">
         <div class="but-in-s but-pic-s">

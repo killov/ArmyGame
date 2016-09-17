@@ -10,6 +10,7 @@ if(!empty($_POST)){
 
     if($errors == [0]){
         $mesto->vytvor_mesto(trim($_POST["jmeno"]),$user->data["id"],$_POST["smer"],$user->data["jmeno"]);
+        $user->refresh();
     }
     echo json_encode($errors);
 }

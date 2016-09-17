@@ -17,10 +17,13 @@ if(isset($_POST["jednotka"]) && isset($_POST["pocet"]) && in_array($_POST["jedno
             $mesto->suroviny_odecti($surovina1,$surovina2,$surovina3,$surovina4);
             if(in_array($_POST["jednotka"],[1,2,3,4])){
                 $b = 1;
+                $d = $mesto->data["b10"];
             }else{
                 $b = 2;
+                $d = $mesto->data["b11"];
             }
-            $mesto->jednotky_postav($mesto->jednotky_cas($_POST["jednotka"],$mesto->data["b10"]),$_POST["jednotka"],$b,$pocet);
+            
+            $mesto->jednotky_postav($mesto->jednotky_cas($_POST["jednotka"],$d),$_POST["jednotka"],$b,$pocet);
             echo json_encode([1]);
         }
     }	

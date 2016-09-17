@@ -16,10 +16,12 @@ if(isset($urovne[$_POST["jid"]])){
             
             if(in_array($_POST["jid"],[1,2,3,4])){
                 $b = 1;
+                $d = $mesto->data["b10"];
             }else{
                 $b = 2;
+                $d = $mesto->data["b11"];
             }
-            $mesto->jednotky_vyzkum_postav($mesto->jednotky_vyzkum_cas($_POST["jid"],$mesto->data["b10"]),$_POST["jid"],$b);
+            $mesto->jednotky_vyzkum_postav($mesto->jednotky_vyzkum_cas($_POST["jid"],$d),$_POST["jid"],$b);
             echo json_encode([1]);
         }
     }		

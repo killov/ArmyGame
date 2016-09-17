@@ -1,12 +1,15 @@
 <?php
 echo "<table class='info'>";
-echo "<tr><th>".$lang[60].":</th><td>".round(100*$mesto->stavba_urychleni($mesto->data["b1"],$hodnoty["budovy"][1]["maximum"]))."%</td></tr>";
+echo "<tr><th>".$lang[60].":</th><td>".round(100*$mesto->stavba_urychleni($mesto->data["b1"],$hodnoty["budovy"][1]["maximum"]))."%</td>";
 if($mesto->data["b1"] < $hodnoty["budovy"][1]["maximum"]){
-    echo "<tr><th>".$lang[61].":</th><td>".round(100*$mesto->stavba_urychleni($mesto->data["b1"]+1,$hodnoty["budovy"][1]["maximum"]))."%</td></tr>";
+    echo "<th>".$lang[61].":</th><td>".round(100*$mesto->stavba_urychleni($mesto->data["b1"]+1,$hodnoty["budovy"][1]["maximum"]))."%</td>";
 }
-echo "</table>";
+echo "</tr></table>";
+$pocetstaveb = true;
 $stavba = $mesto->budova_stavba();
+
 if($stavba){
+    $pocetstaveb = count($stavba)<3;
     echo "<table class=\"dorucene\">";
     echo "<tr><th>".$lang[63]."</th><th>".$lang[64]."</th><th>".$lang[65]."</th></tr>";
     $x = 0;
@@ -30,7 +33,7 @@ if($stavba){
 }
 echo "<h2>".$lang[62]."</h2>";
 $urovne = $mesto->budova_urovne();
-echo "<table class=\"dorucene\">";
+echo "<table class=\"prehled\">";
 $surovina1 = $mesto->surovina1;
 $surovina2 = $mesto->surovina2;
 $surovina3 = $mesto->surovina3;
@@ -39,33 +42,37 @@ $jo = false;
 foreach($urovne as $key => $uroven){
     if($mesto->budova_pozadavky($key,$user)){
         if($hodnoty["budovy"][$key]["maximum"] >= $uroven){
-            echo "<tr><th>".$lang_budova[$key-1]." (".$lang[31].": ".$mesto->data["b".$key].")</th>";
-            echo "<th>";
+            echo "<tr><td>".$lang_budova[$key-1]." (".$lang[31].": ".$mesto->data["b".$key].")</td>";
+            echo "<td>";
             if($cena = $mesto->budova_cena("surovina1",$key,$uroven)){
-                echo "<span class=\"surovina1\">".$cena."</span> ";
+                echo "<span class=\"bunka surovina1\">".$cena."</span> ";
             }
             if($cena = $mesto->budova_cena("surovina2",$key,$uroven)){
-                echo "<span class=\"surovina2\">".$cena."</span> ";
+                echo "<span class=\"bunka surovina2\">".$cena."</span> ";
             }
             if($cena = $mesto->budova_cena("surovina3",$key,$uroven)){
-                echo "<span class=\"surovina3\">".$cena."</span> ";
+                echo "<span class=\"bunka surovina3\">".$cena."</span> ";
             }
             if($cena = $mesto->budova_cena("surovina4",$key,$uroven)){
-                echo "<span class=\"surovina4\">".$cena."</span> ";
+                echo "<span class=\"bunka surovina4\">".$cena."</span> ";
             }
             $surovina11 = $mesto->budova_cena("surovina1",$key,$uroven);
             $surovina21 = $mesto->budova_cena("surovina2",$key,$uroven);
             $surovina31 = $mesto->budova_cena("surovina3",$key,$uroven);
             $surovina41 = $mesto->budova_cena("surovina4",$key,$uroven);
-            echo "<span class=\"cas\">".cas($mesto->budova_cas($mesto->data["b1"],$key,$uroven))."</span>";
-            echo "<span class=\"spotreba\">".$mesto->budova_spotreba($key,$uroven)."</span></th><th>";
-            if($surovina11 <= $surovina1 and
-                $surovina21 <= $surovina2 and
-                $surovina31 <= $surovina3 and
-                $surovina41 <= $surovina4){
-                echo "<a href=\"#\" class=\"postav\" onclick=\"postav(".$key.");return false\">".$lang[62]." ".$uroven."</a>";
+            echo "<span class=\"bunka cas\">".cas($mesto->budova_cas($mesto->data["b1"],$key,$uroven))."</span>";
+            echo "<span class=\"bunka spotreba\">".$mesto->budova_spotreba($key,$uroven)."</span></td><td>";
+            if($pocetstaveb){
+                if($surovina11 <= $surovina1 and
+                    $surovina21 <= $surovina2 and
+                    $surovina31 <= $surovina3 and
+                    $surovina41 <= $surovina4){
+                    echo "<a href=\"#\" class=\"postav\" onclick=\"postav(".$key.");return false\">".$lang[62]." ".$uroven."</a>";
+                }
+            }else{
+                echo $lang[125];
             }
-            echo "</th></tr>";
+            echo "</td></tr>";
         }
     }else{
         $jo = true;

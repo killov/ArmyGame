@@ -36,7 +36,8 @@ if(!empty($_POST)){
         $errors[3] = 2;
     }
     if($errors == [0,0,0,0]){
-        $user->registruj(trim($_POST["jmeno"]),$_POST["email"],$_POST["heslo"]);
+        $id = $user->registruj(trim($_POST["jmeno"]),$_POST["email"],$_POST["heslo"]);
+        $_SESSION["userid"] = $id;
     }
     echo json_encode($errors);
 }

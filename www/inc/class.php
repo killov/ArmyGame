@@ -790,7 +790,7 @@ class mesto extends base{
     
     public function jednotky_cas($j,$b){
         global $hodnoty;
-        return round($hodnoty["jednotky"][$j]["cas"]*$hodnoty["stavba"][$b]/100);
+        return round($hodnoty["jednotky"][$j]["cas"]*$this->stavba_urychleni($this->data["b".$b],$hodnoty["budovy"][$b]["maximum"]));
     }
     
     public function jednotky_postav($delka,$jednotka,$budova,$pocet){
