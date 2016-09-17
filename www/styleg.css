@@ -68,7 +68,21 @@ a:hover {
 
 }
 
+.prehled {
+    width: 100%;
+}
 
+.prehled td {
+    padding: 5px;
+    border-radius: 3px;
+    height: 20px;
+    padding: 2px 2%;
+    text-align: left;   
+}
+
+.prehled tr {
+    background: linear-gradient(#aaaaaa, #cccccc, #cccccc, #bebebe, #cccccc, #cccccc, #cfcfcf, #dddddd, #cbcbcb);
+}
 
 h2 {
     display: block;

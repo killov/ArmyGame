@@ -60,7 +60,7 @@
 "Sklad",
 "Aktuální čas stavby",
 "Čas stavby na další úrovni",
-"Postavit",
+"Postavit na úroveň",
 "Ve výstavbě",
 "Doba",
 "Hotovo",
