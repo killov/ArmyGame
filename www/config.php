@@ -11,5 +11,5 @@ $cfg = array(
     "wsport" => 9000,
     "wsexhost" => "192.168.1.184",
     "wsauth" => "sofi854854fs8a7f7w87fafa"
-);
+);// :)
 ?>
