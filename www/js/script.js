@@ -16,25 +16,7 @@ var g_odpv;
 var g_odpp;
 var map = 0;
 
-	var move = 0;
-	var mysX, mysY, mapX, mapY, x, y;
-	var nacteno = new Array();
-	var mapasez = new Array();
-	var mapacache = new Array();
-	var nactenovi = new Array();
-	var nactenoi = 0;
-	var nactenox = new Array();
-	var nactenoy = new Array();
-	var poleinfo = new Array();
-	var nacitani;
-	var klik = 1;
-	var kliktimer;
-	var velikost = 1000;
-	var dotykX, dotykY;
-        
-        for(var x = -200;x<200;x++){
-            poleinfo[x] = [];
-        }
+
         
 $(document).ready(function(){
     window.onpopstate = function(e) {
@@ -351,6 +333,14 @@ function produkce(){
             $("#surovina3").text(Math.floor(surovina3).toString());
             $("#surovina4").text(Math.floor(surovina4).toString());
         }
+}
+
+function mapa(){
+	if(map){
+		mapa_pozices(mesto_x,mesto_y,0);
+	}else{
+		showmap();
+	}
 }
 
 function showmap(){

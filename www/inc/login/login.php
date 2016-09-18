@@ -1,15 +1,4 @@
-<?php
-
-if (!empty($_GET["s"])) {
-
-    ?>
-
-    <p class="hlaska"><?php echo $lang[15]; ?></p>
-
-<?php } ?>
-
 <form id="log" action="javascript:void(1);">
-
 
     <label id="chyba0"></label>
     <div class="login-wrap">

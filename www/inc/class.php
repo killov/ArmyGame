@@ -476,7 +476,7 @@ class mesto extends base{
     }
     
     public function stavba_urychleni($lvl,$maxlvl){
-        return sqrt(1-$lvl/($maxlvl+5));
+        return sqrt(1-($lvl-1)/($maxlvl+5));
     }
     
     

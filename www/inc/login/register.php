@@ -1,34 +1,19 @@
 <form id="reg" action="javascript:void(1);">
-    <table>		
-        <tr>			
-            <td><?php echo $lang[2]; ?>:</td>			
-            <td><input type="text" name="jmeno"></td>			
-            <td id="chyba0"></td>		
-        </tr>		
-        <tr>			
-            <td><?php echo $lang[3]; ?>:</td>			
-            <td><input type="text" name="email"></td>			
-            <td id="chyba1"></td>		
-        </tr>		
-        <tr>			
-            <td><?php echo $lang[4]; ?>:</td>			
-            <td><input type="password" name="heslo"></td>			
-            <td id="chyba2"></td>		
-        </tr>		
-        <tr>			
-            <td><?php echo $lang[5]; ?>:</td>			
-            <td><input type="password" name="heslo_znovu"></td>			
-            <td id="chyba3"></td>		
-        </tr>		
-        <tr>			
-            <td></td>			
-            <td><input type="submit" value="<?php echo $lang[6]; ?>"></td>		
-        </tr>	
-    </table>	
-    <div id="odpoved"></div>	
+   <div class="reg-wrap">				
+            <input class="reg-input" type="text" name="jmeno" placeholder="<?php echo $lang[2]; ?>">			
+            <label id="chyba0"></label><br>				
+            <input class="reg-input" type="text" name="email" placeholder="<?php echo $lang[3]; ?>">			
+            <label id="chyba1"></label>	<br>						
+            <input class="reg-input" type="password" name="heslo" placeholder="<?php echo $lang[4]; ?>">			
+            <label id="chyba2"></label>	<br>						
+            <input class="reg-input" type="password" name="heslo_znovu" placeholder="<?php echo $lang[5]; ?>">			
+            <label id="chyba3"></label>	
+   </div>
+    <input class="tryit" type="submit" value="<?php echo $lang[6]; ?>"></td>		
+
+
     <script type="text/javascript">		
         formular_upload("#reg", "index.php?post=register", function(data){			
-            $("#odpoved").text(JSON.stringify(data)); 
             var chyba0 = ""; 
             if (data[0] == 0)				
                 chyba0 = ""; 

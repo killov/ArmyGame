@@ -62,6 +62,7 @@ echo "<h2>".$lang[110]."</h2>";
 echo "<table class=\"prehled\">";
 $jo = $mesto->jednotky_vyzkum_urovne();
 for($key=5;$key<=8;$key++){
+    
     echo "<tr><td>".$lang_jednotky[$key-1]."</td>";
     echo "<td>";
     if(!$mesto->data["v".$key]){
@@ -78,21 +79,23 @@ for($key=5;$key<=8;$key++){
             if($surovina4 = $hodnoty["jednotky"][$key]["vyzkum_surovina4"]){
                 echo "<span class=\"bunka surovina4\">".$surovina4."</span> ";
             }
-            echo "<span class=\"bunka cas\">".cas($mesto->jednotky_vyzkum_cas($key,$mesto->data["b10"]))."</span></td><td colspan=2>";
+            echo "<span class=\"bunka cas\">".cas($mesto->jednotky_vyzkum_cas($key,$mesto->data["b10"]))."</span></td><td>";
             if($mesto->jednotky_vyzkum_pozadavky($key,$user)){
                 if($surovina1 <= $mesto->surovina1 && $surovina2 <= $mesto->surovina2 && $surovina3 <= $mesto->surovina3 && $surovina4 <= $mesto->surovina4){
                     echo "<a href=\"#\" class=\"postav\" onclick=\"jednotky_vyzkum(".$key.");return false\">".$lang[109]."</a>";
+                }else{
+                    
                 }
             }else{
-                echo "Požadavky nejsou splněny";
+                echo $lang[127];
             }
         }else{
-            echo "</td><td colspan=2>Ve výzkumu";
+            echo "</td><td colspan=2>".$lang[107];
         }
-        echo "</td></tr>";
+        echo "</td>";
     }else{
         ?>
-            <form id="rek<?=$key?>">
+            
         <?php
         if($surovina1 = $hodnoty["jednotky"][$key]["surovina1"]){
             echo "<span class=\"bunka surovina1\" id=\"s1".$key."\">".$surovina1."</span> ";
@@ -110,14 +113,21 @@ for($key=5;$key<=8;$key++){
         echo "<span class=\"bunka spotreba\" id=\"spotreba".$key."\">".$hodnoty["jednotky"][$key]["spotreba"]."</span></td><td>";
         $pocetmax = $mesto->jednotky_max($key);
         ?>
-            
+            <form id='rek<?=$key?>'>
                 <input name="pocet" id="pocet<?=$key?>" size="5">
                     <a href="#" id="max<?=$key?>" m="<?=$pocetmax?>">[<?=$pocetmax?>]</a>
                 
                 <input type="hidden" name="jednotka" value="<?=$key?>">
-            </td><td>
+            
                 <input type="submit">
-                <script type="text/javascript">
+                </form>
+                
+            
+        <?php
+     }
+    echo "</td></tr>";
+    ?>
+           <script type="text/javascript">
                     formular_upload("#rek<?=$key?>","index.php?post=jednotky_stavba",function(data){
                         page_refresh();
                         data_load();
@@ -134,13 +144,8 @@ for($key=5;$key<=8;$key++){
                         }
                         jednotky(<?=$key?>,<?=$surovina1?>,<?=$surovina2?>,<?=$surovina3?>,<?=$surovina4?>,<?=$mesto->jednotky_vyzkum_cas($key,$mesto->data["b10"])?>,<?=$hodnoty["jednotky"][$key]["spotreba"]?>);
                     });
-                </script>
-                
-            </form>
-        <?php
-     }
-    echo "</td></tr>";
-    
+                </script>     
+                <?php
 
 }
 echo "</table>";

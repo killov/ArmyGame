@@ -244,10 +244,10 @@ $hodnoty = array(
                 "cas_nasobek" => 1.5,
                 "maximum" => 10,
                 "pozadavky" => [
-                        
+                        3 => 1
                 ],
                 "pozadavky_budova" => [
-                        6 => 1
+                        1 => 1
                 ]
             ],
             3 => [

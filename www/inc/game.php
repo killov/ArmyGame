@@ -5,11 +5,14 @@
     <link href="<?=$cfg["dir"]?>css/jquery-ui.css" rel="stylesheet">
     <link rel="stylesheet" href="<?=$cfg["dir"]?>css/styleg.css" type="text/css">
     <script type="text/javascript" src="<?=$cfg["dir"]?>js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="<?=$cfg["dir"]?>js/jquery.cookies.js"></script>
     <script src="<?=$cfg["dir"]?>js/jquery-ui.min.js"></script>
+    
     <script src="<?=$cfg["dir"]?>js/jquery.mousewheel.min.js"></script>
-    <script src="<?=$cfg["dir"]?>js/jquery.waitforimages.js"></script>
     <script type="text/javascript" src="<?=$cfg["dir"]?>js/script.js"></script>
+    
     <script type="text/javascript" src="<?=$cfg["dir"]?>js/mapa.js"></script>
+    <script src="<?=$cfg["dir"]?>js/jquery.waitforimages.js"></script>
     <meta charset="UTF-8">
     <script>
         d = new Date();
@@ -57,7 +60,7 @@
     });
     var websocket;
     function ws_connect(){
-        var wsUri = "ws://<?=$cfg["wsexhost"]?>:9000/"; 	
+        var wsUri = "ws://<?=$cfg["wsexhost"].":".$cfg["wsport"]?>/"; 	
 
         websocket = new WebSocket(wsUri); 
         websocket.onmessage = get;
@@ -82,10 +85,10 @@
 
         
 	ws_connect();
-	
-
-	
-	//#### Message received from server?
+	var c = cookies.get('ag_chat');
+        for(var i in c){
+            otevrichat(c[i]);
+        }
 	
        
         });
@@ -463,6 +466,7 @@
     function otevrichat(x){
         if(chatr.indexOf(x) == -1){
             chatr.push(x);
+            cookies.set('ag_chat', JSON.stringify(chatr));
             schovany[x] = false;
             $.post(dir+"index.php?post=chat",{id: x},function(data){
                 var d = JSON.parse(data);
@@ -534,6 +538,7 @@
     function zavritchat(x){
         $("#chat"+x).remove();
         chatr.splice(chatr.indexOf(x),1);
+        cookies.set('ag_chat', JSON.stringify(chatr));
     }
     
     

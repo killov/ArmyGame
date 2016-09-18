@@ -1,9 +1,11 @@
 <?php
 $vyzkum = $user->vyzkum_stavba();
 if(!$vyzkum){
+    
     $urovne = $user->vyzkum_urovne();
     if(isset($urovne[$_POST["vid"]])){
-        if($mesto->budova_pozadavky($_POST["vid"],$user) && $hodnoty["vyzkum"][$_POST["vid"]]["maximum"] >= $urovne[$_POST["vid"]]){
+        
+        if($user->vyzkum_pozadavky($_POST["vid"],$mesto) && $hodnoty["vyzkum"][$_POST["vid"]]["maximum"] >= $urovne[$_POST["vid"]]){
             $uroven = $urovne[$_POST["vid"]];
             $cena = $user->vyzkum_cena($_POST["vid"],$uroven);
 

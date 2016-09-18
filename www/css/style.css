@@ -121,11 +121,15 @@ menu a.active{
     margin-top: 75px;
 }
 
-#log .login-wrap{
+.login-wrap{
     padding: 20px 100px 120px 270px;
 }
 
-#log .login-input{
+.reg-wrap{
+    padding: 20px 20px 120px 400px;
+}
+
+.login-input{
     width: 153px;
     height: 30px;
     padding: 3px 10px;
@@ -133,9 +137,15 @@ menu a.active{
     margin-right: 50px;
 }
 
-#reg{
-    padding-left: 300px;
+.reg-input{
+    width: 153px;
+    height: 30px;
+    padding: 3px 10px;
+    box-shadow: 0 0 10px -5px #2d2d2d;
+
 }
+
+
 
 #odpoved{
     display: none;

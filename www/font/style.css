@@ -1,0 +1,75 @@
+@font-face {
+    font-family: 'icomoon';
+    src:    url('fonts/icomoon.eot?z1aucw');
+    src:    url('fonts/icomoon.eot?z1aucw#iefix') format('embedded-opentype'),
+        url('fonts/icomoon.ttf?z1aucw') format('truetype'),
+        url('fonts/icomoon.woff?z1aucw') format('woff'),
+        url('fonts/icomoon.svg?z1aucw#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-user:before {
+    content: "\e900";
+}
+.icon-users:before {
+    content: "\e901";
+}
+.icon-user-plus:before {
+    content: "\e902";
+}
+.icon-list-numbered:before {
+    content: "\e903";
+}
+.icon-earth:before {
+    content: "\e904";
+}
+.icon-mail:before {
+    content: "\e905";
+}
+.icon-facebook2:before {
+    content: "\e906";
+}
+.icon-paypal:before {
+    content: "\e907";
+}
+.icon-chrome:before {
+    content: "\e908";
+}
+.icon-firefox:before {
+    content: "\e909";
+}
+.icon-IE:before {
+    content: "\e90a";
+}
+.icon-edge:before {
+    content: "\e90b";
+}
+.icon-safari:before {
+    content: "\e90c";
+}
+.icon-opera:before {
+    content: "\e90d";
+}
+.icon-html-five:before {
+    content: "\e90e";
+}
+.icon-css3:before {
+    content: "\e90f";
+}
+

@@ -1314,7 +1314,8 @@ canvas {
 
 #chat>div>div.messages{
     padding: 3px;
-    overflow: auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
     height: 240px;
 }
 
@@ -1324,6 +1325,7 @@ canvas {
     padding: 5px;
     border-radius: 8px;
     font-size: 12px;
+    word-wrap: break-word;
 }
 
 #chat>div>div.messages div.vy{
@@ -1332,6 +1334,7 @@ canvas {
     padding: 5px;
     border-radius: 8px;
     font-size: 12px;
+    word-wrap: break-word;
 }
 
 #chat>div>div.textbox{
