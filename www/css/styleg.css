@@ -339,7 +339,6 @@ h2 {
 }
 
 #suroviny {
-    //position: absolute;
     top: 0px;
     right: 50px;
     width: 500px;
@@ -969,7 +968,6 @@ canvas {
     position: fixed;
     bottom: 0;
     left: 0;
-    //width: 155px;
     padding: 5px 30px 0 25px;
     height: 60px;
     background: linear-gradient(#aaaaaa, #cccccc, #cccccc, #bebebe, #cccccc, #cccccc, #cfcfcf, #dddddd, #cbcbcb);

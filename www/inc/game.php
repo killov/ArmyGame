@@ -86,8 +86,16 @@
         
 	ws_connect();
 	var c = cookies.get('ag_chat');
+        chatm = cookies.get('ag_chatmin');
+        if(!chatm){
+            chatm = [];
+        }
         for(var i in c){
-            otevrichat(c[i]);
+            if(chatm && chatm.indexOf(c[i]) != -1){
+                otevrichat(c[i],false);
+            }else{
+                otevrichat(c[i],true);
+            }
         }
 	
        
@@ -463,15 +471,27 @@
 <script>
     var chatr = [];
     var chatl = [];
-    function otevrichat(x){
+    var chatm = [];
+    function otevrichat(x,max){
         if(chatr.indexOf(x) == -1){
             chatr.push(x);
             cookies.set('ag_chat', JSON.stringify(chatr));
-            schovany[x] = false;
+            
             $.post(dir+"index.php?post=chat",{id: x},function(data){
                 var d = JSON.parse(data);
                 chatl[x] = d[2];
-                $("#chat").append("<div id='chat"+x+"'><div class='head'><a href='#' onclick='return false' class='prof' h='profil/"+x+"'>"+d[0]+"</a><i class='icon-cross close'></i> <i class='icon-triangle-down min'></i></div><div class='messages' id='mess"+x+"'><div>"+d[1]+"</div></div><div class='textbox' id='t"+x+"' contenteditable='true' pro='"+x+"'></div></div>");
+                if(max){
+                    schovany[x] = false;
+                    var m = "-300";
+                }else{
+                    schovany[x] = true;
+                    var m = "-25";
+                    
+                }
+                $("#chat").append("<div id='chat"+x+"' style='top: "+m+"px'><div class='head'><a href='#' onclick='return false' class='prof' h='profil/"+x+"'>"+d[0]+"</a><i class='icon-cross close'></i> <i class='icon-triangle-down min'></i></div><div class='messages' id='mess"+x+"'><div>"+d[1]+"</div></div><div class='textbox' id='t"+x+"' contenteditable='true' pro='"+x+"'></div></div>");
+                if(!max){
+                    $("#chat"+x+">div.head>i.min").removeClass("icon-triangle-down").addClass("icon-triangle-up");
+                }
                 $("#chat"+x+">div.head>a.prof").mousedown(function(e){
                     e.preventDefault();
                     page_load($(this).attr("h"));
@@ -525,14 +545,17 @@
     
     function schovatchat(chat){
         if(schovany[chat]){
+            chatm.splice(chatm.indexOf(chat),1);
             $("#chat"+chat).animate({top: "-300px"},300);
             schovany[chat] = false;
             $("#chat"+chat+">div.head>i.min").removeClass("icon-triangle-up").addClass("icon-triangle-down");
         }else{
+            chatm.push(chat);
             $("#chat"+chat).animate({top: "-25px"},300);
             schovany[chat] = true;
             $("#chat"+chat+">div.head>i.min").removeClass("icon-triangle-down").addClass("icon-triangle-up");
         }
+        cookies.set('ag_chatmin',JSON.stringify(chatm));
     }
     
     function zavritchat(x){
