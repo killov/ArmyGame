@@ -581,7 +581,7 @@
 })(jQuery);
 
 function pridejdochatu(chat,typ,zprava,time){
-    otevrichat(chat);
+    otevrichat(chat,true);
     $("#mess"+chat).append("<div class='"+typ+"' title='"+time+"'>"+zprava+"</div>");
     $("#mess"+chat).scrollTop(999999999);
 }

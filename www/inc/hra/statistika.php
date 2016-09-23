@@ -16,7 +16,7 @@ if(isset($_GET["s"]) and $_GET["s"] == "staty"){
             echo "<table class=\"dorucene\">";
             echo "<tr><th>".$lang[54]."</th><th>".$lang[55]."</th><th>".$lang[91]."</th><th>".$lang[57]."</th></tr>";
             foreach($stat as $z){
-                    echo "<tr><td>".$z["poradi"]."</td><td><a href=\"#\" onMouseDown=\"page_load('stat&id=".$z["id"]."')\" onMouseUp=\"page_draw()\">".htmlspecialchars($z["jmeno"])."</a></td><td>".$z["clenu"]."</td><td>".$z["pop"]."</td></tr>";
+                    echo "<tr><td>".$z["poradi"]."</td><td><a href=\"#\" class='link' h='stat&id=".$z["id"]."'>".htmlspecialchars($z["jmeno"])."</a></td><td>".$z["clenu"]."</td><td>".$z["pop"]."</td></tr>";
             }
             echo "</table>";
     }else{
@@ -28,7 +28,7 @@ if(isset($_GET["s"]) and $_GET["s"] == "staty"){
             echo "<table class=\"dorucene\">";
             echo "<tr><th>".$lang[54]."</th><th>".$lang[55]."</th><th>".$lang[56]."</th><th>".$lang[57]."</th></tr>";
             foreach($stat as $z){
-                    echo "<tr><td>".$z["poradi"]."</td><td><a href=\"#\" onMouseDown=\"page_load('profil/".$z["id"]."')\" onMouseUp=\"page_draw()\">".htmlspecialchars($z["jmeno"])."</a></td><td>".$z["mest"]."</td><td>".$z["pop"]."</td></tr>";
+                    echo "<tr><td>".$z["poradi"]."</td><td><a href=\"#\" class='link' h='profil/".$z["id"]."'>".htmlspecialchars($z["jmeno"])."</a></td><td>".$z["mest"]."</td><td>".$z["pop"]."</td></tr>";
             }
             echo "</table>";
     }else{

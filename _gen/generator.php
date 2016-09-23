@@ -165,6 +165,27 @@ if($pocet != 0){
             $y--;
     }
 }
+$ins = [];
+$map = new mapa();
+$image = imagecreatefrompng($dir."img/mapa/FULL_MAP_TIME3.png");
+for($y=19;$y>=-20;$y--){
+    for($x=-20;$x<=19;$x++){
+        if(!file_exists($dir."mapacache/".$x."_".$y."_0.jpg")){
+            $mapa = $map->nacti2([[$x,$y]]);         
+            $map->rendermap($image,$mapa,$x,$y,0,$dir);
+            $ins[] = [
+                "x" => $x,
+                "y" => $y
+            ];
+            echo "X";
+        }else{
+            echo 0;
+        }
+    }
+    echo "\n";
+}
+
+$db->insert("mapa", $ins);
 
 
 

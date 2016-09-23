@@ -16,7 +16,7 @@ $m = $us->mesta();
 ?>
 <h2><?php echo $lang[32]." ".htmlspecialchars($profil["jmeno"]);?>
 <?php if($profil["id"] != $user->data["id"]){ ?>
-<span class="zp"><a href="#" onClick="otevrichat(<?php echo $profil["id"];?>);return false"><?php echo $lang[51];?></a></span>
+<span class="zp"><a href="#" onClick="otevrichat(<?php echo $profil["id"];?>,true);return false"><?php echo $lang[51];?></a></span>
 <?php } ?>
 </h2>
 <table class="profil">
@@ -41,7 +41,7 @@ $m = $us->mesta();
 <?php
 if($m){
 	foreach($m as $d){
-		echo "<tr><td><a href=\"#\" h=\"mestoinfo/".$d["id"]."\" class=\"link\">".htmlspecialchars($d["jmeno"])."</a></td><td>".$d["populace"]."</td><td><a href=\"#\"onMouseDown=\"showmap(),mapa_pozice(".$d["x"].",".$d["y"].");\">".$d["x"]."/".$d["y"]."</a></td></tr>";
+		echo "<tr><td><a href=\"#\" h=\"mestoinfo/".$d["id"]."\" class=\"link\">".htmlspecialchars($d["jmeno"])."</a></td><td>".$d["populace"]."</td><td><a href=\"#\"onClick=\"showmap(),mapa_pozice(".$d["x"].",".$d["y"].");return false\">".$d["x"]."/".$d["y"]."</a></td></tr>";
 	}
 }
 ?>

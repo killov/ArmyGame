@@ -579,7 +579,7 @@ class mesto extends base{
 	$sp = 0;
 	$x = 1;
 	while($x <= 11){
-            $sp = $sp+$hodnoty["budovy"][$x]["spotreba"][$mesto["b".$x]];
+            $sp += $this->budova_obyvatele($x, $mesto["b".$x]);
             $x++;
 	}
 	return $sp;
@@ -627,9 +627,14 @@ class mesto extends base{
         return round($hodnoty["budovy"][$budova]["cas"]*pow($hodnoty["budovy"][$budova]["cas_nasobek"],$uroven-1)*$this->stavba_urychleni($this->data["b1"],$hodnoty["budovy"][1]["maximum"]));
     }
     
-    public function budova_spotreba($budova,$uroven){
+    public function budova_spotreba($budova,$lvl){
 	global $hodnoty;
-	return $hodnoty["budovy"][$budova]["spotreba"][$uroven]-$hodnoty["budovy"][$budova]["spotreba"][$uroven-1];
+	return $this->budova_obyvatele($budova, $lvl)-$this->budova_obyvatele($budova, $lvl-1);
+    }
+    
+    public function budova_obyvatele($budova,$lvl){
+        global $hodnoty;
+        return round($hodnoty["budovy"][$budova]["spotreba_zaklad"]*pow($hodnoty["budovy"][$budova]["spotreba_nasobek"],$lvl-1))+$lvl-1;
     }
     
     public function obchodnici($uroven){

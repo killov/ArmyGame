@@ -329,7 +329,7 @@ function mapa_load(){
     }
     if(g){
         $.ajax({url: dir+"index.php?post=mapa&x="+JSON.stringify(f), success: function(data){ 
-            var json = eval("(" + data + ")");
+            var json = JSON.parse(data);
             for(var x in json){
                 for(var y in json[x]){
                     mapa_nacti(json[x][y],x,y);
