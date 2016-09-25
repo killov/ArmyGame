@@ -130,7 +130,11 @@
 "Prodat suroviny",
 "Koupit suroviny",
 "Dovoz surovina za",
-"Prodej surovina za"
+"Prodej surovina za",
+"Dostatek surovin v",
+"Dostatek surovina nikdy",
+"Je potřeba rozšířit sklad",
+"Nápověda"
 );
 $lang_budova = [
     "Hlavní budova",
@@ -153,13 +157,13 @@ $lang_vyzkum = [
     "Vyzkum5"
 ];
 $lang_jednotky = [
-    "Jednotka1",
-    "Jednotka2",
-    "Jednotka3",
-    "Jednotka4",
-    "Jednotka5",
-    "Jednotka6",
-    "Jednotka7",
+    "Pěšák",
+    "Sniper",
+    "Speciální jednotka",
+    "Špión",
+    "Nákladní vozidlo",
+    "Trasportér",
+    "Tank",
     "Jednotka8"
 ];
 ?>

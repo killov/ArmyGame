@@ -33,25 +33,34 @@ if(!empty($_SESSION["userid"])){
     }
     if($mesto->data){
         if(isset($_GET["post"]) and preg_replace("/[^a-z\d_-]+/i", "", $_GET["post"])){
-        $cesta = "inc/hra/post/".$_GET["post"].".php";
-        $cesta = strtr($cesta, './', '');
-        if(file_exists($cesta)){
-            include $cesta;
-        }
+            $cesta = "inc/hra/post/".$_GET["post"].".php";
+            $cesta = strtr($cesta, './', '');
+            if(file_exists($cesta)){
+                include $cesta;
+            }
+        }elseif(isset($_GET["faq"]) and preg_replace("/[^a-z\d_-]+/i", "", $_GET["faq"])){    
+            $cesta = "inc/hra/faq/".$_GET["faq"].".php";
+            $cesta = strtr($cesta, './', '');
+            if(file_exists($cesta)){
+                include $cesta;
+            }
         }elseif(isset($_GET["a"])){
             if(isset($_GET["p"])){
                 $p = explode("/", $_GET["p"]);
-                $cesta = "inc/hra/".$p[0].".php";
+                $cesta = "inc/hra/pages/".$p[0].".php";
                 $cesta = strtr($cesta, './', '');
                 if(file_exists($cesta)){
                     include $cesta;
                 }
             }else{
-                include "inc/hra/mesto.php"; 
+                include "inc/hra/pages/mesto.php"; 
             }
         }else{
             if(isset($_GET["p"])){
                 $p = explode("/", $_GET["p"]);
+            }
+            if(!isset($p[0])){
+                $p[0] = "mesto";
             }
             include "inc/game.php";
         }

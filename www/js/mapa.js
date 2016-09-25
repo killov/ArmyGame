@@ -7,19 +7,101 @@
 	var nactenoi = 0;
 	var nactenox = new Array();
 	var nactenoy = new Array();
-	var poleinfo = new Array();
+	
 	var nacitani;
 	var klik = 1;
 	var kliktimer;
-	var velikost = 1000;
+
 	var dotykX, dotykY;
-        
-        for(var x = -200;x<200;x++){
-            poleinfo[x] = [];
-            for(var y = -200;y<200;y++){
-                poleinfo[x][y] = false;
-            }
+
+$(function(){
+    $('#back').mousewheel(function (e) {
+        var sirka = parseInt($("#back").css("width").replace("px", ""));
+        var vyska = parseInt($("#back").css("height").replace("px", ""))
+        if (e.deltaY > 0) {
+                if (velikost < 1000) {
+                        var ve = velikost;
+                        velikost = velikost + 50;
+                        zoom(ve, velikost, 0, 0);
+
+                        $('.map_zoom').slider('value', velikost);
+                }
         }
+        else {
+                if (velikost > 400) {
+                        var ve = velikost;
+                        velikost = velikost - 50;
+                        zoom(ve, velikost, 0, 0);
+                        $('.map_zoom').slider('value', velikost);
+                }
+        }
+    });
+
+
+    $('.map_zoom').slider({
+            min: 400,
+            max: 1000,
+            step: 50,
+            value: velikost,
+            slide: function (event, ui) {
+                    var orig = velikost;
+                    velikost = ui.value;
+                    zoom(orig, ui.value, 0, 0);
+            },
+            change: function (event, ui) {
+                    var orig = velikost;
+                    velikost = ui.value;
+                    zoom(orig, velikost, 0, 0);
+            }
+    });
+    $('.map_zoom_pop1').click(function () {
+            var orig = velikost;
+            velikost = 400;
+            zoom(orig, 400, 0, 0);
+            $('.map_zoom').slider('value', 400);
+
+    });
+    $('.map_zoom_pop2').click(function () {
+            var orig = velikost;
+            velikost = 600;
+            zoom(orig, 600, 0, 0);
+            $('.map_zoom').slider('value', 600);
+
+    });
+    $('.map_zoom_pop3').click(function () {
+            var orig = velikost;
+            velikost = 1000;
+            zoom(orig, 1000, 0, 0);
+            $('.map_zoom').slider('value', 1000);
+
+    });
+    $("#back").mousedown(function (event) {
+            tahni(event, 1);
+    });
+    $("#back").mousemove(function (event) {
+            pohyb(event);
+    });
+    $("#back").mouseup(function (e) {
+            pust(e);
+    });
+    $("#back").on('touchstart', function (e) {
+            e.preventDefault();
+            var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+            tahni(touch, 0);
+    });
+    $("#back").on('touchmove', function (e) {
+            e.preventDefault();
+
+            var touches = e.originalEvent.touches || e.originalEvent.changedTouches;
+            if(touches.lenght=1){
+                pohyb(touches[0]);
+            }
+
+    });
+    $("#back").on('touchend', function (e) {
+            pust(e);
+    });
+});	
 
 function zoom(z,na,zx,zy){
     var sirka = parseInt($("#back").css("width").replace("px",""));
@@ -231,28 +313,29 @@ function vlozsvg(x,y,json){
         $("#m"+x+"_"+y).html("");
     }
 }
-		function mapa_poz(x,y){
-			if(nactenox.indexOf(x) == -1){
-				nactenox.push(x);
-				var left = x*100;
-				$("#pozxmove").append("<div id='mx"+x+"' class='poz' style='position: absolute;left: "+left+"%'></div>")
-				var z = x*10;
-				while(z<(x+1)*10){
-					$("#mx"+x.toString()).append("<div>"+z+"</div>");
-					z = z+1;
-				}
-			}
-			if(nactenoy.indexOf(y) == -1){
-				nactenoy.push(y);
-				var top = (-y-1)*100;
-				$("#pozymove").append("<div id='my"+y.toString()+"' class='poz' style='position: absolute;top: "+top.toString()+"%'></div>")
-				var z = (y+1)*10-1;
-				while(z>y*10-1){
-					$("#my"+y.toString()).append("<div><span>"+z.toString()+"</span></div>");
-					z = z-1;
-				}
-			}
-		}
+
+function mapa_poz(x,y){
+        if(nactenox.indexOf(x) == -1){
+                nactenox.push(x);
+                var left = x*100;
+                $("#pozxmove").append("<div id='mx"+x+"' class='poz' style='position: absolute;left: "+left+"%'></div>")
+                var z = x*10;
+                while(z<(x+1)*10){
+                        $("#mx"+x.toString()).append("<div>"+z+"</div>");
+                        z = z+1;
+                }
+        }
+        if(nactenoy.indexOf(y) == -1){
+                nactenoy.push(y);
+                var top = (-y-1)*100;
+                $("#pozymove").append("<div id='my"+y.toString()+"' class='poz' style='position: absolute;top: "+top.toString()+"%'></div>")
+                var z = (y+1)*10-1;
+                while(z>y*10-1){
+                        $("#my"+y.toString()).append("<div><span>"+z.toString()+"</span></div>");
+                        z = z-1;
+                }
+        }
+}
 
 	
 	function mapa_clear(){ 
@@ -279,7 +362,7 @@ function vlozsvg(x,y,json){
 	}
 var sirka, vyska;
 
-var xf,yf,nactenovix = [],nactenoviy = [];
+var nactenovix = [],nactenoviy = [];
 function mapa_load(){
     var levo = -(mapX+rozdilX);
     var pravo = levo+sirka;
@@ -289,7 +372,7 @@ function mapa_load(){
     pravo = Math.floor(pravo/velikost);
     nahore = Math.floor(nahore/velikost);
     dole = Math.floor(dole/velikost);
-    var x = levo;
+    var x = levo-1;
     var y;
     nactenovi = [];
     nactenovix = [];
@@ -297,17 +380,17 @@ function mapa_load(){
 
     var f = []; 
     var g = false;
-    while(x<=pravo){
-        y = dole;
-        while(y<=nahore){
+    while(x<=pravo+1){
+        y = dole-1;
+        while(y<=nahore+1){
             if(x <= 19 && x >= -20 && y <= 19 && y >= -20){
-                if(nacteno.indexOf(x.toString()+"_"+y.toString()) == -1){
-                    nacteno.push(x.toString()+"_"+y.toString());
-                    if(mapasez.indexOf(x.toString()+"_"+y.toString()) == -1){
+                if(nacteno.indexOf(x+"_"+y) == -1){
+                    nacteno.push(x+"_"+y);
+                    if(mapasez.indexOf(x+"_"+y) == -1){
                         f.push(Array(x,y));
                         g = true;
                     }else{
-                        mapa_nacti(mapacache[x.toString()+"_"+y.toString()],x,y);
+                        mapa_nacti(mapacache[x+"_"+y],x,y);
                     }				
                 }
                 nactenovi.push(x+"_"+y);
@@ -356,22 +439,21 @@ function mapa_obnov(bloky){
             nacti.push(bloky[i]);
         }
     }
-    
-            $.ajax({url: dir+"index.php?post=mapa&x="+JSON.stringify(nacti), success: function(data){ 
-                var json = eval("(" + data + ")");
-                for(var x in json){
-                    for(var y in json[x]){
-                        vlozsvg(x,y,json[x][y]);
-                        $("#m"+x+"_"+y).css("background-image","url("+dir+"mapacache/"+x+"_"+y+"_"+json[x][y][100]+".jpg?");
-                        mapasez.push(x.toString()+"_"+y.toString());
-                        mapacache[x.toString()+"_"+y.toString()] = json[x][y];
-                        for(var z = 0;z<100;z++){
-                            poleinfo[json[x][y][z][0]][json[x][y][z][1]] = json[x][y][z];
-                        }
-                    }
-                }				
-            }});
-        }
+    $.ajax({url: dir+"index.php?post=mapa&x="+JSON.stringify(nacti), success: function(data){ 
+        var json = eval("(" + data + ")");
+        for(var x in json){
+            for(var y in json[x]){
+                vlozsvg(x,y,json[x][y]);
+                $("#m"+x+"_"+y).css("background-image","url("+dir+"mapacache/"+x+"_"+y+"_"+json[x][y][100]+".jpg?");
+                mapasez.push(x.toString()+"_"+y.toString());
+                mapacache[x.toString()+"_"+y.toString()] = json[x][y];
+                for(var z = 0;z<100;z++){
+                    poleinfo[json[x][y][z][0]][json[x][y][z][1]] = json[x][y][z];
+                }
+            }
+        }				
+    }});
+}
 	
 	function mapa_pozice(sx,sy){
 		mapX = sirka/2-velikost/10*sx-velikost/10/2;

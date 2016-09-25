@@ -62,7 +62,7 @@ $hodnoty = array(
                 "cas_nasobek" => 1.5,
                 "spotreba_zaklad" => 3,
                 "spotreba_nasobek" => 1.2,
-                "maximum" => 10,
+                "maximum" => 20,
                 "pozadavky" => [
                     1 => 1
                 ],

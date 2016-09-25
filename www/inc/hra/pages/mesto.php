@@ -1,7 +1,5 @@
 <h2><?php echo $mesto->data["jmeno"];?></h2>
 
-
-
 <?php
 if($mesto->data["b1"]){
 ?>

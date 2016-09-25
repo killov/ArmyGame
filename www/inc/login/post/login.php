@@ -11,6 +11,8 @@ if(isset($_POST["jmeno"]) and isset($_POST["heslo"])){
     }
     if($errors == [0]){
         $_SESSION["userid"] = $userid;
+        setcookie("ag_chat", "", time() - 3600,"/");
+        setcookie("ag_chatmin", "", time() - 3600,"/");
     }
     echo json_encode($errors);
 }

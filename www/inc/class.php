@@ -419,12 +419,16 @@ class mesto extends base{
                 $x = -$x;
             }
             if(!$this->exist($x,$y)){
+                if($this->db->data[0]["stat"] != 0){
+                    $this->opravhranice($x, $y, $this->db->data[0]["hranice"]);
+                }
                 $pole = array(
                     "user" => $user,
                     "jmeno" => htmlspecialchars($jmeno),
                     "x" => $x,
                     "y" => $y,
                     "stat" => 0,
+                    "hranice" => 0,
                     "statjmeno" => "",
                     "surovina1" => 1000,
                     "surovina1_produkce" => $this->produkce(1, 0),
@@ -455,6 +459,82 @@ class mesto extends base{
             }
             $bod++;
 	}
+    }
+    
+    public function opravhranice($x,$y,$h){
+        $top = $this->getidbyxy($x,$y+1);
+        $bot = $this->getidbyxy($x,$y-1);
+        $left = $this->getidbyxy($x-1,$y);
+        $right = $this->getidbyxy($x+1,$y);
+        switch($h){
+            case 0:
+                $this->pridejhranici($top, 2);
+                $this->pridejhranici($bot, 8);
+                $this->pridejhranici($left, 1);
+                $this->pridejhranici($right, 4);
+                break;
+            case 1:
+                $this->pridejhranici($top, 2);
+                $this->pridejhranici($bot, 8);
+                $this->pridejhranici($left, 1);
+                break;
+            case 2:
+                $this->pridejhranici($top, 2);
+                $this->pridejhranici($left, 1);
+                $this->pridejhranici($right, 4);
+                break;
+            case 3:
+                $this->pridejhranici($top, 2);
+                $this->pridejhranici($left, 1);
+                break;
+            case 4:
+                $this->pridejhranici($top, 2);
+                $this->pridejhranici($bot, 8);
+                $this->pridejhranici($right, 4);
+                break;
+            case 5:
+                $this->pridejhranici($top, 2);
+                $this->pridejhranici($bot, 8);
+                break;
+            case 6:
+                $this->pridejhranici($top, 2);
+                $this->pridejhranici($right, 4);
+                break;
+            case 7:
+                $this->pridejhranici($top, 2);
+                break;
+            case 8:
+                $this->pridejhranici($bot, 8);
+                $this->pridejhranici($left, 1);
+                $this->pridejhranici($right, 4);
+                break;
+            case 9:
+                $this->pridejhranici($bot, 8);
+                $this->pridejhranici($left, 1);
+                break;
+            case 10:
+                $this->pridejhranici($left, 1);
+                $this->pridejhranici($right, 4);
+                break;
+            case 11:
+                $this->pridejhranici($left, 1);
+                break;
+            case 12:
+                $this->pridejhranici($bot, 8);
+                $this->pridejhranici($right, 4);
+                break;
+            case 13:
+                $this->pridejhranici($bot, 8);
+                break;
+            case 14:
+                $this->pridejhranici($right, 4);
+                break;
+        }
+    }
+    
+    public function pridejhranici($id,$h){
+        $this->db->query("UPDATE `mesto` SET `hranice` = `hranice`+".$h." WHERE `id` = '".$id."'",[],false);
+
     }
     
     public function sklad($lvl){
@@ -849,29 +929,46 @@ class mesto extends base{
 	if(!$this->db->data){
             return 300;
 	}else{
-            return $this->db->data[0]["cas"]-time();
+            $time = $this->db->data[0]["cas"]-time();
+            return $time<300?$time:300;
         }
     }
     
-    public function dostupnost_surovin($surovina1){
+    public function dostupnost_surovin($surovina){
+ 
         $max = 0;
-        $min = 0;
+        $min = 999999999999;
         for($i=1;$i<=4;$i++){
-            $potreba = $surovina1-$this->surovina1;
-            if($potreba > 0){
-                if($this->data["surovina1_produkce"] > 0){
-                    $max = max($max,$potreba/$this->data["surovina1_produkce"]/3600);
+            if($surovina[$i-1] == 0) 
+                continue;
+            $prom = "surovina".$i;
+            $potreba = $surovina[$i-1]-$this->$prom;
+            if($potreba >= 0){
+                if($this->data["surovina".$i."_produkce"] >= 0){
+                    $max = max($max,$potreba/($this->data["surovina".$i."_produkce"]/3600));
                 }else{
                     return false;
                 }
             }else{
-                if($this->data["surovina1_produkce"] < 0){
-                    $min = $potreba/$this->data["surovina1_produkce"]/3600;
+                if($this->data["surovina".$i."_produkce"] < 0){
+                    $min = min($min,$potreba/($this->data["surovina".$i."_produkce"]/3600));
                 }
             }
+        }       
+        if($max > $min){
+            return false;
+        }else{
+            return round($max);
         }
     }
-           
+    
+     public function dostupnost_sklad($surovina){
+        for($i=1;$i<=4;$i++){
+            if($surovina[$i-1] > $this->data["sklad"])
+                return false;
+        }
+        return true; 
+    }  
 }
 function data($typ,$lvl){
     global $hodnoty;

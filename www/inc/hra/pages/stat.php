@@ -17,13 +17,13 @@ $s = $st->users($stat["id"]);
 	<h2><?php echo $lang[89]." ".htmlspecialchars($stat["jmeno"]);?>
             <?php if($stat["id"] == $user->data["stat"]){ ?>
 		<span class="zp" >
-			<a href="#"onMouseDown="page_load('stat&s=moznosti')" onMouseUp="page_draw()"><?php echo $lang[94];?></a>
+			<a href="#" h="stat&s=moznosti" class="link"><?php echo $lang[94];?></a>
 		</span>
 		<span class="zp" >
-			<a href="#"onMouseDown="page_load('stat&s=forum')" onMouseUp="page_draw()"><?php echo $lang[93];?></a>
+			<a href="#" h="stat&s=forum" class="link"><?php echo $lang[93];?></a>
 		</span>
 		<span class="zp" >
-			<a href="#"onMouseDown="page_load('stat')" onMouseUp="page_draw()"><?php echo $lang[92];?></a>
+			<a href="#" h="stat" class="link"><?php echo $lang[92];?></a>
 		
 		</span>
 
@@ -83,7 +83,7 @@ $s = $st->pozvanky($stat["id"]);
 if($s){
 	echo "<tr><th colspan='2'>".$lang[96]."</th></tr>";
 	foreach($s as $d){
-		echo "<tr><td><a href=\"#\" onMouseDown=\"page_load('profil&uid=".$d["user"]."')\" onMouseUp=\"page_draw()\">".$d["userjmeno"]."</a></td><td><a href=\"#\" onclick=\"pozvankazrusit('".$d["id"]."')\">".$lang["101"]."</a></td></tr>";
+		echo "<tr><td><a href=\"#\" h=\"profil&uid=".$d["user"]."\" class=\"link\">".$d["userjmeno"]."</a></td><td><a href=\"#\" onclick=\"pozvankazrusit('".$d["id"]."')\">".$lang["101"]."</a></td></tr>";
 	}
 }
 ?>
@@ -96,7 +96,7 @@ if($s){
             <tr><th><?php echo $lang[94];?></th></tr>
             <tr><td>
                     <?php if($user->data["sp_all"]){ ?>
-                    <a href="#" onMouseDown="page_load('stat&s=moznosti&m=pozvat')" onMouseUp="page_draw()"><?php echo $lang[95];?></a><br>
+                    <a href="#" h="stat&s=moznosti&m=pozvat" class="link"><?php echo $lang[95];?></a><br>
                     <?php } ?>
                     <a href="#" onclick="opustitstat();return false"><?php echo $lang[104];?></a>
                 </td>

@@ -100,6 +100,16 @@ h2 {
 
 }
 
+h3 {
+    display: block;
+    padding: 5px 2%;
+    margin: 0 0px 10px 0px;
+    border-radius: 5px;
+    width: 96%;
+    background: linear-gradient(#bebebe, #cccccc, #cccccc, #cfcfcf, #dddddd, #cbcbcb);
+
+}
+
 .jednotky{
     margin: 10px;
     padding: 10px;
@@ -119,6 +129,38 @@ h2 {
 .jednotky td{
     background: rgba(255, 255, 255, 0.5);
     padding: 5px;
+}
+
+#faq{
+    position: fixed;
+    z-index: 1000;
+    width: 50%;
+    min-height: 500px;
+    
+    background: white;
+    border: solid 1px #959595;
+    border-radius: 5px;
+    padding: 5px;
+    display: none;
+}
+
+ #faq>h2 { cursor: move; }
+ 
+ #faq>h2>i.close{
+    float: right;
+    background: aliceblue;
+    margin: 1px;
+ }
+ 
+#faq>h2>i.close:hover{
+  cursor: pointer;
+  font-weight: bold;
+  background: awhite;
+}
+
+#faq_obsah{
+overflow-y: auto;
+max-height: 600px;    
 }
 
 #hlaska {
