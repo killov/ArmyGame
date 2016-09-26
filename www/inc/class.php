@@ -1,5 +1,5 @@
 <?php
-
+$GLOB["pocetbudov"] = 11;
 
 class db{
     public $db;

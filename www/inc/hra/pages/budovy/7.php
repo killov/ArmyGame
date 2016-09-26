@@ -30,7 +30,7 @@ $jo = false;
 foreach($urovne as $key => $uroven){
     echo "<tr><td>".$lang_vyzkum[$key-1]." (".$lang[31].": ".$user->data["v".$key].")</td>";
     echo "<td>";
-    if($hodnoty["budovy"][$key]["maximum"] >= $uroven){
+    if($hodnoty["vyzkum"][$key]["maximum"] >= $uroven){
         if($cena = $user->vyzkum_cena($key,$uroven)){
             echo "<span class=\"bunka surovina0\">".$cena."</span> ";
         }
@@ -50,7 +50,7 @@ foreach($urovne as $key => $uroven){
         }
        
     }else{
-        echo $lang[128];
+        echo "</td><td>".$lang[128];
     }
     echo "</td></tr>";
 }

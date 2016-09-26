@@ -88,6 +88,10 @@ a:hover {
     background: yellowgreen;
 }
 
+.prehled tr.akt{
+    background: yellow;
+}
+
 h2 {
     display: block;
     padding: 5px 2%;
@@ -131,12 +135,36 @@ h3 {
     padding: 5px;
 }
 
+h2>i.faq{
+    float: right;
+    background: grey;
+    margin: 1px;
+    display: block;
+    width: 30px;
+    text-align: center;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    border-radius: 10px;
+ }
+ 
+h2>i.faq:hover{
+    cursor: pointer;
+    font-weight: bold;
+    background: white;
+    font-style: normal;
+    font-variant: normal;
+    text-transform: none;
+}
+
 #faq{
     position: fixed;
     z-index: 1000;
     width: 50%;
     min-height: 500px;
-    
+    left: 300px;
+    top: 60px;
     background: white;
     border: solid 1px #959595;
     border-radius: 5px;
