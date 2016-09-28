@@ -1,0 +1,194 @@
+@import url(https://fonts.googleapis.com/css?family=Noto+Sans&subset=latin,latin-ext);
+body, html{
+    margin: 0;
+    padding: 0;
+}
+body{
+    background: url("http://www.armygame.eu/img/iron-wall.jpg");
+    background-size: cover;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 18px;
+}
+.main{
+    background: #dfdfdf;
+    border: 1px solid #fdfdfd;
+    box-shadow: 0 0 15px #555;
+}
+header{
+    height: 150px;
+    padding-top: 20px;
+}
+#logo{
+    width: 408px;
+    height: 130px;
+    margin: 0 auto;
+    background: url("http://www.armygame.eu/img/armygame.png") 50%;
+    background-size: cover;
+}
+.center{
+    position: relative;
+    margin: 0 auto;
+    width: 980px;
+}
+.welcome h1{
+    margin: 50px 0 0 140px;
+    font-size: 56px;
+    color: #2d2d2d;
+    text-shadow: 0 0 1px #2d2d2d;
+}
+
+.welcome h2{
+    margin: 30px 0 50px 320px;
+    font-size: 32px;
+    color: #2d2d2d;
+    text-shadow: 0 0 1px #2d2d2d;
+}
+
+menu{
+}
+
+menu li{
+    list-style: none;
+    display: inline-block;
+}
+menu a{
+    display: block;
+    color: #2d2d2d;
+    text-decoration: none;
+    outline: none;
+    width: 294px;
+    font-size: 20px;
+    text-align: center;
+}
+
+menu a.active{
+    font-weight: bold;
+}
+
+.lang{
+    position: absolute;
+    right: 5px;
+    top: 0;
+    color: #3d3d3d;
+    text-decoration: none;
+    outline: none;
+}
+.lang .lang-ico-cs{
+    display: inline-block;
+    vertical-align: middle;
+    background: url("http://lipis.github.io/flag-icon-css/flags/4x3/cz.svg") 5%;
+    background-size: cover;
+    width: 20px;
+    height: 15px;
+    margin-right: 5px;
+}
+
+.map{
+    background: url("http://www.armygame.eu/img/map.png");
+    background-size: cover;
+    height: 350px;
+    border: 1px solid #fdfdfd;
+    border-left: none;
+    border-right: none;
+    box-shadow: inset 0 0 15px #555;
+}
+.tryit{
+    display: block;
+    margin: -75px auto;
+    width: 175px;
+    height: 55px;
+    padding-top: 50px;
+    padding-bottom: 82px;
+    background: url("http://www.armygame.eu/img/button_def.png") 50%;
+    background-size: cover;
+    font-size: 22px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold;
+    color: #3d3d3d;
+    border-radius: 87px;
+    border: none;
+    text-shadow: 0 0 5px #fdfdfd;
+    outline: none;
+}
+.tryit:hover{
+    background: url("http://www.armygame.eu/img/button_hov.png") 50%;
+    background-size: cover;
+    text-shadow: 0 0 15px #ffffff;
+}
+
+.description{
+    margin-top: 75px;
+}
+
+.login-wrap{
+    padding: 20px 100px 120px 270px;
+}
+
+.reg-wrap{
+    padding: 20px 20px 120px 400px;
+}
+
+.login-input{
+    width: 153px;
+    height: 30px;
+    padding: 3px 10px;
+    box-shadow: 0 0 10px -5px #2d2d2d;
+    margin-right: 50px;
+}
+
+.reg-input{
+    width: 153px;
+    height: 30px;
+    padding: 3px 10px;
+    box-shadow: 0 0 10px -5px #2d2d2d;
+
+}
+
+
+
+#odpoved{
+    display: none;
+}
+
+.contact{
+    margin: 45px auto;
+    text-align: center;
+}
+.contact .cont{
+    display: inline-block;
+    vertical-align: top;
+    width: 300px;
+}
+
+.contact .cont i{
+    display: block;
+    font-size: 36px;
+    margin-bottom: 10px;
+    color: #2d2d2d;
+}
+
+.contact a{
+    color: #1d1d1d;
+    text-decoration: none;
+    outline: none;
+}
+footer{
+    height: 50px;
+    padding-top: 25px;
+    color: #3d3d3d;
+}
+
+footer a{
+    color: #3d3d3d;
+    text-decoration: none;
+}
+
+footer #copy{
+    float: left;
+}
+
+footer #right{
+    float: right;
+    text-align: right;
+}
