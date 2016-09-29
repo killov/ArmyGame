@@ -341,7 +341,7 @@ function page_load(x){
 			$("#obsah_h").fadeOut(0);
 			$("#obsah_h").html(data);
                         setlinks();
-			$("#obsah_h").fadeIn(500);
+			$("#obsah_h").fadeIn(0);
 			hidemap();
 		}else{
 			load = 1;
@@ -359,7 +359,7 @@ function page_draw(){
 		$("#obsah_h").fadeOut(0);
 		$("#obsah_h").html(data);
                 setlinks();
-		$("#obsah_h").fadeIn(500);
+		$("#obsah_h").fadeIn(0);
 		hidemap();
 	}else{
 		load = 2;
@@ -387,7 +387,7 @@ function page_go(x){
 		$("#obsah_h").hide();
 		$("#obsah_h").html(result);
                 setlinks();
-		$("#obsah_h").fadeIn(500);
+		$("#obsah_h").fadeIn(0);
 		hidemap();
                 
 	}});
@@ -402,7 +402,7 @@ function page_gog(x){
 		$("#obsah_h").hide();
 		$("#obsah_h").html(result);
                 setlinks();
-		$("#obsah_h").fadeIn(500);
+		$("#obsah_h").fadeIn(0);
 		hidemap();
                 
 	}});

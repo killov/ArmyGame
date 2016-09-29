@@ -28,7 +28,7 @@ $urovne = $user->vyzkum_urovne();
 echo "<table class=\"prehled\">";
 $jo = false;
 foreach($urovne as $key => $uroven){
-    echo "<tr><td>".$lang_vyzkum[$key-1]." (".$lang[31].": ".$user->data["v".$key].")</td>";
+    echo "<tr><td><i class=\"faq\" onclick=\"faq_load('vyzkum&b=".$key."');\">?</i> ".$lang_vyzkum[$key-1]." (".$lang[31].": ".$user->data["v".$key].")</td>";
     echo "<td>";
     if($hodnoty["vyzkum"][$key]["maximum"] >= $uroven){
         if($cena = $user->vyzkum_cena($key,$uroven)){

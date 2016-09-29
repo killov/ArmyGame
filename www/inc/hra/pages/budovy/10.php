@@ -63,7 +63,7 @@ echo "<table class=\"prehled\">";
 $jo = $mesto->jednotky_vyzkum_urovne();
 for($key=1;$key<=4;$key++){
     
-    echo "<tr><td>".$lang_jednotky[$key-1]."</td>";
+    echo "<tr><td><i class=\"faq\" onclick=\"faq_load('jednotky&b=".$key."');\">?</i> ".$lang_jednotky[$key-1]."</td>";
     echo "<td>";
     if(!$mesto->data["v".$key]){
         if(!$jo[$key]){

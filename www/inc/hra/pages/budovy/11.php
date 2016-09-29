@@ -24,7 +24,7 @@ if($vyzkum){
                 }else{
                     $h = "<td>".cas($s["delka"]*$s["pocet"])."</td>";
                 }
-                echo "<tr><td>".$lang_jednotky[$s["jednotka"]-1]." (".$s["pocet"].")</td>".$h."<td>".Date("d.m.Y H:i:s", $s["dokonceni"])."</td></tr>";
+                echo "<tr><td><i class=\"faq\" onclick=\"faq_load('jednotky&b=".$key."');\">?</i> ".$lang_jednotky[$s["jednotka"]-1]." (".$s["pocet"].")</td>".$h."<td>".Date("d.m.Y H:i:s", $s["dokonceni"])."</td></tr>";
             }
                 
         }

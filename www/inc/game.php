@@ -342,9 +342,8 @@
     <h2><?=$lang[136]?>
     <i class="icon-cross close" onclick="faq_close()"></i>
     </h2>
-    <div id="faq_obsah">
+    <div id="faq_obsah"></div>
 </div>
-
 <div id="chat">
     
 </div>

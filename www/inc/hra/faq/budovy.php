@@ -3,7 +3,7 @@ if(isset($_GET["b"]) && isset($lang_budova[$_GET["b"]-1])){
     $b = $_GET["b"];
     $data = $hodnoty["budovy"][$b];
 ?>
-<h3><?=$lang_budova[$_GET["b"]-1]?></h3>
+<h3><a href="#" onclick="faq_load('main');return false">Nápověda</a> - <a href="#" onclick="faq_load('budovy');return false">Budovy</a> - <?=$lang_budova[$_GET["b"]-1]?></h3>
 <p>
 Požadavky:
 <?php
@@ -76,6 +76,10 @@ for($i=1;$i<=$data["maximum"];$i++){
 }
 echo "</table>";
 }else{
+    ?>
+<h3><a href="#" onclick="faq_load('main');return false">Nápověda</a> - Budovy</h3>
+
+<?php
     echo "<ul>";
     for($i=1;$i<=$GLOB["pocetbudov"];$i++){
         echo "<li><a href=\"#\" onclick=\"faq_load('budovy&b=".$i."');return false\">".$lang_budova[$i-1]."</li>";

@@ -2,20 +2,20 @@
 $hodnoty = array(
         "produkce" => [
             1 => [
-                "zaklad" => 30,
-                "nasobek" => 1.1
+                "zaklad" => 20,
+                "nasobek" => 1.2
             ],
             2 => [
-                "zaklad" => 30,
-                "nasobek" => 1.1
+                "zaklad" => 20,
+                "nasobek" => 1.2
             ],
             3 => [
-                "zaklad" => 30,
-                "nasobek" => 1.1
+                "zaklad" => 20,
+                "nasobek" => 1.2
             ],
             4 => [
-                "zaklad" => 30,
-                "nasobek" => 1.1
+                "zaklad" => 20,
+                "nasobek" => 1.2
             ]
         ],
         "sklad" => [
@@ -36,38 +36,38 @@ $hodnoty = array(
         "budovy" => array(
             1 => [
                 "surovina1" => 100,
-                "surovina2" => 100,
+                "surovina2" => 85,
                 "surovina3" => 0,
                 "surovina4" => 0,
-                "nasobek" => 1.5,
-                "cas" => 60,
+                "nasobek" => 1.4,
+                "cas" => 80,
                 "cas_nasobek" => 1.5,
                 "spotreba_zaklad" => 3,
                 "spotreba_nasobek" => 1.2,
-                "maximum" => 10,
+                "maximum" => 30,
                 "pozadavky" => [
-                    1 => 1
+
                 ],
                 "pozadavky_vyzkum" => [
-                    1 => 1
+
                 ]
             ],
             2 => [
-                "surovina1" => 100,
-                "surovina2" => 100,
+                "surovina1" => 50,
+                "surovina2" => 40,
                 "surovina3" => 0,
                 "surovina4" => 0,
-                "nasobek" => 1.5,
-                "cas" => 60,
+                "nasobek" => 1.6,
+                "cas" => 40,
                 "cas_nasobek" => 1.5,
                 "spotreba_zaklad" => 3,
                 "spotreba_nasobek" => 1.2,
-                "maximum" => 20,
+                "maximum" => 30,
                 "pozadavky" => [
-                    1 => 1
+
                 ],
                 "pozadavky_vyzkum" => [
-                    1 => 1
+
                 ]
             ],
             3 => [
@@ -76,16 +76,16 @@ $hodnoty = array(
                 "surovina3" => 0,
                 "surovina4" => 0,
                 "nasobek" => 1.5,
-                "cas" => 60,
+                "cas" => 38,
                 "cas_nasobek" => 1.5,
                 "spotreba_zaklad" => 3,
                 "spotreba_nasobek" => 1.2,
-                "maximum" => 10,
+                "maximum" => 30,
                 "pozadavky" => [
-                    1 => 1
+
                 ],
                 "pozadavky_vyzkum" => [
-                    1 => 1
+
                 ]
             ],
             4 => [
@@ -94,16 +94,16 @@ $hodnoty = array(
                 "surovina3" => 0,
                 "surovina4" => 0,
                 "nasobek" => 1.5,
-                "cas" => 60,
+                "cas" => 39,
                 "cas_nasobek" => 1.5,
                 "spotreba_zaklad" => 3,
                 "spotreba_nasobek" => 1.2,
-                "maximum" => 10,
+                "maximum" => 30,
                 "pozadavky" => [
-                    1 => 1
+                    11 => 1
                 ],
                 "pozadavky_vyzkum" => [
-                    1 => 1
+
                 ]
             ],
             5 => [
@@ -112,16 +112,16 @@ $hodnoty = array(
                 "surovina3" => 0,
                 "surovina4" => 0,
                 "nasobek" => 1.5,
-                "cas" => 60,
+                "cas" => 45,
                 "cas_nasobek" => 1.5,
                 "spotreba_zaklad" => 3,
                 "spotreba_nasobek" => 1.2,
                 "maximum" => 10,
                 "pozadavky" => [
-                    1 => 1
+                    1 => 3
                 ],
                 "pozadavky_vyzkum" => [
-                    1 => 1
+                    
                 ]
             ],
             6 => [
@@ -136,10 +136,10 @@ $hodnoty = array(
                 "spotreba_nasobek" => 1.2,
                 "maximum" => 10,
                 "pozadavky" => [
-                    1 => 1
+
                 ],
                 "pozadavky_vyzkum" => [
-                    1 => 1
+
                 ]
             ],
             7 => [
@@ -154,7 +154,7 @@ $hodnoty = array(
                 "spotreba_nasobek" => 1.2,
                 "maximum" => 20,
                 "pozadavky" => [
-                    1 => 1
+                    1 => 3,
                 ],
                 "pozadavky_vyzkum" => [
 
@@ -175,7 +175,7 @@ $hodnoty = array(
                     1 => 1
                 ],
                 "pozadavky_vyzkum" => [
-                    1 => 1
+
                 ]
             ],
             9 => [
@@ -208,7 +208,8 @@ $hodnoty = array(
                 "spotreba_nasobek" => 1.2,
                 "maximum" => 10,
                 "pozadavky" => [
-                    1 => 1
+                    1 => 3,
+                    7 => 1
                 ],
                 "pozadavky_vyzkum" => [
 
@@ -226,7 +227,8 @@ $hodnoty = array(
                 "spotreba_nasobek" => 1.2,
                 "maximum" => 10,
                 "pozadavky" => [
-                    1 => 1
+                    1 => 5,
+                    7 => 5
                 ],
                 "pozadavky_vyzkum" => [
 
@@ -293,7 +295,7 @@ $hodnoty = array(
                 "cas_nasobek" => 1.5,
                 "maximum" => 10,
                 "pozadavky" => [
-                        
+
                 ],
                 "pozadavky_budova" => [
                         1 => 1
