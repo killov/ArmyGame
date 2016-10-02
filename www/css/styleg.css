@@ -233,7 +233,7 @@ max-height: 450px;
 
 #levo {
     background: linear-gradient(90deg, #bebebe, #cccccc, #cccccc, #cfcfcf, #dddddd, #cbcbcb);
-    width: 200px;
+    width: 250px;
     z-index: 1;
     position: absolute;
     left: 0px;
@@ -247,7 +247,7 @@ max-height: 450px;
     background: rgba(20, 20, 20, 0.7);
     z-index: 1;
     position: absolute;
-    left: 200px;
+    left: 250px;
     right: 0px;
     top: 44px;
     box-shadow: 1px 1px 5px black;
@@ -308,7 +308,7 @@ max-height: 450px;
 #back {
     position: fixed;
     top: 44px;
-    left: 200px;
+    left: 250px;
     right: 0;
     bottom: 0;
     z-index: -1;

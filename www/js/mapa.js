@@ -172,7 +172,7 @@ function pohyb(e){
         document.getElementById("pozymove").style.top = y.toString()+"px";
     }
     if(!move){                        
-        var x = (e.clientX-mapX-200)*(1000/velikost);
+        var x = (e.clientX-mapX-250)*(1000/velikost);
         var y = (e.clientY-mapY-44)*(1000/velikost);
         x = Math.floor(x/100);
         y = -Math.floor(y/100)-1;
@@ -216,7 +216,7 @@ function pust(e){
     mapa_load();
 
     if(klik == 1){
-        var x = (e.clientX-mapX-200)*(1000/velikost);
+        var x = (e.clientX-mapX-250)*(1000/velikost);
         var y = (e.clientY-mapY-44)*(1000/velikost);
         x = Math.floor(x/100);
         y = -Math.floor(y/100)-1;

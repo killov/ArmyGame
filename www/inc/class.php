@@ -1093,7 +1093,7 @@ class mapa extends base{
 	}
     }
     
-       function nacti2($c){
+    function nacti2($c){
 	$sql = "";
 	$k = [];
         $bloks = [];
@@ -1133,6 +1133,19 @@ class mapa extends base{
             }
 	}
     }    
+    
+    function nactimapu($x1,$y1,$x2,$y2){
+        $this->db->query("SELECT * FROM `mesto` where x <= %s AND x >= %s AND y <= %s AND y >= %s",[$x1,$x2,$y1,$y2]);
+        if(!$this->db->data){
+                return false;
+        }else{
+            $data = array();
+            foreach($this->db->data as $p){
+                $data[$p["x"]][$p["y"]] = $p;
+            }
+            return $data;
+        }
+    }
        
    public function rendermap($image,$mapa,$x,$y,$v,$dir){
         $ret = imagecreatetruecolor(1000, 1000);
@@ -1532,5 +1545,41 @@ class chat extends base{
             "time" => time()
         ]);
     }
+}
+
+class pohyb extends base{
+    private $projito, $nodes, $mapa, $nodelist;
+    public function __construct() {
+        parent::__construct();
+    }
+    
+    public function addnode($x,$y,$g,$h){
+        if(!in_array([$x,$y], $this->nodelist)){
+            $this->nodes[[$x,$y]] = [$x,$y,$g,$h,$g+$h];
+            $this->nodelist[] = [$x,$y];
+        }
+    }
+    
+    public function getnode(){
+        $node = false;
+        $h = INF;
+        foreach($this->nodes as $n){
+            if($n[4] < $h){
+                $node = $n;
+                $h = $n[4];
+            }
+        }
+        return $node;
+    }
+    
+    public function cesta($x1,$y1,$x2,$y2){
+        $this->projito = [];
+        $this->nodes = [];
+        $this->nodelist = [];
+        $obejit = [[0,1,10],[0,-1,10],[1,0,10],[-1,0,10],[1,1,14],[1,-1,14],[-1,1,14],[-1,-1,14]];
+        $mapa = new mapa();
+        $this->mapa = $mapa->nactimapu(min($x1,$x2)-5, min($y1,$y2)-5, max($x1,$x2)+5, max($y1,$y2)+5);   
+    }
+    
 }
 ?>

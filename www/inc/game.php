@@ -318,7 +318,7 @@
     </script>
 </div>
 <div id="levo">
-    <div class="jednotky">
+    <div class="jednotky" id="jed">
         <h2>Jednotky</h2>
         <div id="jednotky">
             <?php
@@ -335,6 +335,9 @@
                 }
             ?>
         </div>
+    </div>
+    <div id="cont" class="jednotky">
+        
     </div>
 </div>
 

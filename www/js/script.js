@@ -327,6 +327,14 @@ function odpocitejp(){
 }
 
 
+function jednotky_poslat(x){
+    $.ajax({url: dir+"index.php?post=jednotky_poslat&id="+x, success: function(result){
+        $("#cont").show()
+                .html(result);
+        $("#jed").hide();
+    }});
+}
+
 function page_load(x){
 	url = x;
 	data = "";
@@ -447,9 +455,6 @@ function data_load(){
 		$("#surovina4_p").text(surovina4_p.toString());
 		$("#sklad").text(sklad.toString());
                 $("#jednotky").html(json["jednotky"]);
-
-
-                
                 rtime = setTimeout("data_load()", json["refresh"]*1000);
 	}});
 }
