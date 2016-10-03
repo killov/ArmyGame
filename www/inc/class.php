@@ -1554,10 +1554,17 @@ class pohyb extends base{
     }
     
     public function addnode($x,$y,$g,$h){
-        if(!in_array([$x,$y], $this->nodelist)){
+        if(isset($this->nodes[[$x,$y]]) && $this->nodes[[$x,$y]][4] > $g+$h){
+            $this->nodes[[$x,$y]] = [$x,$y,$g,$h,$g+$h];
+        }else if(!in_array([$x,$y], $this->nodelist)){
             $this->nodes[[$x,$y]] = [$x,$y,$g,$h,$g+$h];
             $this->nodelist[] = [$x,$y];
         }
+    }
+    
+    public function removenode($x,$y){
+        $this->projito[$x][$y] = $this->nodes[[$x,$y]];
+        unset($this->nodes[[$x,$y]]);
     }
     
     public function getnode(){
@@ -1572,6 +1579,10 @@ class pohyb extends base{
         return $node;
     }
     
+    public function heurestic($x1,$y1,$x2,$y2){
+        return sqrt(pow($x1-$x2,2)+pow($y1-$y2,2));
+    }
+    
     public function cesta($x1,$y1,$x2,$y2){
         $this->projito = [];
         $this->nodes = [];
@@ -1579,7 +1590,38 @@ class pohyb extends base{
         $obejit = [[0,1,10],[0,-1,10],[1,0,10],[-1,0,10],[1,1,14],[1,-1,14],[-1,1,14],[-1,-1,14]];
         $mapa = new mapa();
         $this->mapa = $mapa->nactimapu(min($x1,$x2)-5, min($y1,$y2)-5, max($x1,$x2)+5, max($y1,$y2)+5);   
+        $this->addnode($x1, $y1, 0, heurestic($x1,$y1,$x2,$y2));
+        while($node = $this->getnode() || ($x == $x2 && $y == $y2)){
+            $x = $node[0];
+            $y = $node[1];
+            $g = $node[2];
+            foreach($obejit as $o){
+                switch($mapa[$x+$o[0]][$y+$o[1]]["typ"]){
+                    case 2:
+                        $n = 2;
+                        break;
+                    case 3:
+                        $n = 3;
+                        break;
+                    default:
+                        $n = 1;
+                }
+                $this->addnode($x+$o[0], $y+$o[1], $g+$n*$o[2], heurestic($x+$o[0],$y+$o[1],$x2,$y2));
+            }
+            $this->removenode($x,$y);
+        }
+        $x = $x2;
+        $y = $y2;
+        $cesta = [];
+        $cesta[] = [$x,$y];
+        while(!($x == $x1 && $y == $y1)){
+            foreach($obejit as $o){
+                $f = INF;
+                if(isset($cesta[[$x+$o[0],$y+$o[1]]])){
+                    
+                }
+            }
+        }
     }
-    
 }
 ?>
