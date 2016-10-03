@@ -722,11 +722,10 @@ class mesto extends base{
 
     public function budova_cas($b1,$budova,$uroven){
         global $hodnoty;
-        return round($hodnoty["budovy"][$budova]["cas"]*pow($hodnoty["budovy"][$budova]["cas_nasobek"],$uroven-1)*$this->stavba_urychleni($this->data["b1"],$hodnoty["budovy"][1]["maximum"]));
+        return round($hodnoty["budovy"][$budova]["cas"]*pow($hodnoty["budovy"][$budova]["cas_nasobek"],$uroven-1)*$this->stavba_urychleni($b1,$hodnoty["budovy"][1]["maximum"]));
     }
     
     public function budova_spotreba($budova,$lvl){
-	global $hodnoty;
 	return $this->budova_obyvatele($budova, $lvl)-$this->budova_obyvatele($budova, $lvl-1);
     }
     
@@ -1615,13 +1614,33 @@ class pohyb extends base{
         $cesta = [];
         $cesta[] = [$x,$y];
         while(!($x == $x1 && $y == $y1)){
+            $f = INF;
+            $g = INF;
             foreach($obejit as $o){
-                $f = INF;
-                if(isset($cesta[[$x+$o[0],$y+$o[1]]])){
-                    
+                if(isset($this->projito[[$x+$o[0],$y+$o[1]]])){
+                    $node = $this->projito[[$x+$o[0],$y+$o[1]]];
+                    if($node[4] < $f && $node[3] < $g){
+                        $next = $node;
+                        $f = $node[4];
+                        $g = $node[3];
+                    }
                 }
             }
+            $cesta[] = [$next[0],$next[1]];
+            $x = $next[0];
+            $y = $next[1];
         }
+        return array_reverse($cesta);
+    }
+    
+    public function cesticka($start,$arr){
+        $ret = [];
+        foreach($arr as $a){
+            $ret = array_merge($this->cesta($start[0], $start[1], $a[0], $a[1]));
+            $start = $a;
+        }
+        array_pop($ret);
+        return $ret;
     }
 }
 ?>
