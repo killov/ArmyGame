@@ -4,7 +4,7 @@ session_start();
 require "src/tracy.php";
 use Tracy\Debugger;
 
-//Debugger::enable();
+Debugger::enable();
 include "inc/class.php";
 include "config.php";
 include "lang/".$cfg["lang"].".php";

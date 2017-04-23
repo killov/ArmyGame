@@ -200,8 +200,7 @@ class user extends base{
         $this->db->update("users", $id, $arr);
     }
     
-    public function mesta(){
-        
+    public function mesta(){        
 	$this->db->query("SELECT * FROM `mesto` WHERE `user` = %s",[$this->data["id"]]);
 	return $this->db->data;
     }
@@ -1133,10 +1132,14 @@ class mapa extends base{
 	}
     }    
     
-    function nactimapu($x1,$y1,$x2,$y2){
-        $this->db->query("SELECT * FROM `mesto` where x <= %s AND x >= %s AND y <= %s AND y >= %s",[$x1,$x2,$y1,$y2]);
+    function nactimapu($x1,$y1,$x2,$y2,$colums = []){
+        $c = "*";
+        if($colums){
+            $c = implode(", ", $colums);
+        }
+        $this->db->query("SELECT ".$c." FROM `mesto` where x <= %s AND x >= %s AND y <= %s AND y >= %s",[$x1,$x2,$y1,$y2]);
         if(!$this->db->data){
-                return false;
+            return false;
         }else{
             $data = array();
             foreach($this->db->data as $p){
@@ -1553,26 +1556,28 @@ class pohyb extends base{
     }
     
     public function addnode($x,$y,$g,$h){
-        if(isset($this->nodes[[$x,$y]]) && $this->nodes[[$x,$y]][4] > $g+$h){
-            $this->nodes[[$x,$y]] = [$x,$y,$g,$h,$g+$h];
+        if(isset($this->nodes[$x][$y]) && $this->nodes[$x][$y][4] > $g+$h){
+            $this->nodes[$x][$y] = [$x,$y,$g,$h,$g+$h];
         }else if(!in_array([$x,$y], $this->nodelist)){
-            $this->nodes[[$x,$y]] = [$x,$y,$g,$h,$g+$h];
+            $this->nodes[$x][$y] = [$x,$y,$g,$h,$g+$h];
             $this->nodelist[] = [$x,$y];
         }
     }
     
     public function removenode($x,$y){
-        $this->projito[$x][$y] = $this->nodes[[$x,$y]];
-        unset($this->nodes[[$x,$y]]);
+        $this->projito[$x][$y] = $this->nodes[$x][$y];
+        unset($this->nodes[$x][$y]);
     }
     
     public function getnode(){
         $node = false;
         $h = INF;
-        foreach($this->nodes as $n){
-            if($n[4] < $h){
-                $node = $n;
-                $h = $n[4];
+        foreach($this->nodes as $nn){
+            foreach($nn as $n){
+                if($n[4] < $h){
+                    $node = $n;
+                    $h = $n[4];
+                }
             }
         }
         return $node;
@@ -1582,20 +1587,23 @@ class pohyb extends base{
         return sqrt(pow($x1-$x2,2)+pow($y1-$y2,2));
     }
     
-    public function cesta($x1,$y1,$x2,$y2){
+    public function cesta($x1,$y1,$x2,$y2){       
         $this->projito = [];
         $this->nodes = [];
         $this->nodelist = [];
+        
         $obejit = [[0,1,10],[0,-1,10],[1,0,10],[-1,0,10],[1,1,14],[1,-1,14],[-1,1,14],[-1,-1,14]];
         $mapa = new mapa();
-        $this->mapa = $mapa->nactimapu(min($x1,$x2)-5, min($y1,$y2)-5, max($x1,$x2)+5, max($y1,$y2)+5);   
-        $this->addnode($x1, $y1, 0, heurestic($x1,$y1,$x2,$y2));
-        while($node = $this->getnode() || ($x == $x2 && $y == $y2)){
+        $this->mapa = $mapa->nactimapu(min($x1,$x2)-5, min($y1,$y2)-5, max($x1,$x2)+5, max($y1,$y2)+5,["x","y"]);   
+        $this->addnode($x1, $y1, 0, $this->heurestic($x1,$y1,$x2,$y2));
+ 
+        while($node = $this->getnode()){     
             $x = $node[0];
             $y = $node[1];
             $g = $node[2];
+            if($x == $x2 && $y == $y2) break;
             foreach($obejit as $o){
-                switch($mapa[$x+$o[0]][$y+$o[1]]["typ"]){
+                switch($this->mapa[$x+$o[0]][$y+$o[1]]["typ"]){
                     case 2:
                         $n = 2;
                         break;
@@ -1605,7 +1613,7 @@ class pohyb extends base{
                     default:
                         $n = 1;
                 }
-                $this->addnode($x+$o[0], $y+$o[1], $g+$n*$o[2], heurestic($x+$o[0],$y+$o[1],$x2,$y2));
+                $this->addnode($x+$o[0], $y+$o[1], $g+$n*$o[2], $this->heurestic($x+$o[0],$y+$o[1],$x2,$y2));
             }
             $this->removenode($x,$y);
         }
@@ -1613,22 +1621,25 @@ class pohyb extends base{
         $y = $y2;
         $cesta = [];
         $cesta[] = [$x,$y];
-        while(!($x == $x1 && $y == $y1)){
+        while(true){
             $f = INF;
             $g = INF;
+            
             foreach($obejit as $o){
-                if(isset($this->projito[[$x+$o[0],$y+$o[1]]])){
-                    $node = $this->projito[[$x+$o[0],$y+$o[1]]];
-                    if($node[4] < $f && $node[3] < $g){
+                if(isset($this->projito[$x+$o[0]][$y+$o[1]])){
+                    $node = $this->projito[$x+$o[0]][$y+$o[1]];
+                    if($node[4] < $f){
                         $next = $node;
                         $f = $node[4];
                         $g = $node[3];
                     }
                 }
             }
-            $cesta[] = [$next[0],$next[1]];
             $x = $next[0];
             $y = $next[1];
+            if($x == $x1 && $y == $y1) break;
+            $cesta[] = [$next[0],$next[1]];
+            
         }
         return array_reverse($cesta);
     }

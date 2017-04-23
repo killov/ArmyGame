@@ -465,7 +465,7 @@ function mapa_obnov(bloky){
 			mapa_load();
 		});
 		$("#pozxmove").animate({
-			left: mapX,
+			left: mapX
 		}, 1000);
 		$("#pozymove").animate({
 			top: mapY
@@ -485,3 +485,11 @@ function mapa_obnov(bloky){
 		document.getElementById("pozymove").style.top = mapY.toString()+"px";
 		mapa_load();
 	}
+        
+        function renderCesta(pocatek,cesta){
+            var body = "";
+            for(var i in cesta){
+                body += " "+(50+(cesta[i][0]+200)*100)+","+(-50+(-cesta[i][1]+190)*100);
+            }
+            $("#map_svg").html('<path d="M'+(50+(pocatek[0]+200)*100)+','+(-50+(-pocatek[1]+190)*100)+' '+body+'" stroke="red" stroke-width="3" fill="none" />');           
+        }

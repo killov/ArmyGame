@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="css/style.css" type="text/css">
     <link rel="stylesheet" type="text/css" href="font/style.css">
 
-    <script src="http://www.armygame.eu/js/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="<?=$cfg["dir"]?>js/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
 
 </head>

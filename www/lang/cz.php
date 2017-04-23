@@ -134,7 +134,8 @@
 "Dostatek surovin v",
 "Dostatek surovina nikdy",
 "Je potřeba rozšířit sklad",
-"Nápověda"
+"Nápověda",
+"Poslat jednotky"        
 );
 $lang_budova = [
     "Hlavní budova",

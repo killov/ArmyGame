@@ -257,7 +257,7 @@ function odpocitejv(){
 	
 function odpocitej(){
     if (g_odpocitavac >= 0){
-        var h,m,s
+        var h,m,s;
         h = Math.floor(g_odpocitavac/3600);
         m = Math.floor(g_odpocitavac%3600/60);
         s = g_odpocitavac%60;

@@ -664,7 +664,7 @@ max-height: 450px;
     height: 20px;
     position: fixed;
     text-shadow: 1px 1px 5px black;
-    left: 200px;
+    left: 250px;
     right: 0px;
     bottom: 0px;
 }
@@ -696,7 +696,7 @@ max-height: 450px;
     text-shadow: 1px 1px 5px black;
     top: 44px;
     bottom: 20px;
-    left: 200px;
+    left: 250px;
     overflow: hidden;
 }
 
@@ -1442,8 +1442,14 @@ canvas {
 }
 
 
-#mapsvg{
+#map_svg{
     z-index: 100;
+    width: 4000%;
+    height: 4000%;
+    position: absolute;
+    left: -2000%;
+    top: -1900%;
+    display: block;
 }
 
 input[type=text]{

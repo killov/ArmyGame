@@ -11,8 +11,9 @@
     
     <script src="<?=$cfg["dir"]?>js/jquery.mousewheel.min.js"></script>
     <script type="text/javascript" src="<?=$cfg["dir"]?>js/script.js"></script>
-    
-    <script type="text/javascript" src="<?=$cfg["dir"]?>js/mapa.js"></script>
+    <script type="text/javascript" src="<?=$cfg["dir"]?>js/game.js"></script>
+    <script type="text/javascript" src="<?=$cfg["dir"]?>js/map.js"></script>
+    <script type="text/javascript" src="<?=$cfg["dir"]?>js/map2d.js"></script>
     <script src="<?=$cfg["dir"]?>js/jquery.waitforimages.js"></script>
     <meta charset="UTF-8">
     <script>
@@ -49,10 +50,10 @@
                             return $("#surovina4c div.hidden").html();
                     }
             });
-            $("#back").tooltip({
+            $("#map_svg").tooltip({
                     track: true,
                     content: function(){
-                            return "";
+                            return "d";
                     },
                     hide: { effect: "blind", duration: 0 }
             });
@@ -88,7 +89,7 @@
 <body>
     <div id="back">
 	<div id="move" style="position:absolute;top:20px;left:20px;width:1000px;height:1000px;">
-
+            <svg id="map_svg" title></svg>
 	</div>
 </div>
     
@@ -271,10 +272,12 @@
 	var mesto_x = <?=$mesto->data["x"]?>;
 	var mesto_y = <?=$mesto->data["y"]?>;
 	var stat = <?=$user->data["stat"]?>;
-	$( document ).ready(function() {
-            mapload();
-            mapa_pozices(<?php echo $mesto->data["x"].",".$mesto->data["y"];?>, 0);
-        });
+	
+            var mapp = new Map();
+            var map2d = new Map2d(mapp);
+            map2d.mapload();
+            map2d.pozices(<?php echo $mesto->data["x"].",".$mesto->data["y"];?>, 0);
+
 </script>
 <div id="celek">
 	<div id="obsah">

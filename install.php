@@ -20,7 +20,7 @@ $db->query("SELECT COUNT(*) as `pocet` FROM `mesto`",[]);
 $pocet = $db->data[0]["pocet"];
 
 if($pocet != 0){
-    info("Mapa hotova preskakuji...");
+    info("Mapa hotova, preskakuji...");
 }else{
     info("Generuji mapu");
     $xmin = -200;

@@ -130,7 +130,7 @@ if($s){
 if($s){
 	$x = 1;
 	foreach($s as $d){
-		echo "<tr><td>".$x."</td><td><a href=\"#\" onMouseDown=\"page_load('profil&uid=".$d["id"]."')\" onMouseUp=\"page_draw()\">".htmlspecialchars($d["jmeno"])."</a></td><td>".$d["mest"]."</td><td>".$d["pop"]."</td></tr>";
+		echo "<tr><td>".$x."</td><td><a href=\"#\" onMouseDown=\"page_load('profil/".$d["id"]."')\" onMouseUp=\"page_draw()\">".htmlspecialchars($d["jmeno"])."</a></td><td>".$d["mest"]."</td><td>".$d["pop"]."</td></tr>";
 	
                 $x++;
         }

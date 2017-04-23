@@ -19,8 +19,7 @@ function auth($hash){
     
     $db->query("SELECT * FROM `ws_auth` WHERE `hash` = %s",[$hash]);
 
-    if($db->data){
-        
+    if($db->data){    
         $db->query("DELETE FROM `ws_auth` WHERE `id` = %s",[$db->data[0]["id"]],false);
         return $db->data[0]["user"];
     }else{
