@@ -1,6 +1,6 @@
 
-function Game(map){
-    this.map = map;
+function Game(){
+    this.mapControl = new Map(this);
     this.mesto = {
         x: 0,
         y: 0,
@@ -15,19 +15,22 @@ function Game(map){
         sklad: 0
     };
     
+    this.stat = 0;
+    
+    this.mapa = new Map();
+    
     this.dir = "";
     this.url = "";
     this.time_rozdil = 0;
     this.map = false;
     this.faq = false;
-    this.time_rozdil();
     this.rtime;
     this.faq_load = function(x){
         if(!this.faq){
             $("#faq").fadeIn(500);
             this.faq = true;
         }
-        $("#faq_obsah").load(dir+"index.php?faq="+x);
+        $("#faq_obsah").load(this.dir+"index.php?faq="+x);
     };   
 
     this.faq_close = function(){
@@ -36,29 +39,30 @@ function Game(map){
     };
     
     this.page_load = function(x){
-        this.url = x;
         this.data = "";
         this.load = 0;
-        $.ajax({url: dir+"index.php?p="+x+"&a", success: function(result){
-            this.data = result;
-            if(this.load == 2){
-                window.history.pushState({}, "Armygame", dir+url);
+        var self = this;
+        $.ajax({url: this.dir+"index.php?p="+x+"&a", success: function(result){
+            self.data = result;
+            self.url = x;
+            if(self.load == 2){
+                window.history.pushState({}, "Armygame", self.dir+x);
                 $("#obsah_h").fadeOut(0);
-                $("#obsah_h").html(data);
-                this.setlinks();
+                $("#obsah_h").html(self.data);
+                self.setlinks();
                 $("#obsah_h").fadeIn(0);
-                this.hidemap();
+                self.hidemap();
             }else{
-                this.load = 1;
+                self.load = 1;
             }
         }});
     };
 
     this.page_draw = function(){
         if(this.load == 1){
-            window.history.pushState({}, "Armygame", dir+url);
+            window.history.pushState({}, "Armygame", this.dir+this.url);
             $("#obsah_h").fadeOut(0);
-            $("#obsah_h").html(data);
+            $("#obsah_h").html(this.data);
             this.setlinks();
             $("#obsah_h").fadeIn(0);
             this.hidemap();
@@ -68,9 +72,10 @@ function Game(map){
     };
 
     this.page_refresh = function(){
-        $.ajax({url: dir+"index.php?p="+url+"&a", success: function(result){
+        var self = this;
+        $.ajax({url: this.dir+"index.php?p="+this.url+"&a", success: function(result){
             $("#obsah_h").html(result);
-            this.setlinks();
+            self.setlinks();
         }});
     };
 
@@ -82,54 +87,57 @@ function Game(map){
     
     this.page_gog = function(x){
 	this.url = x;
-	$.ajax({url: dir+"index.php?p="+x+"&a", success: function(result){
+        var self = this;
+	$.ajax({url: this.dir+"index.php?p="+x+"&a", success: function(result){
             $("#obsah_h").hide();
             $("#obsah_h").html(result);
-            this.setlinks();
+            self.setlinks();
             $("#obsah_h").fadeIn(0);
-            this.hidemap();    
+            self.hidemap();    
 	}});
     };
     
     this.setlinks = function(){
+        var self = this;
         $(".link").click(function(e){
             e.preventDefault();
         })
         .mousedown(function(e){
             e.preventDefault();
-            this.page_load($(this).attr("h"));
+            self.page_load($(this).attr("h"));
         }).mouseup(function(e){
             e.preventDefault();
-            this.page_draw();
+            self.page_draw();
         });
     };
     
     this.data_load = function(){
         clearTimeout(this.rtime);
+        var self = this;
         $.ajax({url: this.dir+"index.php?post=mestodata", success: function(data){ 
             var json = eval("(" + data + ")");
             var penize = json["penize"];
-            this.mesto.surovina1 = json["surovina1"];
-            this.mesto.surovina2 = json["surovina2"];
-            this.mesto.surovina3 = json["surovina3"];
-            this.mesto.surovina4 = json["surovina4"];
-            this.mesto.surovina1_p = json["surovina1_produkce"];
-            this.mesto.surovina2_p = json["surovina2_produkce"];
-            this.mesto.surovina3_p = json["surovina3_produkce"];
-            this.mesto.surovina4_p = json["surovina4_produkce"];
-            this.mesto.sklad = json["sklad"];
+            self.mesto.surovina1 = json["surovina1"];
+            self.mesto.surovina2 = json["surovina2"];
+            self.mesto.surovina3 = json["surovina3"];
+            self.mesto.surovina4 = json["surovina4"];
+            self.mesto.surovina1_p = json["surovina1_produkce"];
+            self.mesto.surovina2_p = json["surovina2_produkce"];
+            self.mesto.surovina3_p = json["surovina3_produkce"];
+            self.mesto.surovina4_p = json["surovina4_produkce"];
+            self.mesto.sklad = json["sklad"];
             $("#surovina0").text(penize.toString());
-            $("#surovina1").text(this.mesto.surovina1.toString());
-            $("#surovina2").text(this.mesto.surovina2.toString());
-            $("#surovina3").text(this.mesto.surovina3.toString());
-            $("#surovina4").text(this.mesto.surovina4.toString());
-            $("#surovina1_p").text(this.mesto.surovina1_p.toString());
-            $("#surovina2_p").text(this.mesto.surovina2_p.toString());
-            $("#surovina3_p").text(this.mesto.surovina3_p.toString());
-            $("#surovina4_p").text(this.mesto.surovina4_p.toString());
-            $("#sklad").text(this.mesto.sklad.toString());
+            $("#surovina1").text(self.mesto.surovina1.toString());
+            $("#surovina2").text(self.mesto.surovina2.toString());
+            $("#surovina3").text(self.mesto.surovina3.toString());
+            $("#surovina4").text(self.mesto.surovina4.toString());
+            $("#surovina1_p").text(self.mesto.surovina1_p.toString());
+            $("#surovina2_p").text(self.mesto.surovina2_p.toString());
+            $("#surovina3_p").text(self.mesto.surovina3_p.toString());
+            $("#surovina4_p").text(self.mesto.surovina4_p.toString());
+            $("#sklad").text(self.mesto.sklad.toString());
             $("#jednotky").html(json["jednotky"]);
-            this.rtime = setTimeout("data_load()", json["refresh"]*1000);
+            self.rtime = setTimeout(function(){self.data_load();}, json["refresh"]*1000);
         }});
     };
     
@@ -160,6 +168,112 @@ function Game(map){
         }
     };    
     
+    this.jednotky_poslat = function(x){
+        $.ajax({url: this.dir+"index.php?post=jednotky_poslat&id="+x, success: function(result){
+            $("#cont").show()
+                    .html(result);
+            $("#jed").hide();
+        }});
+    };
+
+    this.postav = function(x){
+        var self = this;
+        $.post(this.dir+"index.php?post=postav",{bid: x},function(){
+            self.data_load();
+            self.page_refresh();
+        });
+    };
+
+    this.vyzkum = function(x){
+        var self = this;
+        $.post(this.dir+"index.php?post=vyzkum",{vid: x},function(){
+            self.data_load();
+            self.page_refresh();
+        });
+    };
+
+    this.jednotky_vyzkum = function(x){
+        var self = this;
+        $.post(this.dir+"index.php?post=jednotky_vyzkum",{jid: x},function(){
+            self.data_load();
+            self.page_refresh();
+        });
+    };
+
+    this.pozvankazrusit = function(x){
+        var self = this;
+        $.post(this.dir+"index.php?post=statsmazatpozvanku",{id: x},function(){
+            self.page_refresh();
+        });
+    };
+
+    this.pozvankapotvrdit = function(x){
+        var self = this;
+        $.post(this.dir+"index.php?post=statpotvrditpozvanku",{id: x},function(data){
+            var d = JSON.parse(data);
+            self.stat = d[0];
+            self.page_refresh();
+        });
+    };
+    
+    this.opustitstat = function(){
+        var self = this;
+        $.post(dir+"index.php?post=opustitstat",function(){
+            self.stat = 0;
+            self.page_go("stat");
+        });
+    };
+    
+    this.mapa = function(){
+        if(this.map){
+            this.mapControl.pozice(this.mesto.x,this.mesto.y);
+        }else{
+            this.showmap();
+        }
+    };
+
+    this.showmap = function(){
+        $("#celek").fadeOut(500);
+        this.map = true;
+    };
+
+    this.hidemap = function(){
+        if(this.map){
+            $("#celek").fadeIn(500);
+            this.map = false;
+        }
+    };	
+
+
+    this.jednotky = function(id,s1,s2,s3,s4,cass,spotreba){
+        var pocet = parseInt($("#pocet"+id).val()); 
+        if(isNaN(pocet) || pocet <= 0){
+            if(s1) $("#s1"+id).html(s1);
+            if(s2) $("#s2"+id).html(s2);
+            if(s3) $("#s3"+id).html(s3);
+            if(s4) $("#s4"+id).html(s4);
+            $("#cas"+id).html(cas(cass));
+            $("#spotreba"+id).html(spotreba);
+        }else{
+            if(s2) $("#s1"+id).html(s1*pocet);
+            if(s2) $("#s2"+id).html(s2*pocet);
+            if(s3) $("#s3"+id).html(s3*pocet);
+            if(s4) $("#s4"+id).html(s4*pocet);
+            $("#cas"+id).html(cas(cass*pocet));
+            $("#spotreba"+id).html(spotreba*pocet);
+        }
+    };
+    
+    this.formular_upload = function(form,kam,callback){
+        var self = this;
+        $(form).submit(function(ev){
+            $.post(self.dir+kam, $(this).serialize(), function(data){ 
+                var json = eval("(" + data + ")");
+                callback(json);
+            });
+        ev.preventDefault();
+        });
+    };
     
     this.cesta = function(x){
         $.ajax({url: dir+"index.php?post=cesta&id="+x, success: function(result){

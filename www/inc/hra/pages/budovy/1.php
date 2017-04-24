@@ -67,7 +67,7 @@ foreach($urovne as $key => $uroven){
                     $surovina21 <= $surovina2 and
                     $surovina31 <= $surovina3 and
                     $surovina41 <= $surovina4){
-                    echo "<a href=\"#\" class=\"postav\" onclick=\"postav(".$key.");return false\">".$lang[62]." ".$uroven."</a>";
+                    echo "<a href=\"#\" class=\"postav\" onclick=\"game.postav(".$key.");return false\">".$lang[62]." ".$uroven."</a>";
                 }else{
                     if($dost = $mesto->dostupnost_sklad([$surovina11,$surovina21,$surovina31,$surovina41])){
                         if($dost = $mesto->dostupnost_surovin([$surovina11,$surovina21,$surovina31,$surovina41])){

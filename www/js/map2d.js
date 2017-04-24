@@ -18,6 +18,10 @@ function Map2d(map){
         this.vyska = parseInt($("#back").css("height"));
     };
     
+    this.map.pozice = function(x,y){
+        t.pozices(x,y,0);
+    };
+    
     this.mapload();
     
     this.tahni = function(e){
@@ -91,10 +95,10 @@ function Map2d(map){
             y = -Math.floor(y/100)-1;
             var data = this.map.getPole(x,y);
             if(data[2] == 1){
-                if(mesto == data[3]){
-                    page_go("mesto");
+                if(this.map.game.mesto.id == data[3]){
+                    map.game.page_go("mesto");
                 }else{
-                    page_go("mestoinfo/"+data[3]);
+                    map.game.page_go("mestoinfo/"+data[3]);
                 }
             } 
         }
@@ -107,7 +111,7 @@ function Map2d(map){
         $("#move").append("<div id='m"+x+"_"+y+"' class='mapblok' style='position: absolute;left: "+left.toString()+"%;top:"+top.toString()+"%' title=''></div>");
         this.vlozsvg(x,y,json);
         $("#m"+x+"_"+y)
-            .css("background-image","url("+dir+"mapacache/"+x+"_"+y+"_"+json[100]+".jpg?")
+            .css("background-image","url("+this.map.game.dir+"mapacache/"+x+"_"+y+"_"+json[100]+".jpg?")
             .waitForImages(function() {
                 $(this).fadeOut(0)
                     .fadeIn(0);
@@ -119,7 +123,7 @@ function Map2d(map){
         for(var z=0;z<100;z++){
             var l = (z%10)*100;
             var t = Math.floor(z/10)*100;
-            if(json[z][8] == stat){
+            if(json[z][8] == this.map.game.stat){
                 var barva = "blue";
             }else{
                 var barva = "red";
@@ -176,7 +180,6 @@ function Map2d(map){
                     break;
             }
         }
-        console.log(f);
         if(f != ""){
             $("#m"+x+"_"+y).html("<svg id='svg"+x+"_"+y+"' height='100%' width='100%' viewBox='0 0 1000 1000'>"+f+"</svg>");
         }else{
@@ -298,34 +301,34 @@ function Map2d(map){
     };
     
     this.pozice = function(sx,sy){
-            this.mapPosition.x = this.sirka/2-this.velikost/10*sx-this.velikost/10/2;
-            this.mapPosition.y = this.vyska/2+this.velikost/10*sy+this.velikost/10/2+35;
-            $("#move").animate({
-                    left: this.mapPosition.x,
-                    top: this.mapPosition.y
-            }, 1000, function() {
-                    this.load();
-            });
-            $("#pozxmove").animate({
-                    left: this.mapPosition.x
-            }, 1000);
-            $("#pozymove").animate({
-                    top: this.mapPosition.y
-            }, 1000);
-            this.load();
+        this.mapPosition.x = this.sirka/2-this.velikost/10*sx-this.velikost/10/2;
+        this.mapPosition.y = this.vyska/2+this.velikost/10*sy+this.velikost/10/2+35;
+        $("#move").animate({
+                left: this.mapPosition.x,
+                top: this.mapPosition.y
+        }, 1000, function() {
+                this.load();
+        });
+        $("#pozxmove").animate({
+                left: this.mapPosition.x
+        }, 1000);
+        $("#pozymove").animate({
+                top: this.mapPosition.y
+        }, 1000);
+        this.load();
     };
 
     this.pozices = function (sx,sy,sir){
-            $("#move").fadeOut(0);
-            $("#move").fadeIn(1000);
+        $("#move").fadeOut(0);
+        $("#move").fadeIn(1000);
 
-            this.mapPosition.x = (this.sirka-sir)/2-this.velikost/10*sx-this.velikost/10/2;
-            this.mapPosition.y = this.vyska/2+this.velikost/10*sy+this.velikost/10/2;
-            document.getElementById("move").style.left = this.mapPosition.x.toString()+"px";
-            document.getElementById("move").style.top = this.mapPosition.y.toString()+"px";
-            document.getElementById("pozxmove").style.left = this.mapPosition.x.toString()+"px";
-            document.getElementById("pozymove").style.top = this.mapPosition.y.toString()+"px";
-            this.load();
+        this.mapPosition.x = (this.sirka-sir)/2-this.velikost/10*sx-this.velikost/10/2;
+        this.mapPosition.y = this.vyska/2+this.velikost/10*sy+this.velikost/10/2;
+        document.getElementById("move").style.left = this.mapPosition.x.toString()+"px";
+        document.getElementById("move").style.top = this.mapPosition.y.toString()+"px";
+        document.getElementById("pozxmove").style.left = this.mapPosition.x.toString()+"px";
+        document.getElementById("pozymove").style.top = this.mapPosition.y.toString()+"px";
+        this.load();
     };
 
     this.zoom = function(na,zx,zy){

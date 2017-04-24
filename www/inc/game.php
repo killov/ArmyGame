@@ -20,7 +20,7 @@
     d = new Date();
     $(function () {
 
-        time_rozdil = <?php echo microtime(true)*1000;?>-d.getTime();
+        game.time_rozdil = <?php echo microtime(true)*1000;?>-d.getTime();
 
             $(document).tooltip({
                     track: true,
@@ -66,7 +66,7 @@
         $(document).ready(function(){
 
         
-	ws_connect();
+	//ws_connect();
 	var c = cookies.get('ag_chat');
         chatm = cookies.get('ag_chatmin');
         if(!chatm){
@@ -107,14 +107,14 @@
             <label><i class="icon-menu"></i></label>
         </div>
     </div>
-    <div class="but-out-s but-2 hide-but" onClick="mapa()">
+    <div class="but-out-s but-2 hide-but" onClick="game.mapa()">
         <div class="but-in-s but-pic-s">
             <div class="but-hov-s">
             </div>
             <label><i class="icon-hair-cross"></i></label>
         </div>
     </div>
-    <div class="but-out-s but-3 hide-but" onClick="page_go('mesto')">
+    <div class="but-out-s but-3 hide-but" onClick="game.page_go('mesto')">
         <div class="but-in-s but-pic-s">
             <div class="but-hov-s">
             </div>
@@ -195,21 +195,21 @@
                             </div>
 			</div>
 		</div>
-    <div class="but-out-s but-7" onClick="page_go('stat')">
+    <div class="but-out-s but-7" onClick="game.page_go('stat')">
         <div class="but-in-s but-pic-s">
             <div class="but-hov-s">
             </div>
             <label><i class="icon-globe"></i></label>
         </div>
     </div>
-    <div class="but-out-s but-6" onClick="page_go('profil')">
+    <div class="but-out-s but-6" onClick="game.page_go('profil')">
         <div class="but-in-s but-pic-s">
             <div class="but-hov-s">
             </div>
             <label><i class="icon-v-card"></i></label>
         </div>
     </div>
-    <div class="but-out-s but-5" onClick="page_go('statistika')">
+    <div class="but-out-s but-5" onClick="game.page_go('statistika')">
         <div class="but-in-s but-pic-s">
             <div class="but-hov-s">
             </div>
@@ -227,19 +227,22 @@
     </div>
 </div>
 <script type="text/javascript">
-        var dir = "<?=$cfg["dir"]?>";
-        var surovina1 = <?=$mesto->surovina1?>;
-        var surovina1_p = <?=$mesto->data["surovina1_produkce"]?>;
-        var surovina2 = <?=$mesto->surovina2?>;
-        var surovina2_p = <?=$mesto->data["surovina2_produkce"]?>;
-        var surovina3 = <?=$mesto->surovina3?>;
-        var surovina3_p = <?=$mesto->data["surovina3_produkce"]?>;
-        var surovina4 = <?=$mesto->surovina4?>;
-        var surovina4_p = <?=$mesto->data["surovina4_produkce"]?>;
-        var sklad = <?=$mesto->data["sklad"]?>;
-
-        setInterval("produkce()", 1000);
-        setTimeout("data_load()", 1000);
+    var game = new Game();
+    game.dir = "<?=$cfg["dir"]?>";
+    game.mesto.surovina1 = <?=$mesto->surovina1?>;
+    game.mesto.surovina1_p = <?=$mesto->data["surovina1_produkce"]?>;
+    game.mesto.surovina2 = <?=$mesto->surovina2?>;
+    game.mesto.surovina2_p = <?=$mesto->data["surovina2_produkce"]?>;
+    game.mesto.surovina3 = <?=$mesto->surovina3?>;
+    game.mesto.surovina3_p = <?=$mesto->data["surovina3_produkce"]?>;
+    game.mesto.surovina4 = <?=$mesto->surovina4?>;
+    game.mesto.surovina4_p = <?=$mesto->data["surovina4_produkce"]?>;
+    game.mesto.sklad = <?=$mesto->data["sklad"]?>;
+    
+    game.mesto.id = <?=$mesto->data["id"]?>;
+    game.mesto.x = <?=$mesto->data["x"]?>;
+    game.mesto.y = <?=$mesto->data["y"]?>;
+    game.stat = <?=$user->data["stat"]?>;
 </script>    
 
 
@@ -268,15 +271,9 @@
 
 
 <script type="text/javascript">
-	var mesto = <?=$mesto->data["id"]?>;
-	var mesto_x = <?=$mesto->data["x"]?>;
-	var mesto_y = <?=$mesto->data["y"]?>;
-	var stat = <?=$user->data["stat"]?>;
-	
-            var mapp = new Map();
-            var map2d = new Map2d(mapp);
-            map2d.mapload();
-            map2d.pozices(<?php echo $mesto->data["x"].",".$mesto->data["y"];?>, 0);
+        var map2d = new Map2d(game.mapControl);
+        map2d.mapload();
+        map2d.pozices(<?php echo $mesto->data["x"].",".$mesto->data["y"];?>, 0);
 
 </script>
 <div id="celek">
@@ -313,9 +310,9 @@
 	</div>
     <div id="rip" style="height:100%"></div>
     <script>
-        setlinks();
+        game.setlinks();
         $("#rip").click(function (event) {
-		mapa();
+		game.mapa();
                 event.preventDefault();
 	});
     </script>

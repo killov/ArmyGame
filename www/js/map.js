@@ -1,4 +1,5 @@
-function Map(){
+function Map(game){
+    this.game = game;
     this.cache = [];
     this.pole = [];
     for(i=-20;i<20;i++) this.cache[i] = [];
@@ -15,7 +16,7 @@ function Map(){
             }
         }
         if(f.length){
-            $.ajax({url: dir+"index.php?post=mapa&x="+JSON.stringify(f), success: function(data){ 
+            $.ajax({url: this.game.dir+"index.php?post=mapa&x="+JSON.stringify(f), success: function(data){ 
                 var json = JSON.parse(data);
                 for(var x in json){
                     for(var y in json[x]){
@@ -32,5 +33,9 @@ function Map(){
     
     this.getPole = function(x,y){
         return this.pole[x][y];
+    };
+    
+    this.pozice = function(){
+        console.log("map.pozice callback is missing");
     };
 }
