@@ -35,7 +35,18 @@ function Map(game){
         return this.pole[x][y];
     };
     
+    this.obnov = function(bloky){
+        for(var i in bloky){
+            this.cache[bloky[i][0]][bloky[i][1]] = false;
+        }
+        this.obnovit(bloky);
+    };
+    
     this.pozice = function(){
         console.log("map.pozice callback is missing");
+    };
+    
+    this.obnovit = function(){
+        console.log("map.obnovit callback is missing");
     };
 }

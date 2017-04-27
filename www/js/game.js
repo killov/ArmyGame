@@ -24,6 +24,8 @@ function Game(){
     this.time_rozdil = 0;
     this.map = false;
     this.faq = false;
+    this.wsUri = "";
+    this.ws;
     this.rtime;
     this.faq_load = function(x){
         if(!this.faq){
@@ -32,6 +34,64 @@ function Game(){
         }
         $("#faq_obsah").load(this.dir+"index.php?faq="+x);
     };   
+    
+    this.init = function(){
+        var self = this;
+        window.onpopstate = function(e) {
+            this.page_gog(location.pathname.replace(self.dir,"")? location.pathname.replace(self.dir,"") : "mesto");
+        };    
+        $( "#faq" ).draggable({ 
+            handle: "h2",
+            cancel: "i.close"
+        });
+    };
+    
+    this.ws_connect = function(){
+        var self = this;
+        this.ws = new WebSocket(this.wsUri); 
+        this.ws.onmessage = function(ev) {
+            msg = JSON.parse(ev.data);
+            console.log(msg);
+            if(msg.typ == "mapa_refresh"){
+                self.map.obnov(msg.bloky);
+            }else if(msg.typ == "chatme"){
+                self.pridejdochatu(msg.pro,"my",msg.text,msg.time);
+            }
+            else if(msg.typ == "chat"){
+                self.pridejdochatu(msg.od,"vy",msg.text,msg.time);
+            }
+        };
+        
+        this.ws.onerror = function(ev){
+            console.log("Error Occurred - "+ev.data);
+        }; 
+        
+        this.ws.onclose = function(ev){
+            console.log("Connection Closed");
+            setTimeout(function(){self.ws_connect();},1000);
+        }; 
+        
+        this.ws.onopen = function(ev) { // connection is open 
+            console.log("Connected!"); //notify user
+            $.ajax({url: self.dir+"index.php?post=ws", success: function(result){
+                var res = JSON.parse(result);
+                send({typ: "auth", hash: res[0]});
+            }});
+        };
+    };
+    
+    this.hlaska = function(x,typ){
+            if(typ == 1){
+                $("#hlaska").css("background-color","green");
+            }else{
+                $("#hlaska").css("background-color","red");
+            }
+            $("#hlaska").text(x);
+            $("#hlaska").css("display","block");
+            setTimeout(function(){
+                    $("#hlaska").fadeOut(1000);
+            },2000);
+    };
 
     this.faq_close = function(){
         $("#faq").fadeOut(500);

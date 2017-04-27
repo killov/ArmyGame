@@ -319,8 +319,7 @@ function Map2d(map){
     };
 
     this.pozices = function (sx,sy,sir){
-        $("#move").fadeOut(0);
-        $("#move").fadeIn(1000);
+        $("#move").fadeOut(0).fadeIn(1000);
 
         this.mapPosition.x = (this.sirka-sir)/2-this.velikost/10*sx-this.velikost/10/2;
         this.mapPosition.y = this.vyska/2+this.velikost/10*sy+this.velikost/10/2;
@@ -332,8 +331,9 @@ function Map2d(map){
     };
 
     this.zoom = function(na,zx,zy){
-        var sirka = parseInt($("#back").css("width"));
-        var vyska = parseInt($("#back").css("height"));
+        $back = $("#back");
+        var sirka = parseInt($back.css("width"));
+        var vyska = parseInt($back.css("height"));
         this.mapPosition.x = this.mapPosition.x*(na/this.velikost)+(sirka/2)*(1-na/this.velikost)+zx*0.1;
         this.mapPosition.y = this.mapPosition.y*(na/this.velikost)+(vyska/2)*(1-na/this.velikost)+zy*0.1;
         this.velikost = na;

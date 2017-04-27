@@ -290,7 +290,7 @@
                             ?>
                                 <script type="text/javascript">
                                 
-                                url = "<?php 
+                                game.url = "<?php 
                                 if(isset($_GET["p"])){
                                     echo $_GET["p"];
                                 }
@@ -343,7 +343,7 @@
 
 <div id="faq">
     <h2><?=$lang[136]?>
-    <i class="icon-cross close" onclick="faq_close()"></i>
+    <i class="icon-cross close" onclick="game.faq_close()"></i>
     </h2>
     <div id="faq_obsah"></div>
 </div>
