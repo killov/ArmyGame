@@ -1,6 +1,6 @@
 <?php
 ini_set('memory_limit', '-1');
-$dir = "I:/xamp/htdocs/armygame/www/";
+$dir = __DIR__;
 
 include $dir."config.php";
 include $dir."inc/class.php";
@@ -13,7 +13,7 @@ $db->db->multi_query($sqlSource);
 
 while ($db->db->next_result()) {;}
 function info($x){
-	echo "\n[".Date("H:i:s", time())."] ".$x."\n";
+    echo "\n[".Date("H:i:s", time())."] ".$x."\n";
 }
 
 $db->query("SELECT COUNT(*) as `pocet` FROM `mesto`",[]);
@@ -177,7 +177,7 @@ $map = new mapa();
 $image = imagecreatefrompng($dir."img/mapa/FULL_MAP_TIME3.png");
 for($y=19;$y>=-20;$y--){
     for($x=-20;$x<=19;$x++){
-        if(!file_exists($dir."mapacache/".$x."_".$y."_0.jpg")){
+        if(!file_exists($dir."wwww/mapacache/".$x."_".$y."_0.jpg")){
             $mapa = $map->nacti2([[$x,$y]]);         
             $map->rendermap($image,$mapa,$x,$y,0,$dir);
             

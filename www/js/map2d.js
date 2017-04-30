@@ -13,6 +13,11 @@ function Map2d(map){
     this.videno = [];
     var t = this;
     
+    window.onresize = function(event) {
+        t.mapload();
+        t.load();
+    };
+    
     this.mapload = function(){
         this.sirka = parseInt($("#back").css("width"));
         this.vyska = parseInt($("#back").css("height"));
@@ -20,6 +25,10 @@ function Map2d(map){
     
     this.map.pozice = function(x,y){
         t.pozices(x,y,0);
+    };
+    
+    this.map.obnovit = function(bloky){
+        t.obnov(bloky);
     };
     
     this.mapload();
@@ -38,7 +47,8 @@ function Map2d(map){
         this.startMove.y = e.clientY;
         
         $("body").css( {'cursor': 'move','user-select': 'none' });
-        this.nacitani = setInterval(function(){t.load();},500);
+        var self = this;
+        this.nacitani = setInterval(function(){self.load();},500);
         this.klik = true;
         this.kliktimer = setTimeout(function(){this.klik = false;},500);
     };
@@ -377,7 +387,7 @@ function Map2d(map){
         min: 400,
         max: 1000,
         step: 50,
-        value: velikost,
+        value: this.velikost,
         slide: function (event, ui) {
             t.zoom(ui.value, 0, 0);
         },

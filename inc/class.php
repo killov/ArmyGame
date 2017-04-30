@@ -576,7 +576,7 @@ class mesto extends base{
         return sqrt(1-($lvl-1)/($maxlvl+5));
     }
     
-    
+   
     public function suroviny_refresh($time){
 	global $hodnoty;
 	$mesto = $this->data;
@@ -1183,7 +1183,7 @@ class mapa extends base{
             }
             $z++;
         }
-        imagejpeg($ret, $dir."mapacache/".$x."_".$y."_".$v.".jpg", 80);
+        imagejpeg($ret, $dir."www/mapacache/".$x."_".$y."_".$v.".jpg", 80);
         imagedestroy($ret);
     }
     
@@ -1235,7 +1235,6 @@ class statistika extends base{
 	}
     } 
 }
-
 
 
 class stat extends base{

@@ -12,6 +12,7 @@
     <script src="<?=$cfg["dir"]?>js/jquery.mousewheel.min.js"></script>
     <script type="text/javascript" src="<?=$cfg["dir"]?>js/script.js"></script>
     <script type="text/javascript" src="<?=$cfg["dir"]?>js/game.js"></script>
+    <script type="text/javascript" src="<?=$cfg["dir"]?>js/chat.js"></script>
     <script type="text/javascript" src="<?=$cfg["dir"]?>js/map.js"></script>
     <script type="text/javascript" src="<?=$cfg["dir"]?>js/map2d.js"></script>
     <script src="<?=$cfg["dir"]?>js/jquery.waitforimages.js"></script>
@@ -59,32 +60,33 @@
             });
 
 
-    });
-    var websocket;
-    var wsUri = "ws://<?=$cfg["wsexhost"].":".$cfg["wsport"]?>/"; 
-    
-        $(document).ready(function(){
+    });        
 
+    var game = new Game();
+    $(function(){
+        game.dir = "<?=$cfg["dir"]?>";
+        game.mesto.surovina1 = <?=$mesto->surovina1?>;
+        game.mesto.surovina1_p = <?=$mesto->data["surovina1_produkce"]?>;
+        game.mesto.surovina2 = <?=$mesto->surovina2?>;
+        game.mesto.surovina2_p = <?=$mesto->data["surovina2_produkce"]?>;
+        game.mesto.surovina3 = <?=$mesto->surovina3?>;
+        game.mesto.surovina3_p = <?=$mesto->data["surovina3_produkce"]?>;
+        game.mesto.surovina4 = <?=$mesto->surovina4?>;
+        game.mesto.surovina4_p = <?=$mesto->data["surovina4_produkce"]?>;
+        game.mesto.sklad = <?=$mesto->data["sklad"]?>;   
+        game.mesto.id = <?=$mesto->data["id"]?>;
+        game.mesto.x = <?=$mesto->data["x"]?>;
+        game.mesto.y = <?=$mesto->data["y"]?>;
+        game.stat = <?=$user->data["stat"]?>;
+        game.wsUri = "ws://<?=$cfg["wsexhost"].":".$cfg["wsport"]?>/"; 
+
+     
+        game.init();
+        var map2d = new Map2d(game.mapControl);
+        game.mapControl.pozice(<?php echo $mesto->data["x"].",".$mesto->data["y"];?>, 0);
         
-	//ws_connect();
-	var c = cookies.get('ag_chat');
-        chatm = cookies.get('ag_chatmin');
-        if(!chatm){
-            chatm = [];
-        }
-        for(var i in c){
-            if(chatm && chatm.indexOf(c[i]) != -1){
-                otevrichat(c[i],false);
-            }else{
-                otevrichat(c[i],true);
-            }
-        }
-	
-       
-        });
-        
-        
-    </script>
+    });
+</script> 
 </head>
 <body>
     <div id="back">
@@ -123,24 +125,25 @@
     </div>
     <script type="text/javascript">
 	$("#ren").click(function(){
-		$("#ren").hide();
-		$("#reg").css("display", "inline-block");
-		$("#in").focus().val($("#ren").text());
+            $("#ren").hide();
+            $("#reg").css("display", "inline-block");
+            $("#in").focus().val($("#ren").text());
 	});
 	
-	formular_upload("#reg","index.php?post=rename",function(data){
-		if(data[0] == 1){
-			$("#ren").text(data[1]);
-			$("#reg").hide();
-			$("#ren").fadeIn(1000);
-		}else{
-			$("#reg").hide();
-			$("#ren").fadeIn(1000);
-		}
+	game.formular_upload("#reg","index.php?post=rename",function(data){
+            if(data[0] == 1){
+                $("#ren").text(data[1]);
+                $("#reg").hide();
+                $("#ren").fadeIn(1000);
+            }else{
+                $("#reg").hide();
+                $("#ren").fadeIn(1000);
+            }
 	});
-		$("#in").blur(function(){
-			$("#reg").hide();
-			$("#ren").fadeIn(1000);
+        
+        $("#in").blur(function(){
+            $("#reg").hide();
+            $("#ren").fadeIn(1000);
 	})
     </script>
     
@@ -226,24 +229,7 @@
         </a>
     </div>
 </div>
-<script type="text/javascript">
-    var game = new Game();
-    game.dir = "<?=$cfg["dir"]?>";
-    game.mesto.surovina1 = <?=$mesto->surovina1?>;
-    game.mesto.surovina1_p = <?=$mesto->data["surovina1_produkce"]?>;
-    game.mesto.surovina2 = <?=$mesto->surovina2?>;
-    game.mesto.surovina2_p = <?=$mesto->data["surovina2_produkce"]?>;
-    game.mesto.surovina3 = <?=$mesto->surovina3?>;
-    game.mesto.surovina3_p = <?=$mesto->data["surovina3_produkce"]?>;
-    game.mesto.surovina4 = <?=$mesto->surovina4?>;
-    game.mesto.surovina4_p = <?=$mesto->data["surovina4_produkce"]?>;
-    game.mesto.sklad = <?=$mesto->data["sklad"]?>;
-    
-    game.mesto.id = <?=$mesto->data["id"]?>;
-    game.mesto.x = <?=$mesto->data["x"]?>;
-    game.mesto.y = <?=$mesto->data["y"]?>;
-    game.stat = <?=$user->data["stat"]?>;
-</script>    
+   
 
 
 
@@ -268,21 +254,13 @@
 	</div>
 </div>
 
-
-
-<script type="text/javascript">
-        var map2d = new Map2d(game.mapControl);
-        map2d.mapload();
-        map2d.pozices(<?php echo $mesto->data["x"].",".$mesto->data["y"];?>, 0);
-
-</script>
 <div id="celek">
 	<div id="obsah">
 		<div id="obsah_h">
                     
 			<?php 
                             if(isset($p[0])){
-                                $cesta = "inc/hra/pages/".$p[0].".php";
+                                $cesta = "../inc/hra/pages/".$p[0].".php";
                                 $cesta = strtr($cesta, './', '');
                                 if(file_exists($cesta)){
                                     include $cesta; 

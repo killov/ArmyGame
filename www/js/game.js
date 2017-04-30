@@ -1,6 +1,6 @@
 
 function Game(){
-    this.mapControl = new Map(this);
+    var self = this;
     this.mesto = {
         x: 0,
         y: 0,
@@ -15,10 +15,7 @@ function Game(){
         sklad: 0
     };
     
-    this.stat = 0;
-    
-    this.mapa = new Map();
-    
+    this.stat = 0;    
     this.dir = "";
     this.url = "";
     this.time_rozdil = 0;
@@ -38,12 +35,31 @@ function Game(){
     this.init = function(){
         var self = this;
         window.onpopstate = function(e) {
-            this.page_gog(location.pathname.replace(self.dir,"")? location.pathname.replace(self.dir,"") : "mesto");
+            self.page_gog(location.pathname.replace(self.dir,"")? location.pathname.replace(self.dir,"") : "mesto");
         };    
         $( "#faq" ).draggable({ 
             handle: "h2",
             cancel: "i.close"
         });
+        this.ws_connect();
+        this.mapControl = new Map(this);
+        this.chat = new Chat(this);
+        this.data_load();
+    };
+    
+    setInterval(function(){
+        self.timeloop();
+    }, 500);
+    
+    this.timeloop = function(){
+        var d = new Date();
+        var time = this.time_rozdil+d.getTime();
+        this.timelooppage(time);
+        this.produkce();
+    };
+    
+    this.timelooppage = function(time){
+        console.log(time);
     };
     
     this.ws_connect = function(){
@@ -55,10 +71,10 @@ function Game(){
             if(msg.typ == "mapa_refresh"){
                 self.map.obnov(msg.bloky);
             }else if(msg.typ == "chatme"){
-                self.pridejdochatu(msg.pro,"my",msg.text,msg.time);
+                self.chat.pridej(msg.pro,"my",msg.text,msg.time);
             }
             else if(msg.typ == "chat"){
-                self.pridejdochatu(msg.od,"vy",msg.text,msg.time);
+                self.chat.pridej(msg.od,"vy",msg.text,msg.time);
             }
         };
         
@@ -75,9 +91,13 @@ function Game(){
             console.log("Connected!"); //notify user
             $.ajax({url: self.dir+"index.php?post=ws", success: function(result){
                 var res = JSON.parse(result);
-                send({typ: "auth", hash: res[0]});
+                self.ws_send({typ: "auth", hash: res[0]});
             }});
         };
+    };
+    
+    this.ws_send = function(data){
+        this.ws.send(JSON.stringify(data));
     };
     
     this.hlaska = function(x,typ){
@@ -106,6 +126,7 @@ function Game(){
             self.data = result;
             self.url = x;
             if(self.load == 2){
+                this.timelooppage = function(){};
                 window.history.pushState({}, "Armygame", self.dir+x);
                 $("#obsah_h").fadeOut(0);
                 $("#obsah_h").html(self.data);
@@ -120,6 +141,7 @@ function Game(){
 
     this.page_draw = function(){
         if(this.load == 1){
+            this.timelooppage = function(){};
             window.history.pushState({}, "Armygame", this.dir+this.url);
             $("#obsah_h").fadeOut(0);
             $("#obsah_h").html(this.data);
@@ -132,6 +154,7 @@ function Game(){
     };
 
     this.page_refresh = function(){
+        this.timelooppage = function(){};
         var self = this;
         $.ajax({url: this.dir+"index.php?p="+this.url+"&a", success: function(result){
             $("#obsah_h").html(result);
@@ -146,6 +169,7 @@ function Game(){
     };
     
     this.page_gog = function(x){
+        this.timelooppage = function(){};
 	this.url = x;
         var self = this;
 	$.ajax({url: this.dir+"index.php?p="+x+"&a", success: function(result){
@@ -331,7 +355,7 @@ function Game(){
                 var json = eval("(" + data + ")");
                 callback(json);
             });
-        ev.preventDefault();
+            ev.preventDefault();
         });
     };
     

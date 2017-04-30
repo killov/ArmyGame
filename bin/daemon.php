@@ -1,13 +1,13 @@
 <?php
 ini_set('memory_limit', '-1');
-$dir = "I:/xamp/htdocs/armygame/www/";
+$dir = __DIR__ . "/../";
 include $dir."config.php";
 
 
 include $dir."inc/class.php";
 include $dir."inc/data.php";
 
-$image = imagecreatefrompng($dir."img/mapa/FULL_MAP_TIME3.png");
+$image = imagecreatefrompng($dir.$cfg[""]);
 
 $db = new db($cfg["mysqlserver"],$cfg["mysqluser"],$cfg["mysqlpw"],$cfg["mysqldb"]);
 $ws = new ws();
@@ -60,7 +60,7 @@ while(true){
                         "typ"=>"mapa_refresh",
                         "bloky" => [[$p["x"], $p["y"]]]
                     ]);
-                    unlink($dir."mapacache/".$p["x"]."_".$p["y"]."_".$v.".jpg");
+                    unlink($dir."www/mapacache/".$p["x"]."_".$p["y"]."_".$v.".jpg");
                     info("Map: ".$p["x"]." | ".$p["y"]);
                 }
                 $b->db->query("DELETE FROM `tasks` WHERE `id` = %s",[$p["id"]],false);
@@ -229,7 +229,7 @@ function statistika(){
             foreach($b->db->data as $r){
                 $del[] = $r["id"];
             }
-           $b->db->multi_delete("stat",$del);
+            $b->db->multi_delete("stat",$del);
         }
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-$cesta = "I:/xamp/htdocs/armygame/www/";
+$cesta = __DIR__ . "/../";
 
 
 include $cesta."config.php";
@@ -10,8 +10,8 @@ include $cesta."inc/class.php";
 include $cesta."inc/data.php";
 $db = new db($cfg["mysqlserver"],$cfg["mysqluser"],$cfg["mysqlpw"],$cfg["mysqldb"]);
 
-$host = 'localhost'; //host
-$port = '9000'; //port
+$host = $cfg["wshost"]; //host
+$port = $cfg["wsport"]; //port
 $null = NULL; //null var
 
 function auth($hash){

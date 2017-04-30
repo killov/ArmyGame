@@ -1,17 +1,17 @@
 <?php
 ini_set('memory_limit', '-1');
 session_start();
-require "src/tracy.php";
+require "../src/tracy.php";
 use Tracy\Debugger;
 
 Debugger::enable();
-include "inc/class.php";
-include "config.php";
-include "lang/".$cfg["lang"].".php";
-include "inc/data.php";
+include "../inc/class.php";
+include "../config.php";
+include "../lang/".$cfg["lang"].".php";
+include "../inc/data.php";
 $db = new db($cfg["mysqlserver"],$cfg["mysqluser"],$cfg["mysqlpw"],$cfg["mysqldb"]);
 $task = new task();
-include "inc/akce.php";
+include "../inc/akce.php";
 
 if(!empty($_SESSION["userid"])){
     if(isset($_GET["odhlas"])){
@@ -33,13 +33,13 @@ if(!empty($_SESSION["userid"])){
     }
     if($mesto->data){
         if(isset($_GET["post"]) and preg_replace("/[^a-z\d_-]+/i", "", $_GET["post"])){
-            $cesta = "inc/hra/post/".$_GET["post"].".php";
+            $cesta = "../inc/hra/post/".$_GET["post"].".php";
             $cesta = strtr($cesta, './', '');
             if(file_exists($cesta)){
                 include $cesta;
             }
         }elseif(isset($_GET["faq"]) and preg_replace("/[^a-z\d_-]+/i", "", $_GET["faq"])){    
-            $cesta = "inc/hra/faq/".$_GET["faq"].".php";
+            $cesta = "../inc/hra/faq/".$_GET["faq"].".php";
             $cesta = strtr($cesta, './', '');
             if(file_exists($cesta)){
                 include $cesta;
@@ -47,13 +47,13 @@ if(!empty($_SESSION["userid"])){
         }elseif(isset($_GET["a"])){
             if(isset($_GET["p"])){
                 $p = explode("/", $_GET["p"]);
-                $cesta = "inc/hra/pages/".$p[0].".php";
+                $cesta = "../inc/hra/pages/".$p[0].".php";
                 $cesta = strtr($cesta, './', '');
                 if(file_exists($cesta)){
                     include $cesta;
                 }
             }else{
-                include "inc/hra/pages/mesto.php"; 
+                include "../inc/hra/pages/mesto.php"; 
             }
         }else{
             if(isset($_GET["p"])){
@@ -62,24 +62,24 @@ if(!empty($_SESSION["userid"])){
             if(!isset($p[0])){
                 $p[0] = "mesto";
             }
-            include "inc/game.php";
+            include "../inc/game.php";
         }
     }else{
         if(isset($_GET["ok"])){
-            include "inc/zalozitmestopost.php";
+            include "../inc/zalozitmestopost.php";
         }else{
-            include "inc/zalozitmesto.php";
+            include "../inc/zalozitmesto.php";
         }
     }
 }else{
     if(isset($_GET["post"]) and preg_replace("/[^a-z\d_-]+/i", "", $_GET["post"])){
-        $cesta = "inc/login/post/".$_GET["post"].".php";
+        $cesta = "../inc/login/post/".$_GET["post"].".php";
         $cesta = strtr($cesta, './', '');
         if(file_exists($cesta)){
             include $cesta;
         }
     }elseif(isset($_GET["p"]) and preg_replace("/[^a-z\d_-]+/i", "", $_GET["p"])){
-        $cesta = "inc/login/".$_GET["p"].".php";
+        $cesta = "../inc/login/".$_GET["p"].".php";
         $cesta = strtr($cesta, './', '');
         if(file_exists($cesta)){
             include $cesta;
@@ -87,7 +87,7 @@ if(!empty($_SESSION["userid"])){
             header("location: ".$cfg["dir"]);
         }
     }else{
-        include "inc/main.php";
+        include "../inc/main.php";
     }
 }
 

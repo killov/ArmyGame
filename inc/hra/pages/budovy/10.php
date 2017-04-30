@@ -19,7 +19,7 @@ if($vyzkum){
                 if($x == 0){
                     $c = $s["dokonceni"];
                     $d = $s["cas"];
-                    $h = "<td><span id=\"odpocet\">".cas($s["dokonceni"]-time())."</span> (<span id=\"odpocet2\">".cas($s["cas"]-time())."</span>)</td>";
+                    $h = "<td><span class=\"odpocet\" t=\"".$s["dokonceni"]."\">".cas($s["dokonceni"]-time())."</span> (<span class=\"odpocet2\" t=\"".$s["cas"]."\">".cas($s["cas"]-time())."</span>)</td>";
                     $x = 1;
                 }else{
                     $h = "<td>".cas($s["delka"]*$s["pocet"])."</td>";
@@ -31,28 +31,26 @@ if($vyzkum){
 	echo "</table>";
 	?>
             <script type="text/javascript">
-                $(function () {
-                    timer(function(){
-                        <?php if($d){ ?>
-                        var d = <?php echo $d; ?>-((Date.now()+time_rozdil)/1000| 0);
-                        if(d<=0){
-                            page_refresh();
-                            
-                            return 0;
+                game.timelooppage = function(time){
+                    var t = Math.round(time/1000);
+                    $(".odpocet2").each(function(){
+                        var $this = $(this);
+                        var zb = $this.attr("t") - t;
+                        if(zb>=0){
+                            $this.html(cas(zb));
                         }else{
-                            $("#odpocet2").html(cas(d));
-                        }
-                        <?php } ?>
-                        var c = <?php echo $c; ?>-((Date.now()+time_rozdil)/1000| 0);
-                        if(c<=0){
-                            page_refresh();
-                            
-                            return 0;
-                        }else{
-                            $("#odpocet").html(cas(c));                            
+                            game.data_load();
+                            game.page_refresh();
                         }
                     });
-                });
+                    $(".odpocet").each(function(){
+                        var $this = $(this);
+                        var zb = $this.attr("t") - t;
+                        if(zb>=0){
+                            $this.html(cas(zb));
+                        }
+                    });
+                };
             </script>
 	<?php
 
@@ -128,12 +126,12 @@ for($key=1;$key<=4;$key++){
     echo "</td></tr>";
     ?>
            <script type="text/javascript">
-                    formular_upload("#rek<?=$key?>","index.php?post=jednotky_stavba",function(data){
-                        page_refresh();
-                        data_load();
+                    game.formular_upload("#rek<?=$key?>","index.php?post=jednotky_stavba",function(data){
+                        game.page_refresh();
+                        game.data_load();
                     });
                     $("#pocet<?=$key?>").keyup(function(){
-                        jednotky(<?=$key?>,<?=$surovina1?>,<?=$surovina2?>,<?=$surovina3?>,<?=$surovina4?>,<?=$mesto->jednotky_vyzkum_cas($key,$mesto->data["b10"])?>,<?=$hodnoty["jednotky"][$key]["spotreba"]?>);
+                        game.jednotky(<?=$key?>,<?=$surovina1?>,<?=$surovina2?>,<?=$surovina3?>,<?=$surovina4?>,<?=$mesto->jednotky_vyzkum_cas($key,$mesto->data["b10"])?>,<?=$hodnoty["jednotky"][$key]["spotreba"]?>);
                     });
                     $("#max<?=$key?>").click(function(e){
                         e.preventDefault();
@@ -142,7 +140,7 @@ for($key=1;$key<=4;$key++){
                         }else{
                             $("#pocet<?=$key?>").val($(this).attr("m"));
                         }
-                        jednotky(<?=$key?>,<?=$surovina1?>,<?=$surovina2?>,<?=$surovina3?>,<?=$surovina4?>,<?=$mesto->jednotky_vyzkum_cas($key,$mesto->data["b10"])?>,<?=$hodnoty["jednotky"][$key]["spotreba"]?>);
+                        game.jednotky(<?=$key?>,<?=$surovina1?>,<?=$surovina2?>,<?=$surovina3?>,<?=$surovina4?>,<?=$mesto->jednotky_vyzkum_cas($key,$mesto->data["b10"])?>,<?=$hodnoty["jednotky"][$key]["spotreba"]?>);
                     });
                 </script>     
                 <?php

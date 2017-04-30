@@ -12,22 +12,27 @@ if($stavba){
     $pocetstaveb = count($stavba)<3;
     echo "<table class=\"dorucene\">";
     echo "<tr><th>".$lang[63]."</th><th>".$lang[64]."</th><th>".$lang[65]."</th></tr>";
-    $x = 0;
     foreach($stavba as $s){
-            if($x == 0){
-                $c = $s["cas"]-time();
-                $h = "<td id=\"odpocet\">".cas($s["cas"]-time())."</td>";
-                $x = 1;
-            }else{
-                $h = "<td>".cas($s["delka"])."</td>";
-            }
-            echo "<tr><td>".$lang_budova[$s["budova"]-1]." (".$lang[31].": ".$s["uroven"].")</td>".$h."<td>".Date("d.m.Y H:i:s", $s["cas"])."</td></tr>";
+        $h = "<td class=\"odpocet\" t=\"".$s["cas"]."\">".cas($s["cas"]-time())."</td>";       
+        echo "<tr><td>".$lang_budova[$s["budova"]-1]." (".$lang[31].": ".$s["uroven"].")</td>".$h."<td>".Date("d.m.Y H:i:s", $s["cas"])."</td></tr>";
     }
     echo "</table>";
     ?>
         <script type="text/javascript">
-            g_odpocitavac = <?php echo $c; ?>;
-            odpocitej();
+            game.timelooppage = function(time){
+        var t = Math.round(time/1000);
+        $(".odpocet").each(function(){
+            var $this = $(this);
+            var zb = $this.attr("t") - t;
+            if(zb>=0){
+                $this.html(cas(zb));
+            }else{
+                game.data_load();
+                game.page_refresh();
+            }
+            
+        });
+    };
         </script>
     <?php
 }

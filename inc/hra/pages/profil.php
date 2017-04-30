@@ -16,7 +16,7 @@ $m = $us->mesta();
 ?>
 <h2><?php echo $lang[32]." ".htmlspecialchars($profil["jmeno"]);?>
 <?php if($profil["id"] != $user->data["id"]){ ?>
-<span class="zp"><a href="#" onClick="otevrichat(<?php echo $profil["id"];?>,true);return false"><?php echo $lang[51];?></a></span>
+    <span class="zp"><a href="#" onClick="game.chat.otevri(<?php echo $profil["id"];?>,true);return false"><?php echo $lang[51];?></a></span>
 <?php } ?>
 </h2>
 <table class="profil">
