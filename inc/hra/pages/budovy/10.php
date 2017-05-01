@@ -6,14 +6,10 @@ if($vyzkum){
 	$x = 0;
 	foreach($vyzkum as $s){
             if($s["typ"] == 4){
-                if($x == 0){
-                    $d = false;
-                    $c = $s["cas"];
-                    $h = "<td id=\"odpocet\">".cas($s["cas"]-time())."</td>";
-                    $x = 1;
-                }else{
-                    $h = "<td>".cas($s["delka"])."</td>";
-                }
+                $d = false;
+                $c = $s["cas"];
+                $h = "<td class=\"odpocet\" t=\"".$s["dokonceni"]."\">".cas($s["cas"]-time())."</td>";
+                $x = 1;
                 echo "<tr><td>".$lang_jednotky[$s["jednotka"]-1]." (Vyzkum)</td>".$h."<td>".Date("d.m.Y H:i:s", $s["cas"])."</td></tr>";
             }else{
                 if($x == 0){
@@ -22,11 +18,10 @@ if($vyzkum){
                     $h = "<td><span class=\"odpocet\" t=\"".$s["dokonceni"]."\">".cas($s["dokonceni"]-time())."</span> (<span class=\"odpocet2\" t=\"".$s["cas"]."\">".cas($s["cas"]-time())."</span>)</td>";
                     $x = 1;
                 }else{
-                    $h = "<td>".cas($s["delka"]*$s["pocet"])."</td>";
+                    $h = "<td class=\"odpocet\" t=\"".$s["dokonceni"]."\">".cas($s["delka"]*$s["pocet"])."</td>";
                 }
                 echo "<tr><td>".$lang_jednotky[$s["jednotka"]-1]." (".$s["pocet"].")</td>".$h."<td>".Date("d.m.Y H:i:s", $s["dokonceni"])."</td></tr>";
-            }
-                
+            }         
         }
 	echo "</table>";
 	?>
@@ -61,7 +56,7 @@ echo "<table class=\"prehled\">";
 $jo = $mesto->jednotky_vyzkum_urovne();
 for($key=1;$key<=4;$key++){
     
-    echo "<tr><td><i class=\"faq\" onclick=\"faq_load('jednotky&b=".$key."');\">?</i> ".$lang_jednotky[$key-1]."</td>";
+    echo "<tr><td><i class=\"faq\" onclick=\"game.faq_load('jednotky&b=".$key."');\">?</i> ".$lang_jednotky[$key-1]."</td>";
     echo "<td>";
     if(!$mesto->data["v".$key]){
         if(!$jo[$key]){

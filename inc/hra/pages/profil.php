@@ -1,6 +1,6 @@
 <?php
 if(isset($p[1])){
-        $us = new user();
+        $us = new User();
 	$us->nacti($p[1]);
 	if(!$us->data){
 		exit;
@@ -41,7 +41,7 @@ $m = $us->mesta();
 <?php
 if($m){
 	foreach($m as $d){
-		echo "<tr><td><a href=\"#\" h=\"mestoinfo/".$d["id"]."\" class=\"link\">".htmlspecialchars($d["jmeno"])."</a></td><td>".$d["populace"]."</td><td><a href=\"#\"onClick=\"showmap(),mapa_pozice(".$d["x"].",".$d["y"].");return false\">".$d["x"]."/".$d["y"]."</a></td></tr>";
+		echo "<tr><td><a href=\"#\" h=\"mestoinfo/".$d["id"]."\" class=\"link\">".htmlspecialchars($d["jmeno"])."</a></td><td>".$d["populace"]."</td><td><a href=\"#\"onClick=\"game.showmap(),game.mapControl.pozice(".$d["x"].",".$d["y"].");return false\">".$d["x"]."/".$d["y"]."</a></td></tr>";
 	}
 }
 ?>

@@ -1,10 +1,10 @@
 <?php
 ini_set('memory_limit', '-1');
-$dir = __DIR__;
+$dir = __DIR__."/";
 
 include $dir."config.php";
 include $dir."inc/class.php";
-$db = new db($cfg["mysqlserver"],$cfg["mysqluser"],$cfg["mysqlpw"],$cfg["mysqldb"]);
+$db = new Db($cfg["mysqlserver"],$cfg["mysqluser"],$cfg["mysqlpw"],$cfg["mysqldb"]);
 info("Spousteni");
 info("Vytvarim tabulky");
 
@@ -16,7 +16,7 @@ function info($x){
     echo "\n[".Date("H:i:s", time())."] ".$x."\n";
 }
 
-$db->query("SELECT COUNT(*) as `pocet` FROM `mesto`",[]);
+$db->query("SELECT COUNT(*) as `pocet` FROM `mapa`",[]);
 $pocet = $db->data[0]["pocet"];
 
 if($pocet != 0){
@@ -37,12 +37,15 @@ if($pocet != 0){
                     $pole[$x][$y]["typ"] = 0;
                     $r = rand(0,20);
                     $r2 = rand(0,70);
+                    $r3 = rand(0,100);
                     if($r == 0){
-                            $h = 2;
+                        $h = 2;
                     }elseif($r2 == 0){
-                            $h = 3;
+                        $h = 3;
+                    }elseif($r3 == 0){
+                        $h = 4;
                     }else{
-                            $h = 0;
+                        $h = 0;
                     }
 
                     if($h == 0){
@@ -70,6 +73,7 @@ if($pocet != 0){
                                     $pole[$x][$y+1]["typ"] = $h;
                             }
                             if($r == 3){
+                                if($h != 4){
                                     $pole[$x][$y+1]["typ"] = $h;
                                     $pole[$x][$y+2]["typ"] = $h;
                                     $pole[$x][$y+3]["typ"] = $h;
@@ -78,6 +82,7 @@ if($pocet != 0){
                                     $pole[$x-1][$y+2]["typ"] = $h;
                                     $pole[$x-1][$y+3]["typ"] = $h;
                                     $pole[$x-1][$y+4]["typ"] = $h;
+                                }
                             }
                     }
                     $pole[$x][$y]["levo"] = 0;
@@ -165,7 +170,7 @@ if($pocet != 0){
                     ];
                     $x++;
             }
-            $db->multi_insert("mesto", $values);
+            $db->multi_insert("mapa", $values);
             if($y%4==0){
                 echo (100-($y+200)/4)." ";
             }
@@ -173,11 +178,11 @@ if($pocet != 0){
     }
 }
 info("Kreslim obrazky:");
-$map = new mapa();
-$image = imagecreatefrompng($dir."img/mapa/FULL_MAP_TIME3.png");
+$map = new Mapa();
+$image = imagecreatefrompng($dir.$cfg["imagemap"]);
 for($y=19;$y>=-20;$y--){
     for($x=-20;$x<=19;$x++){
-        if(!file_exists($dir."wwww/mapacache/".$x."_".$y."_0.jpg")){
+        if(!file_exists($dir."www/mapacache/".$x."_".$y."_0.jpg")){
             $mapa = $map->nacti2([[$x,$y]]);         
             $map->rendermap($image,$mapa,$x,$y,0,$dir);
             
@@ -189,7 +194,7 @@ for($y=19;$y>=-20;$y--){
     echo "\n";
 }
 
-$db->query("SELECT COUNT(*) as `pocet` FROM `mapa`",[]);
+$db->query("SELECT COUNT(*) as `pocet` FROM `mapa_bloky`",[]);
 $pocet = $db->data[0]["pocet"];
 if($pocet==0){
     $ins = [];
@@ -201,7 +206,7 @@ if($pocet==0){
                 ]; 
         }
     }
-    $db->multi_insert("mapa", $ins);
+    $db->multi_insert("mapa_bloky", $ins);
 }
 
 

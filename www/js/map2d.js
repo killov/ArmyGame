@@ -1,4 +1,4 @@
-function Map2d(map){
+function Mapa(map){
     this.map = map;
     
     this.move = false;
@@ -12,6 +12,11 @@ function Map2d(map){
     this.nacteno = [];
     this.videno = [];
     var t = this;
+    
+    
+    this.init = function(x,y){
+        t.pozices(x,y,0);
+    };
     
     window.onresize = function(event) {
         t.mapload();
@@ -29,6 +34,10 @@ function Map2d(map){
     
     this.map.obnovit = function(bloky){
         t.obnov(bloky);
+    };
+    
+    this.map.renderCesta = function(pocatek,cesta){
+        t.renderCesta(pocatek,cesta);
     };
     
     this.mapload();
@@ -75,15 +84,13 @@ function Map2d(map){
             var z = y*10+x;
 
             var data = this.map.getPole(x,y);
-            console.log(y);
             if(data){
-                var st = data[8]!=0?"<br>Stát: "+data[9]:"";
+                var st = data[5]!=0?"<br>Stát: "+map.getStat(data[5]):"";
                 if(data[2] == 1){
-                    $("#map_svg").tooltip("option", "content", "<b>"+data[4]+" ("+data[0]+"/"+data[1]+")</b><br>Hráč: "+data[5]+"<br>Počet obyvatel: "+data[6]+st);
+                    $("#map_svg").tooltip("option", "content", "<b>"+data[8]+" ("+data[0]+"/"+data[1]+")</b><br>Hráč: "+data[9]+"<br>Počet obyvatel: "+data[7]+st);
                 }else{
                     $("#map_svg").tooltip("option", "content", "<b>Volné pole ("+data[0]+"/"+data[1]+")</b>"+st);
                 }
-
             }
         }
     };
@@ -106,9 +113,9 @@ function Map2d(map){
             var data = this.map.getPole(x,y);
             if(data[2] == 1){
                 if(this.map.game.mesto.id == data[3]){
-                    map.game.page_go("mesto");
+                    this.map.game.page_go("mesto");
                 }else{
-                    map.game.page_go("mestoinfo/"+data[3]);
+                    this.map.game.page_go("mestoinfo/"+data[3]);
                 }
             } 
         }
@@ -133,12 +140,12 @@ function Map2d(map){
         for(var z=0;z<100;z++){
             var l = (z%10)*100;
             var t = Math.floor(z/10)*100;
-            if(json[z][8] == this.map.game.stat){
+            if(json[z][5] == this.map.game.stat){
                 var barva = "blue";
             }else{
                 var barva = "red";
             }
-            switch(parseInt(json[z][10])){
+            switch(parseInt(json[z][6])){
                 case 1:
                     f += '<line x1="'+(l+97)+'" y1="'+(t-3)+'" x2="'+(l+97)+'" y2="'+(t+103)+'" style="stroke:'+barva+';stroke-width:3" class="sth'+json[z][8]+'" />';    
                     break;
@@ -299,7 +306,7 @@ function Map2d(map){
         var f = [];
         for(var i in bloky){
             if(this.videno.indexOf(bloky[i][0]+"_"+bloky[i][1]) != -1){
-                nacti.push(bloky[i]);
+                f.push(bloky[i]);
             }
         }
         if(f){
@@ -363,6 +370,15 @@ function Map2d(map){
         }, 1);
         this.load();
     };
+    
+    
+    this.renderCesta = function(pocatek,cesta){
+        var body = "";
+        for(var i in cesta){
+            body += " "+(50+(cesta[i][0]+200)*100)+","+(-50+(-cesta[i][1]+190)*100);
+        }
+        $("#map_svg").html('<path d="M'+(50+(pocatek[0]+200)*100)+','+(-50+(-pocatek[1]+190)*100)+' '+body+'" stroke="red" stroke-width="3" fill="none" />');           
+    }
     
     
     $('#back').mousewheel(function (e) {

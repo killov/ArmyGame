@@ -8,7 +8,7 @@
 
 </h2>
 <?php
-$statistika = new statistika();
+$statistika = new Statistika();
 
 if(isset($_GET["s"]) and $_GET["s"] == "staty"){
     $stat = $statistika->staty();

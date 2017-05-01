@@ -45,20 +45,20 @@
                 $("#sur4").keyup(function(){
                     trh.prepocet()
                 });
-                formular_upload("#trhprodat","index.php?post=trh",function(data){
+                game.formular_upload("#trhprodat","index.php?post=trh",function(data){
                     if(data[0] == 1)
-                        hlaska("<?php echo $lang[77];?>",2);
+                        game.hlaska("<?php echo $lang[77];?>",2);
                     if(data[0] == 2)
-                        hlaska("<?php echo $lang[78];?>",2);
+                        game.hlaska("<?php echo $lang[78];?>",2);
                     if(data[0] == 3)
-                        hlaska("<?php echo $lang[126];?>",2);
+                        game.hlaska("<?php echo $lang[126];?>",2);
                     if(data[0] == 4)
-                        hlaska("<?php echo $lang[76];?>",2);
+                        game.hlaska("<?php echo $lang[76];?>",2);
                     if(data[0] == 0){
-                        hlaska("<?php echo $lang[75];?>",1);
-                        page_refresh();
+                        game.hlaska("<?php echo $lang[75];?>",1);
+                        game.page_refresh();
                     }
-                    data_load();
+                    game.data_load();
 		});
             });
         </script>
@@ -72,26 +72,33 @@
         echo "<table class=\"prehled\">";
         foreach($transport as $t){           
             if($t["budova"] == 2){
-                echo "<tr><td>".$lang[131]." <span id=odpv".$t["id"].">".cas($t["cas"]-time())."</span></td>";
+                echo "<tr><td>".$lang[131]." <span class=\"odpocet\" t=\"".$s["cas"]."\">".cas($t["cas"]-time())."</span></td>";
                 echo "<td><span class=\"bunka surovina1\">".$t["surovina1"]."</span>
                     <span class=\"bunka surovina2\">".$t["surovina2"]."</span>
                     <span class=\"bunka surovina3\">".$t["surovina3"]."</span>
                     <span class=\"bunka surovina4\">".$t["surovina4"]."</span></td></tr>";
             }
             if($t["budova"] == 1){
-                echo "<tr><td>".$lang[132]." <span id=odpv".$t["id"].">".cas($t["cas"]-time())."</span>";
+                echo "<tr><td>".$lang[132]." <span class=\"odpocet\" t=\"".$s["cas"]."\">".cas($t["cas"]-time())."</span>";
                 echo "<td><span class=\"bunka surovina0\">".$t["surovina1"]."</span></td></tr>";
             }
         }
         echo "</table>";
         ?>
 <script type="text/javascript">
-    <?php 
-        foreach($transport as $t){
-            echo "g_odpocitavacv[".$t["id"]."] = ".($t["cas"]).";";
-        }
-    ?>
-        odpocitejv();
+    game.timelooppage = function(time){
+        var t = Math.round(time/1000);
+        $(".odpocet").each(function(){
+            var $this = $(this);
+            var zb = $this.attr("t") - t;
+            if(zb>=0){
+                $this.html(cas(zb));
+            }else{
+                game.data_load();
+                game.page_refresh();
+            }
+        });
+    };
 </script>
 
 

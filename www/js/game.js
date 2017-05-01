@@ -59,7 +59,7 @@ function Game(){
     };
     
     this.timelooppage = function(time){
-        console.log(time);
+        
     };
     
     this.ws_connect = function(){
@@ -69,7 +69,7 @@ function Game(){
             msg = JSON.parse(ev.data);
             console.log(msg);
             if(msg.typ == "mapa_refresh"){
-                self.map.obnov(msg.bloky);
+                self.mapControl.obnov(msg.bloky);
             }else if(msg.typ == "chatme"){
                 self.chat.pridej(msg.pro,"my",msg.text,msg.time);
             }
@@ -302,7 +302,7 @@ function Game(){
     
     this.opustitstat = function(){
         var self = this;
-        $.post(dir+"index.php?post=opustitstat",function(){
+        $.post(this.dir+"index.php?post=opustitstat",function(){
             self.stat = 0;
             self.page_go("stat");
         });
@@ -360,12 +360,13 @@ function Game(){
     };
     
     this.cesta = function(x){
-        $.ajax({url: dir+"index.php?post=cesta&id="+x, success: function(result){
+        var self = this;
+        $.ajax({url: game.dir+"index.php?post=cesta&id="+x, success: function(result){
             $("#cont").show()
                     .html(result);
             $("#jed").hide();
             var cesta = JSON.parse(result);
-            this.map.renderCesta([this.mesto.x,this.mesto.y], cesta);
+            self.mapControl.renderCesta([self.mesto.x,self.mesto.y], cesta);
         }});
     };
     

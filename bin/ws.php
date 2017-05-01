@@ -8,7 +8,7 @@ include $cesta."config.php";
 
 include $cesta."inc/class.php";
 include $cesta."inc/data.php";
-$db = new db($cfg["mysqlserver"],$cfg["mysqluser"],$cfg["mysqlpw"],$cfg["mysqldb"]);
+$db = new Db($cfg["mysqlserver"],$cfg["mysqluser"],$cfg["mysqlpw"],$cfg["mysqldb"]);
 
 $host = $cfg["wshost"]; //host
 $port = $cfg["wsport"]; //port
@@ -49,7 +49,7 @@ function odpoj($socket){
 $users = [];
 $s_users = [];
 $sv = [];
-$chat = new chat();
+$chat = new Chat();
 
 //Create TCP/IP sream socket
 $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);

@@ -1,6 +1,6 @@
 <?php
 if(isset($_POST["id"])){
-    $chat = new chat();
+    $chat = new Chat();
     $s = false;
     if(isset($_POST["od"])){
         $od = $_POST["od"];
@@ -13,7 +13,7 @@ if(isset($_POST["id"])){
             $s = true;
         }
     }
-    $u = new user();
+    $u = new User();
     $u->nacti($_POST["id"]);
     if(isset($u->data["jmeno"])){
         $ret = "";

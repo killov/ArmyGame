@@ -3,7 +3,7 @@ if(isset($_GET["b"]) && isset($lang_jednotky[$_GET["b"]-1])){
     $b = $_GET["b"];
     $data = $hodnoty["jednotky"][$b];
 ?>
-<h3><a href="#" onclick="faq_load('main');return false">Nápověda</a> - <a href="#" onclick="faq_load('jednotky');return false">Jetnotky</a> - <?=$lang_jednotky[$_GET["b"]-1]?></h3>
+<h3><a href="#" onclick="game.faq_load('main');return false">Nápověda</a> - <a href="#" onclick="game.faq_load('jednotky');return false">Jetnotky</a> - <?=$lang_jednotky[$_GET["b"]-1]?></h3>
 <p>
 Požadavky:
 <?php
@@ -48,12 +48,12 @@ echo "<tr><th></th></tr><tr><td>";
 echo "</table>";
 }else{
     ?>
-<h3><a href="#" onclick="faq_load('main');return false">Nápověda</a> - Jednotky</h3>
+<h3><a href="#" onclick="game.faq_load('main');return false">Nápověda</a> - Jednotky</h3>
 
 <?php
     echo "<ul>";
     for($i=1;$i<=$GLOB["pocetjednotek"];$i++){
-        echo "<li><a href=\"#\" onclick=\"faq_load('jednotky&b=".$i."');return false\">".$lang_jednotky[$i-1]."</li>";
+        echo "<li><a href=\"#\" onclick=\"game.faq_load('jednotky&b=".$i."');return false\">".$lang_jednotky[$i-1]."</li>";
     }
     echo "</ul>";
 }

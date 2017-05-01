@@ -9,8 +9,8 @@ include "../inc/class.php";
 include "../config.php";
 include "../lang/".$cfg["lang"].".php";
 include "../inc/data.php";
-$db = new db($cfg["mysqlserver"],$cfg["mysqluser"],$cfg["mysqlpw"],$cfg["mysqldb"]);
-$task = new task();
+$db = new Db($cfg["mysqlserver"],$cfg["mysqluser"],$cfg["mysqlpw"],$cfg["mysqldb"]);
+$task = new Task();
 include "../inc/akce.php";
 
 if(!empty($_SESSION["userid"])){
@@ -18,13 +18,13 @@ if(!empty($_SESSION["userid"])){
 	session_destroy();
 	header("location: ./");
     }
-    $user = new user();
+    $user = new User();
     $user->nacti($_SESSION["userid"]);
     if(!$user->data){
         session_destroy();
         header("location: index.php");
     }
-    $mesto = new mesto();
+    $mesto = new Mesto();
     $mesto->nacti($user->data["mesto"]);
     if($mesto->data["user"] != $user->data["id"]){
         $mesto->pridel($user->data["id"]);

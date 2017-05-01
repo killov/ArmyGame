@@ -1,6 +1,6 @@
 <?php
 if(!empty($_POST)){
-    $user = new user();
+    $user = new User();
     $errors = [0,0,0,0];
     if(empty($_POST["jmeno"])){
         $errors[0] = 1;

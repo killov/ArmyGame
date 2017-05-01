@@ -14,7 +14,12 @@
     <script type="text/javascript" src="<?=$cfg["dir"]?>js/game.js"></script>
     <script type="text/javascript" src="<?=$cfg["dir"]?>js/chat.js"></script>
     <script type="text/javascript" src="<?=$cfg["dir"]?>js/map.js"></script>
-    <script type="text/javascript" src="<?=$cfg["dir"]?>js/map2d.js"></script>
+    <?php if($cfg["map"] == 1){ ?>
+        <script type="text/javascript" src="<?=$cfg["dir"]?>js/map2d.js"></script>
+    <?php }else{ ?>
+        <script type="text/javascript" src="<?=$cfg["dir"]?>js/map3d.js"></script>
+    <?php } ?>    
+        
     <script src="<?=$cfg["dir"]?>js/jquery.waitforimages.js"></script>
     <meta charset="UTF-8">
     <script>
@@ -82,47 +87,47 @@
 
      
         game.init();
-        var map2d = new Map2d(game.mapControl);
-        game.mapControl.pozice(<?php echo $mesto->data["x"].",".$mesto->data["y"];?>, 0);
-        
+        new Mapa(game.mapControl).init(<?php echo $mesto->data["x"].",".$mesto->data["y"];?>);       
     });
 </script> 
 </head>
 <body>
     <div id="back">
+        <?php if($cfg["map"] == 1){ ?>
 	<div id="move" style="position:absolute;top:20px;left:20px;width:1000px;height:1000px;">
-            <svg id="map_svg" title></svg>
+            <svg id="map_svg" viewBox="0 0 40000 40000" title></svg>
 	</div>
-</div>
+        <?php } ?>  
+    </div>
     
-<div class="layout-left-top">
-    <label><span id="ren"><?php echo $mesto->data["jmeno"];?></span>
-	<form id="reg" action="javascript:void(1);" style="display: none">
-		
-		<input type="text" name="jmeno" id="in">
-		
-	</form></label>
-    <div class="but-out-s but-1 hide-but">
-        <div class="but-in-s but-pic-s">
-            <div class="but-hov-s">
+    <div class="layout-left-top">
+        <label><span id="ren"><?php echo $mesto->data["jmeno"];?></span>
+            <form id="reg" action="javascript:void(1);" style="display: none">
+
+                    <input type="text" name="jmeno" id="in">
+
+            </form></label>
+        <div class="but-out-s but-1 hide-but">
+            <div class="but-in-s but-pic-s">
+                <div class="but-hov-s">
+                </div>
+                <label><i class="icon-menu"></i></label>
             </div>
-            <label><i class="icon-menu"></i></label>
         </div>
-    </div>
-    <div class="but-out-s but-2 hide-but" onClick="game.mapa()">
-        <div class="but-in-s but-pic-s">
-            <div class="but-hov-s">
+        <div class="but-out-s but-2 hide-but" onClick="game.mapa()">
+            <div class="but-in-s but-pic-s">
+                <div class="but-hov-s">
+                </div>
+                <label><i class="icon-hair-cross"></i></label>
             </div>
-            <label><i class="icon-hair-cross"></i></label>
         </div>
-    </div>
-    <div class="but-out-s but-3 hide-but" onClick="game.page_go('mesto')">
-        <div class="but-in-s but-pic-s">
-            <div class="but-hov-s">
+        <div class="but-out-s but-3 hide-but" onClick="game.page_go('mesto')">
+            <div class="but-in-s but-pic-s">
+                <div class="but-hov-s">
+                </div>
+                <label><i class="icon-home"></i></label>
             </div>
-            <label><i class="icon-home"></i></label>
         </div>
-    </div>
     <script type="text/javascript">
 	$("#ren").click(function(){
             $("#ren").hide();
@@ -198,40 +203,41 @@
                             </div>
 			</div>
 		</div>
-    <div class="but-out-s but-7" onClick="game.page_go('stat')">
-        <div class="but-in-s but-pic-s">
-            <div class="but-hov-s">
-            </div>
-            <label><i class="icon-globe"></i></label>
-        </div>
-    </div>
-    <div class="but-out-s but-6" onClick="game.page_go('profil')">
-        <div class="but-in-s but-pic-s">
-            <div class="but-hov-s">
-            </div>
-            <label><i class="icon-v-card"></i></label>
-        </div>
-    </div>
-    <div class="but-out-s but-5" onClick="game.page_go('statistika')">
-        <div class="but-in-s but-pic-s">
-            <div class="but-hov-s">
-            </div>
-            <label><i class="icon-cog"></i></label>
-        </div>
-    </div>
-    <div class="but-out-s but-4">
-        <a href="<?=$cfg["dir"]?>index.php?odhlas">
+        <div class="but-out-s but-7" onClick="game.page_go('stat')">
             <div class="but-in-s but-pic-s">
                 <div class="but-hov-s">
                 </div>
-                <label><i class="icon-cross"></i></label>
+                <label><i class="icon-globe"></i></label>
             </div>
-        </a>
+        </div>
+        <div class="but-out-s but-6" onClick="game.page_go('profil')">
+            <div class="but-in-s but-pic-s">
+                <div class="but-hov-s">
+                </div>
+                <label><i class="icon-v-card"></i></label>
+            </div>
+        </div>
+        <div class="but-out-s but-5" onClick="game.page_go('statistika')">
+            <div class="but-in-s but-pic-s">
+                <div class="but-hov-s">
+                </div>
+                <label><i class="icon-cog"></i></label>
+            </div>
+        </div>
+        <div class="but-out-s but-4">
+            <a href="<?=$cfg["dir"]?>index.php?odhlas">
+                <div class="but-in-s but-pic-s">
+                    <div class="but-hov-s">
+                    </div>
+                    <label><i class="icon-cross"></i></label>
+                </div>
+            </a>
+        </div>
     </div>
-</div>
    
-
-
+<div id="hlaska">
+</div>
+<?php if($cfg["map"] == 1){ ?>
 
     <div class="map_options">
 	<div class="map_zoom"></div>
@@ -241,8 +247,7 @@
     </div>
 
 
-<div id="hlaska">
-</div>
+
 <div id="pozx">
 	<div id="pozxmove">
 
@@ -253,7 +258,7 @@
 
 	</div>
 </div>
-
+<?php } ?>  
 <div id="celek">
 	<div id="obsah">
 		<div id="obsah_h">

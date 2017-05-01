@@ -7,12 +7,12 @@ include $dir."config.php";
 include $dir."inc/class.php";
 include $dir."inc/data.php";
 
-$image = imagecreatefrompng($dir.$cfg[""]);
+$image = imagecreatefrompng($dir.$cfg["imagemap"]);
 
-$db = new db($cfg["mysqlserver"],$cfg["mysqluser"],$cfg["mysqlpw"],$cfg["mysqldb"]);
-$ws = new ws();
-$map = new mapa();
-$b = new base();
+$db = new Db($cfg["mysqlserver"],$cfg["mysqluser"],$cfg["mysqlpw"],$cfg["mysqldb"]);
+$ws = new Ws();
+$map = new Mapa();
+$b = new Base();
 
 function make_when($array) {
     $return = "";
@@ -46,12 +46,13 @@ while(true){
                     $lastmap = true;
                 }
                 else if($p["typ"] == 2 and !$laststat){
-                    statistika();
+                    Statistika();
                     info("Statistika prepocitana");
                     $laststat = true;
                 }
                 else if($p["typ"] == 3){
                     $mapa = $map->nacti2([[$p["x"],$p["y"]]]);   
+                    echo count($mapa);
                     $v = $map->nacti_verze([[$p["x"],$p["y"]]]);
                     $v = $v[$p["x"]][$p["y"]];
                     $map->rendermap($image,$mapa,$p["x"],$p["y"],$v+1,$dir);
@@ -99,7 +100,7 @@ function mapa_pocitej(){
             $y--;
     }
 
-    $q = $b->db->db->query("SELECT id, x, y, stat, statjmeno, populace, user FROM `mesto` WHERE typ = 1");
+    $q = $b->db->db->query("SELECT id, x, y, stat, populace, user FROM `mesto` WHERE typ = 1");
     if(1){
         while($r = $q->fetch_assoc()){
             $nove[$r["x"]][$r["y"]] = $r;
@@ -111,7 +112,6 @@ function mapa_pocitej(){
                 if($nove[$r["x"]+$k[0]][$r["y"]+$k[1]]["typ"] != 1){
                     if($nove[$r["x"]+$k[0]][$r["y"]+$k[1]]["dom"] < $dominance){
                         $nove[$r["x"]+$k[0]][$r["y"]+$k[1]]["stat"] = $r["stat"];
-                        $nove[$r["x"]+$k[0]][$r["y"]+$k[1]]["statjmeno"] = $r["statjmeno"];
                         $nove[$r["x"]+$k[0]][$r["y"]+$k[1]]["dom"] = $dominance;
                     }
                 }
@@ -167,15 +167,13 @@ function mapa_pocitej(){
         $x++;
     }	
 
-    $q = $b->db->db->query("SELECT id, x, y, stat, hranice, blokx, bloky, user, dom FROM `mesto`");
+    $q = $b->db->db->query("SELECT id, x, y, stat, hranice, blokx, bloky, dom FROM `mapa`");
     if(1){
         $bloks = [];
         while($r = $q->fetch_assoc()){
-            if($nove[$r["x"]][$r["y"]]["stat"] != $r["stat"] or $nove[$r["x"]][$r["y"]]["hranice"] != $r["hranice"] or $nove[$r["x"]][$r["y"]]["user"] != $r["user"] or $nove[$r["x"]][$r["y"]]["dom"] != $r["dom"]){
+            if($nove[$r["x"]][$r["y"]]["stat"] != $r["stat"] or $nove[$r["x"]][$r["y"]]["hranice"] != $r["hranice"] or $nove[$r["x"]][$r["y"]]["dom"] != $r["dom"]){
                 $stat[$r["id"]]["stat"] = $nove[$r["x"]][$r["y"]]["stat"];
-                $stat[$r["id"]]["statjmeno"] = $nove[$r["x"]][$r["y"]]["statjmeno"];
                 $stat[$r["id"]]["hranice"] = $nove[$r["x"]][$r["y"]]["hranice"];
-                $stat[$r["id"]]["user"] = $nove[$r["x"]][$r["y"]]["user"];
                 $stat[$r["id"]]["dom"] = $nove[$r["x"]][$r["y"]]["dom"];
                 $bloky = [$r["blokx"],$r["bloky"]];
                 if(!in_array($bloky, $bloks)){
@@ -184,7 +182,7 @@ function mapa_pocitej(){
             }
         }
         if(isset($stat)){
-            $b->db->multi_update("mesto",$stat);
+            $b->db->multi_update("mapa",$stat);
         }
     }	
     $time = time()-$start;
@@ -195,7 +193,6 @@ function mapa_pocitej(){
         "bloky" => $bloks
     ]);
 }
-
 
 function statistika(){
 	global $b,$ws;

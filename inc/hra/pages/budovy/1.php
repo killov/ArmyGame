@@ -47,7 +47,7 @@ $jo = false;
 foreach($urovne as $key => $uroven){
     if($mesto->budova_pozadavky($key,$user)){
         if($hodnoty["budovy"][$key]["maximum"] >= $uroven){
-            echo "<tr><td>".$lang_budova[$key-1]." (".$lang[31].": ".$mesto->data["b".$key].")</td>";
+            echo "<tr><td><i class=\"faq\" onclick=\"game.faq_load('budovy&b=".$key."');\">?</i>".$lang_budova[$key-1]." (".$lang[31].": ".$mesto->data["b".$key].")</td>";
             echo "<td>";
             if($cena = $mesto->budova_cena("surovina1",$key,$uroven)){
                 echo "<span class=\"bunka surovina1\">".$cena."</span> ";

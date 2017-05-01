@@ -1,8 +1,8 @@
 <?php
 if(!empty($_POST)){
     if($user->data["sp_all"] == 1){
-        $stat = new stat();
-        $us = new user();
+        $stat = new Stat();
+        $us = new User();
         $errors = [0];
         if(empty($_POST["jmeno"])){
             $errors[0] = 1;
@@ -20,7 +20,7 @@ if(!empty($_POST)){
             $errors[0] = 4;
         }
         if($errors == [0]){
-            $stat = new stat();
+            $stat = new Stat();
             $stat->pozvat($id, $us->data["jmeno"], $user->data["stat"], $user->data["statjmeno"]);
         }
         echo json_encode($errors);

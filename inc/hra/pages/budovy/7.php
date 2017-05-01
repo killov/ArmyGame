@@ -3,23 +3,34 @@ $vyzkum = $user->vyzkum_stavba();
 if($vyzkum){
     echo "<table class=\"dorucene\">";
     echo "<tr><th>".$lang[107]."</th><th>".$lang[64]."</th><th>".$lang[65]."</th></tr>";
-    $x = 0;
     foreach($vyzkum as $s){
-            if($x == 0){
-                    $c = $s["cas"]-time();
-                    $h = "<td id=\"odpocet\">".cas($s["cas"]-time())."</td>";
-                    $x = 1;
-            }else{
-                    $h = "<td>".cas($s["delka"])."</td>";
-            }
-            echo "<tr><td>".$lang_vyzkum[$s["vyzkum"]-1]." (".$lang[31].": ".$s["uroven"].")</td>".$h."<td>".Date("d.m.Y H:i:s", $s["cas"])."</td></tr>";
+        $h = "<td class=\"odpocet\" t=\"".$s["cas"]."\">".cas($s["cas"]-time())."</td>";
+        echo "<tr><td>".$lang_vyzkum[$s["vyzkum"]-1]." (".$lang[31].": ".$s["uroven"].")</td>".$h."<td>".Date("d.m.Y H:i:s", $s["cas"])."</td></tr>";
     }
     echo "</table>";
     ?>
-            <script type="text/javascript">
-                    g_odpocitavac = <?php echo $c; ?>;
-                    odpocitej();
-            </script>
+    <script type="text/javascript">
+        game.timelooppage = function(time){
+            var t = Math.round(time/1000);
+            $(".odpocet2").each(function(){
+                var $this = $(this);
+                var zb = $this.attr("t") - t;
+                if(zb>=0){
+                    $this.html(cas(zb));
+                }else{
+                    game.data_load();
+                    game.page_refresh();
+                }
+            });
+            $(".odpocet").each(function(){
+                var $this = $(this);
+                var zb = $this.attr("t") - t;
+                if(zb>=0){
+                    $this.html(cas(zb));
+                }
+            });
+        };
+    </script>
     <?php
 }
 echo "<h2>".$lang[108]."</h2>";
@@ -28,7 +39,7 @@ $urovne = $user->vyzkum_urovne();
 echo "<table class=\"prehled\">";
 $jo = false;
 foreach($urovne as $key => $uroven){
-    echo "<tr><td><i class=\"faq\" onclick=\"faq_load('vyzkum&b=".$key."');\">?</i> ".$lang_vyzkum[$key-1]." (".$lang[31].": ".$user->data["v".$key].")</td>";
+    echo "<tr><td><i class=\"faq\" onclick=\"game.faq_load('vyzkum&b=".$key."');\">?</i> ".$lang_vyzkum[$key-1]." (".$lang[31].": ".$user->data["v".$key].")</td>";
     echo "<td>";
     if($hodnoty["vyzkum"][$key]["maximum"] >= $uroven){
         if($cena = $user->vyzkum_cena($key,$uroven)){
@@ -38,7 +49,7 @@ foreach($urovne as $key => $uroven){
         if($user->vyzkum_pozadavky($key,$mesto)){
             if(!$vyzkum){
                 if($cena <= $user->penize){
-                    echo "<a href=\"#\" class=\"postav\" onclick=\"vyzkum(".$key.");return false\">".$lang[108]." ".$uroven."</a>";
+                    echo "<a href=\"#\" class=\"postav\" onclick=\"game.vyzkum(".$key.");return false\">".$lang[108]." ".$uroven."</a>";
                 }else{
                     echo $lang[126];
                 }

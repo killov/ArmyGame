@@ -2,7 +2,7 @@
 <?php
 
 if($user->data["stat"] or isset($_GET["id"])){
-$st = new stat();
+$st = new Stat();
 if(isset($_GET["id"])){
     $stat = $st->info($_GET["id"]);       
 }else{
@@ -53,7 +53,7 @@ if(isset($_GET["s"]) and $_GET["s"] == "moznosti"){
 		
 				</form>
                                 <script type="text/javascript">
-                                    formular_upload("#stat","index.php?post=statpozvat",function(data){
+                                    game.formular_upload("#stat","index.php?post=statpozvat",function(data){
                                         $("#odpoved").text(JSON.stringify(data));
                                         if(data[0] == 1)
                                                 chyba0 = "<?php echo $lang[7];?>";
@@ -67,7 +67,7 @@ if(isset($_GET["s"]) and $_GET["s"] == "moznosti"){
                                             chyba0 = "<?php echo $lang[100];?>";
                                         if(data[0] == 0){
                                                 chyba0 = "";
-                                                page_refresh();
+                                                game.page_refresh();
                                         }
                                         $("#chyba0").text(chyba0);
                                 });
@@ -83,7 +83,7 @@ $s = $st->pozvanky($stat["id"]);
 if($s){
 	echo "<tr><th colspan='2'>".$lang[96]."</th></tr>";
 	foreach($s as $d){
-		echo "<tr><td><a href=\"#\" h=\"profil&uid=".$d["user"]."\" class=\"link\">".$d["userjmeno"]."</a></td><td><a href=\"#\" onclick=\"pozvankazrusit('".$d["id"]."')\">".$lang["101"]."</a></td></tr>";
+		echo "<tr><td><a href=\"#\" h=\"profil&uid=".$d["user"]."\" class=\"link\">".$d["userjmeno"]."</a></td><td><a href=\"#\" onclick=\"game.pozvankazrusit('".$d["id"]."')\">".$lang["101"]."</a></td></tr>";
 	}
 }
 ?>
@@ -98,7 +98,7 @@ if($s){
                     <?php if($user->data["sp_all"]){ ?>
                     <a href="#" h="stat&s=moznosti&m=pozvat" class="link"><?php echo $lang[95];?></a><br>
                     <?php } ?>
-                    <a href="#" onclick="opustitstat();return false"><?php echo $lang[104];?></a>
+                    <a href="#" onclick="game.opustitstat();return false"><?php echo $lang[104];?></a>
                 </td>
             </tr>
         </table>
@@ -130,7 +130,7 @@ if($s){
 if($s){
 	$x = 1;
 	foreach($s as $d){
-		echo "<tr><td>".$x."</td><td><a href=\"#\" onMouseDown=\"page_load('profil/".$d["id"]."')\" onMouseUp=\"page_draw()\">".htmlspecialchars($d["jmeno"])."</a></td><td>".$d["mest"]."</td><td>".$d["pop"]."</td></tr>";
+		echo "<tr><td>".$x."</td><td><a href=\"#\" h=\"profil/".$d["id"]."\" class=\"link\">".htmlspecialchars($d["jmeno"])."</a></td><td>".$d["mest"]."</td><td>".$d["pop"]."</td></tr>";
 	
                 $x++;
         }
@@ -152,12 +152,12 @@ if($s){
 <table class="profil3">
 
 <?php
-$st = new stat();
+$st = new Stat();
 $s = $st->pozvanky_hrac($user->data["id"]);
 if($s){
 	echo "<tr><th colspan='2'>".$lang[102]."</th></tr>";
 	foreach($s as $d){
-		echo "<tr><td>".htmlspecialchars($d["statjmeno"])."</a></td><td><a href=\"#\" onclick=\"pozvankapotvrdit('".$d["id"]."')\">".$lang[103]."</a></td></tr>";
+		echo "<tr><td>".htmlspecialchars($d["statjmeno"])."</a></td><td><a href=\"#\" onclick=\"game.pozvankapotvrdit('".$d["id"]."')\">".$lang[103]."</a></td></tr>";
 	}
 }
 ?>
@@ -183,7 +183,7 @@ if($s){
 		
 				</form>
 							<script type="text/javascript">
-						formular_upload("#stat","index.php?post=zalozitstat",function(data){
+						game.formular_upload("#stat","index.php?post=zalozitstat",function(data){
 							$("#odpoved").text(JSON.stringify(data));
 							if(data[0] == 1)
 								chyba0 = "<?php echo $lang[7];?>";
@@ -191,8 +191,8 @@ if($s){
 								chyba0 = "<?php echo $lang[8];?>";
 							if(data[0] == 0){
 								chyba0 = "";
-                                                                stat = data[1];
-                                                                page_refresh();
+                                                                game.stat = data[1];
+                                                                game.page_refresh();
 							}
 							$("#chyba0").text(chyba0);
 						});

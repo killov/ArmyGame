@@ -9,7 +9,7 @@ if(!empty($_POST)){
             $errors[0] = 2;
         }
         if($errors == [0]){
-            $stat = new stat();
+            $stat = new Stat();
             $id = $stat->vytvor(trim(($_POST["jmeno"])),$user->data["id"]);
         }
         echo json_encode([$errors[0],$id]);

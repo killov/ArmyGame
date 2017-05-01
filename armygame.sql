@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Počítač: 127.0.0.1
--- Vytvořeno: Ned 18. zář 2016, 11:16
+-- Vytvořeno: Pon 01. kvě 2017, 14:14
 -- Verze serveru: 5.6.26
 -- Verze PHP: 5.6.12
 
@@ -66,6 +66,25 @@ CREATE TABLE IF NOT EXISTS `mapa` (
   `id` int(11) NOT NULL,
   `x` int(11) NOT NULL,
   `y` int(11) NOT NULL,
+  `blokx` int(11) NOT NULL,
+  `bloky` int(11) NOT NULL,
+  `typ` int(11) NOT NULL,
+  `hrana` int(11) NOT NULL,
+  `stat` int(11) NOT NULL,
+  `hranice` int(11) NOT NULL,
+  `dom` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `mapa_bloky`
+--
+
+CREATE TABLE IF NOT EXISTS `mapa_bloky` (
+  `id` int(11) NOT NULL,
+  `x` int(11) NOT NULL,
+  `y` int(11) NOT NULL,
   `verze` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -76,17 +95,12 @@ CREATE TABLE IF NOT EXISTS `mapa` (
 --
 
 CREATE TABLE IF NOT EXISTS `mesto` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL DEFAULT '0',
   `x` int(11) NOT NULL,
   `y` int(11) NOT NULL,
-  `blokx` int(11) NOT NULL,
-  `bloky` int(11) NOT NULL,
   `typ` int(11) NOT NULL,
-  `hrana` int(11) NOT NULL,
   `stat` int(11) NOT NULL,
   `statjmeno` varchar(20) NOT NULL,
-  `hranice` int(11) NOT NULL,
-  `dom` int(11) NOT NULL,
   `user` int(11) NOT NULL,
   `userjmeno` varchar(20) NOT NULL,
   `jmeno` varchar(20) NOT NULL,
@@ -246,6 +260,17 @@ ALTER TABLE `chat`
 --
 ALTER TABLE `mapa`
   ADD PRIMARY KEY (`id`),
+  ADD KEY `blokx` (`blokx`),
+  ADD KEY `bloky` (`bloky`),
+  ADD KEY `x` (`x`),
+  ADD KEY `y` (`y`),
+  ADD KEY `typ` (`typ`);
+
+--
+-- Klíče pro tabulku `mapa_bloky`
+--
+ALTER TABLE `mapa_bloky`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `x` (`x`),
   ADD KEY `y` (`y`);
 
@@ -253,13 +278,7 @@ ALTER TABLE `mapa`
 -- Klíče pro tabulku `mesto`
 --
 ALTER TABLE `mesto`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `blokx` (`blokx`),
-  ADD KEY `bloky` (`bloky`),
-  ADD KEY `user` (`user`),
-  ADD KEY `x` (`x`),
-  ADD KEY `y` (`y`),
-  ADD KEY `typ` (`typ`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Klíče pro tabulku `stat`
@@ -311,9 +330,9 @@ ALTER TABLE `chat`
 ALTER TABLE `mapa`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pro tabulku `mesto`
+-- AUTO_INCREMENT pro tabulku `mapa_bloky`
 --
-ALTER TABLE `mesto`
+ALTER TABLE `mapa_bloky`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `stat`

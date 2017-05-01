@@ -3,7 +3,7 @@ if(isset($_GET["b"]) && isset($lang_vyzkum[$_GET["b"]-1])){
     $b = $_GET["b"];
     $data = $hodnoty["vyzkum"][$b];
 ?>
-<h3><a href="#" onclick="faq_load('main');return false">Nápověda</a> - <a href="#" onclick="faq_load('vyzkum');return false">Výzkum</a> - <?=$lang_vyzkum[$_GET["b"]-1]?></h3>
+<h3><a href="#" onclick="game.faq_load('main');return false">Nápověda</a> - <a href="#" onclick="game.faq_load('vyzkum');return false">Výzkum</a> - <?=$lang_vyzkum[$_GET["b"]-1]?></h3>
 <p>
 Požadavky:
 <?php
@@ -42,12 +42,12 @@ for($i=1;$i<=$data["maximum"];$i++){
 echo "</table>";
 }else{
     ?>
-<h3><a href="#" onclick="faq_load('main');return false">Nápověda</a> - Budovy</h3>
+<h3><a href="#" onclick="game.faq_load('main');return false">Nápověda</a> - Výzkum</h3>
 
 <?php
     echo "<ul>";
     for($i=1;$i<=$GLOB["pocetvyzkumu"];$i++){
-        echo "<li><a href=\"#\" onclick=\"faq_load('vyzkum&b=".$i."');return false\">".$lang_vyzkum[$i-1]."</li>";
+        echo "<li><a href=\"#\" onclick=\"game.faq_load('vyzkum&b=".$i."');return false\">".$lang_vyzkum[$i-1]."</li>";
     }
     echo "</ul>";
 }

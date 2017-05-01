@@ -71,7 +71,7 @@
 </div>
 <footer class="main">
     <div class="center">
-        <label id="copy">&copy; 2016 | Zdeněk Mazurák & <a href="http://aloushweb.cz/" target="_blank">Aleš
+        <label id="copy">&copy; 2017 | Zdeněk Mazurák & <a href="http://aloushweb.cz/" target="_blank">Aleš
                 Dopita</a></label>
     </div>
 </footer>
