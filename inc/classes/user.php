@@ -37,9 +37,7 @@ class User extends Base{
     }
     
     public function check_email($email) {
-        $atom = '[-a-z0-9!#$%&\'*+/=?^_`{|}~]';
-        $domain = '[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])';
-        return eregi("^$atom+(\\.$atom+)*@($domain?\\.)+$domain\$", $email);
+        return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
     public function registruj($jmeno,$email,$heslo){

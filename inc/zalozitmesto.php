@@ -55,7 +55,7 @@
 								chyba0 = "<?php echo $lang[8];?>";
 							if(data[0] == 0){
 								chyba0 = "";
-								//window.location.href = "index.php";
+								window.location.href = "index.php";
 							}
 							$("#chyba0").text(chyba0);
 						});
