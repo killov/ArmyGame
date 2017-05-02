@@ -2,7 +2,8 @@ function Mapa(map){
     var p = Mapa.prototype;
 
     p.settings = {
-        parentElement: $("#back")
+        parentElement: $("#back"),
+        backgroundPlane: null
     };
 
     p.loadedBlocks = [];
@@ -142,7 +143,7 @@ function Mapa(map){
             3000
         );
         camera.position.z = 250;
-        camera.position.y = 500;
+        camera.position.y = 250;
         camera.rotation.x = -0.6;
         camera.zoom = 1;
 
@@ -175,6 +176,7 @@ function Mapa(map){
         makeLights();
         makeWaterMaterial();
         loadModels();
+        makeBackground();
 
         window.addEventListener('resize', onWindowResize, false);
     }
@@ -492,9 +494,6 @@ function Mapa(map){
                 if (!notClick) {
                     if (mapOn) {
                         clickOn(ev);
-                        //zoomTo();
-                    } else {
-                        //zoomOut();
                     }
                 }
             });
@@ -505,6 +504,7 @@ function Mapa(map){
         raycaster.setFromCamera(mouse, camera);
         var intersects = raycaster.intersectObjects(groundList);
         if (intersects.length > 0) {
+            console.log(intersects[0].point);
             calculateCoords(intersects[0].point);
         }
     }
@@ -610,21 +610,97 @@ function Mapa(map){
                 z: Math.floor((-targetPosition.z + 1.5) / 50)
             };
 
-            checkVisibleBlocks(actualBlock);
+            checkVisibleBlock(actualBlock);
         }, 200);
+        setInterval(checkBlocks,1000);
     }
 
     /**
      * Check if all wanted blocks are loaded.
      * @param {Object} actualBlock
      */
-    function checkVisibleBlocks(actualBlock) {
+    function checkVisibleBlock(actualBlock) {
         if ($.grep(p.loadedBlocks, function(n){return n.x == actualBlock.x && n.z == actualBlock.z}).length == 0) {
             p.loadedBlocks.push(actualBlock);
             map.load([[actualBlock.x, actualBlock.z]], function(json,x,y){
                 drawBlock(json, x, y);
             });
         }
+    }
+
+    function checkBlocks() {
+        var intersects,
+            xl,
+            xr,
+            yt,
+            yb,
+            toLoad = [];
+
+        raycaster.setFromCamera({x: -1, y: 1}, camera);
+        intersects = raycaster.intersectObjects([p.settings.backgroundPlane]);
+        if (intersects[0]) {
+            xl = Math.floor((intersects[0].point.x + 2.5) / 50);
+            yt = Math.floor((intersects[0].point.y + 1.5) / 50);
+
+            raycaster.setFromCamera({x: 1, y: 1}, camera);
+            intersects = raycaster.intersectObjects([p.settings.backgroundPlane]);
+            xr = Math.floor((intersects[0].point.x + 2.5) / 50);
+            if (yt < Math.floor((intersects[0].point.y + 1.5) / 50)) {
+                yt = Math.floor((intersects[0].point.y + 1.5) / 50);
+            }
+
+            raycaster.setFromCamera({x: 1, y: -1}, camera);
+            intersects = raycaster.intersectObjects([p.settings.backgroundPlane]);
+            if (xr < Math.floor((intersects[0].point.x + 2.5) / 50)) {
+                xr = Math.floor((intersects[0].point.x + 2.5) / 50);
+            }
+            yb = Math.floor((intersects[0].point.y + 1.5) / 50);
+
+            raycaster.setFromCamera({x: 1, y: -1}, camera);
+            intersects = raycaster.intersectObjects([p.settings.backgroundPlane]);
+            if (xl > Math.floor((intersects[0].point.x + 2.5) / 50)) {
+                xl = Math.floor((intersects[0].point.x + 2.5) / 50);
+            }
+            if (yb > Math.floor((intersects[0].point.y + 1.5) / 50)) {
+                yb = Math.floor((intersects[0].point.y + 1.5) / 50);
+            }
+
+            if (xl > xr) {
+                var a = xl;
+                xl = xr;
+                xr = a;
+            }
+            if (yb > yt) {
+                var b = yb;
+                yb = yt;
+                yt = b;
+            }
+
+            for (var i = xl; i <= xr; i++) {
+                for (var j = yb; j <= yt; j++) {
+                    if ($.grep(p.loadedBlocks, function(n){return n.x == i && n.z == j}).length == 0) {
+                        p.loadedBlocks.push({x: i, z: j});
+                        toLoad.push([i, j]);
+                    }
+                }
+            }
+            if (toLoad.length > 0) {
+                map.load(toLoad, function(json,x,y){
+                    drawBlock(json, x, y);
+                });
+            }
+        }
+    }
+
+    /**
+     * Make transparent background due to checking blocks.
+     */
+    function makeBackground() {
+        var backgroundGeo = new THREE.PlaneGeometry(10000, 10000, 1, 1);
+        var ground = new THREE.Mesh(backgroundGeo, new THREE.MeshBasicMaterial());
+        ground.rotation.x = -Math.PI / 2;
+        ground.position.y = 0;
+        p.settings.backgroundPlane = ground;
     }
 
     // MAP
@@ -688,9 +764,6 @@ function Mapa(map){
 
         fancyHills();
         colorHills();
-        //přepočítat normály kvůli správnému stínování kompců - není nutné?
-        //groundGeo.computeFaceNormals();
-        //groundGeo.computeVertexNormals();
 
         // materiál se bere z faces
         var material = new THREE.MeshStandardMaterial(
@@ -707,7 +780,6 @@ function Mapa(map){
         ground.position.y = -2;
         ground.position.x = 22.5 + (x * 50);
         ground.position.z = -22.5 - (y * 50);
-        //ground.matrixAutoUpdate = false;
         ground.receiveShadow = true;
         ground.castShadow = true;
 
