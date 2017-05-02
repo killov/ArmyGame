@@ -111,7 +111,7 @@ class Mapa extends Base{
         if($colums){
             $c = implode(", ", $colums);
         }
-        $this->db->query("SELECT ".$c." FROM `mapa` where x <= %s AND x >= %s AND y <= %s AND y >= %s",[$x1,$x2,$y1,$y2]);
+        $this->db->query("SELECT ".$c." FROM `mapa` where x >= %s AND x <= %s AND y >= %s AND y <= %s",[$x1,$x2,$y1,$y2]);
         if(!$this->db->data){
             return false;
         }else{

@@ -374,10 +374,13 @@ function Mapa(map){
     
     this.renderCesta = function(pocatek,cesta){
         var body = "";
+        var ct = '<rect x="'+((pocatek[0]+200)*100)+'" y="'+((-pocatek[1]+189)*100)+'" width="100" height="100" style="fill:rgba(255,0,0,0.1);stroke-width:0;stroke:rgb(0,0,0)" />';
         for(var i in cesta){
             body += " "+(50+(cesta[i][0]+200)*100)+","+(-50+(-cesta[i][1]+190)*100);
+            ct += '<rect x="'+((cesta[i][0]+200)*100)+'" y="'+((-cesta[i][1]+189)*100)+'" width="100" height="100" style="fill:rgba(255,0,0,0.1);stroke-width:0;stroke:rgb(0,0,0)" />';
         }
-        $("#map_svg").html('<path d="M'+(50+(pocatek[0]+200)*100)+','+(-50+(-pocatek[1]+190)*100)+' '+body+'" stroke="red" stroke-width="3" fill="none" />');           
+        
+        $("#map_svg").html(ct+'<path d="M'+(50+(pocatek[0]+200)*100)+','+(-50+(-pocatek[1]+190)*100)+' '+body+'" stroke="red" stroke-width="3" fill="none" />');           
     }
     
     

@@ -34,7 +34,7 @@ class Db{
             }
             $sql = vsprintf($sql,$args);
         }
-        //echo $sql;
+        Tracy\Debugger::barDump($sql);
         if($query = $this->db->query($sql)){
             if($b){
                 if($query->num_rows > 0){

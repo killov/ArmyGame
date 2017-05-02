@@ -7,7 +7,7 @@ class Pohyb extends Base{
     }
     
     public function addnode($x,$y,$g,$h){
-        if(isset($this->nodes[$x][$y]) && $this->nodes[$x][$y][4] > $g+$h){
+        if(isset($this->nodes[$x][$y]) && $this->nodes[$x][$y][4] > $h+$g){
             $this->nodes[$x][$y] = [$x,$y,$g,$h,$g+$h];
         }else if(!in_array([$x,$y], $this->nodelist)){
             $this->nodes[$x][$y] = [$x,$y,$g,$h,$g+$h];
@@ -45,7 +45,7 @@ class Pohyb extends Base{
         
         $obejit = [[0,1,10],[0,-1,10],[1,0,10],[-1,0,10],[1,1,14],[1,-1,14],[-1,1,14],[-1,-1,14]];
         $mapa = new Mapa();
-        $this->mapa = $mapa->nactimapu(min($x1,$x2)-5, min($y1,$y2)-5, max($x1,$x2)+5, max($y1,$y2)+5,["x","y"]);   
+        $this->mapa = $mapa->nactimapu(min($x1,$x2)-5, min($y1,$y2)-5, max($x1,$x2)+5, max($y1,$y2)+5,["x","y","typ"]);   
         $this->addnode($x1, $y1, 0, $this->heurestic($x1,$y1,$x2,$y2));
  
         while($node = $this->getnode()){     
@@ -75,14 +75,15 @@ class Pohyb extends Base{
         while(true){
             $f = INF;
             $g = INF;
-            
+            Tracy\Debugger::barDump($this);
             foreach($obejit as $o){
                 if(isset($this->projito[$x+$o[0]][$y+$o[1]])){
                     $node = $this->projito[$x+$o[0]][$y+$o[1]];
-                    if($node[4] < $f){
+                    if($node[2] < $g){
                         $next = $node;
                         $f = $node[4];
-                        $g = $node[3];
+                        $h = $node[3];
+                        $g = $node[2];
                     }
                 }
             }

@@ -5,6 +5,8 @@ require "../src/tracy.php";
 use Tracy\Debugger;
 
 Debugger::enable();
+Debugger::$maxDepth = 20; 
+Debugger::$maxLength = 1000;
 include "../inc/class.php";
 include "../config.php";
 include "../lang/".$cfg["lang"].".php";
