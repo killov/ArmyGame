@@ -92,7 +92,7 @@
             .stats label {
                 vertical-align: bottom;
                 display: inline-block;
-                width: 80px;
+                width: 130px;
                 overflow: hidden;
             }
         </style>
@@ -286,6 +286,33 @@
         <div id="move" style="position:absolute;top:20px;left:20px;width:1000px;height:1000px;">
             <svg id="map_svg" viewBox="0 0 40000 40000" title></svg>
         </div>
+    <?php } else { ?>
+
+        <div class="stats">
+            <button id="toggleDebugPanel">Show/hide</button>
+            <h2>Debug panel</h2>
+            <div class="stats-content">
+                <h3>Camera</h3>
+                <ul>
+                    <li>pos.x = <label id="camPosX"></label></li>
+                    <li>pos.y = <label id="camPosY"></label></li>
+                    <li>pos.z = <label id="camPosZ"></label></li>
+                    <li>rot.x = <label id="camRotX"></label></li>
+                    <li>rot.y = <label id="camRotY"></label></li>
+                    <li>rot.z = <label id="camRotZ"></label></li>
+                    <li>zoom = <label id="camZoom"></label></li>
+                </ul>
+                <h3>Controls</h3>
+                <button id="shadowsOff">Shadows OFF</button>
+                <button id="shadowsOn">Shadows ON</button>
+                <br>
+                <br>
+                <button id="makeBlock">Load map</button>
+                <button id="hideBlock">Hide (wip)</button><br><br>
+                <input type="text" id="game-time"> <button id="load-time">Change</button>
+                <button id="animate-time">1 day in 24 seconds</button>
+            </div>
+        </div>
     <?php } ?>
 </div>
 <?php if ($cfg["map"] == 2) { ?>
@@ -299,31 +326,6 @@
 
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="stats">
-        <button id="toggleDebugPanel">Show/hide</button>
-        <h2>Debug panel</h2>
-        <div class="stats-content">
-            <h3>Camera</h3>
-            <ul>
-                <li>pos.x = <label id="camPosX"></label></li>
-                <li>pos.y = <label id="camPosY"></label></li>
-                <li>pos.z = <label id="camPosZ"></label></li>
-                <li>rot.x = <label id="camRotX"></label></li>
-                <li>rot.y = <label id="camRotY"></label></li>
-                <li>rot.z = <label id="camRotZ"></label></li>
-                <li>zoom = <label id="camZoom"></label></li>
-            </ul>
-            <h3>Controls</h3>
-            <button id="shadowsOff">Shadows OFF</button>
-            <button id="shadowsOn">Shadows ON</button>
-            <br>
-            <br>
-            <button id="makeBlock">Load map</button>
-            <button id="hideBlock">Hide (wip)</button><br><br>
-            <input type="text" id="game-time"> <button id="load-time">Change</button>
-            <button id="animate-time">1 day in 24 seconds</button>
         </div>
     </div>
 <?php } ?>

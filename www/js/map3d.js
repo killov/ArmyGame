@@ -1,19 +1,34 @@
 function Mapa(map){
     var p = Mapa.prototype;
 
+    /**
+     * Map settings
+     * @type {Object}
+     */
     p.settings = {
         parentElement: $("#back"),
+        showDebugPanel: true,
         backgroundPlane: null
     };
 
+    /**
+     * Loaded (rendered) blocks.
+     * @type {Array}
+     */
     p.loadedBlocks = [];
+
+    /**
+     * Coordinates of block in the middle of screen.
+     * @type {[number, number]}
+     */
+    p.actualBlock = null;
 
 
     this.map = map;
     
     //Startování mapy, [x,y] výchozí pozice
     this.init = function(x,y){
-        init2();
+        p.init2();
         clicking();
         animate();
         cameraCron();
@@ -21,7 +36,7 @@ function Mapa(map){
     
     //Mapa se vycentruje na pole [x,y]
     this.map.pozice = function(x,y){
-        
+        p.centerMapToCoors(x, y);
     };
     
     //Bloky která se mají překreslit
@@ -106,7 +121,7 @@ function Mapa(map){
 
     // BASE
 
-    function init2() {
+    p.init2 = function() {
         var ws = p.settings.parentElement.width(),
             hs = p.settings.parentElement.height();
 
@@ -126,12 +141,10 @@ function Mapa(map){
 
         // stats
 
-        stats = new Stats();
-        stats.domElement.style.position = 'absolute';
-        stats.domElement.style.top = '50px';
-        stats.domElement.style.left = '260px';
-        stats.domElement.style.zIndex = 0;
-        document.body.appendChild(stats.domElement);
+        if (p.settings.showDebugPanel) {
+            debuggerBar();
+        }
+
 
         //camera
         camera = new THREE.OrthographicCamera(
@@ -179,9 +192,18 @@ function Mapa(map){
         makeBackground();
 
         window.addEventListener('resize', onWindowResize, false);
-    }
+    };
 
     function debuggerBar() {
+
+        stats = new Stats();
+        stats.domElement.style.position = 'absolute';
+        stats.domElement.style.top = '50px';
+        stats.domElement.style.left = '260px';
+        stats.domElement.style.zIndex = 0;
+        document.body.appendChild(stats.domElement);
+
+        $(".stats").show();
 
         // own controls
         $('#shadowsOff').click(function () {
@@ -260,8 +282,13 @@ function Mapa(map){
             animateBorders(time);
             waterAnimation(time);
         }
+
+        if (p.settings.showDebugPanel) {
+            makeStats(); // debugPanel
+            stats.update(); // FPS meter
+        }
+
         if (mapOn) {
-            //makeStats();
             //fixLight();
         } else {
             camera.position.x = camPosition.x;
@@ -274,12 +301,8 @@ function Mapa(map){
         }
 
         //TWEEN.update(time);
-
-        stats.update();
-
         controls.update();
         //camera.updateProjectionMatrix();
-
         render();
     }
 
@@ -457,7 +480,7 @@ function Mapa(map){
         scene.add(dirLight);
     }
 
-    // ANIMATION
+    // *ANIMATION*
 
     function animateBorders(time){
         myLines.position.y = Math.sin(time*0.002)/8 - 1.5;
@@ -465,8 +488,6 @@ function Mapa(map){
 
     function waterAnimation(t) {
         waterMaterial.uniforms.time.value = t * 0.0030;
-        //this.ms_Water.material.uniforms.time.value += 1.0 / 60.0;
-
     }
 
     function forestWind(t){
@@ -504,7 +525,6 @@ function Mapa(map){
         raycaster.setFromCamera(mouse, camera);
         var intersects = raycaster.intersectObjects(groundList);
         if (intersects.length > 0) {
-            console.log(intersects[0].point);
             calculateCoords(intersects[0].point);
         }
     }
@@ -524,6 +544,32 @@ function Mapa(map){
             }
         }
     }
+
+    /**
+     * Centers map to coordinates
+     * @param x
+     * @param y
+     */
+    p.centerMapToCoors = function (x, y) {
+        var actualCoors = {x: 0, y: 0},
+            difference = {x: 0, y: 0},
+            intersects;
+
+        raycaster.setFromCamera({x: 0, y: 0}, camera);
+        intersects = raycaster.intersectObjects([p.settings.backgroundPlane]);
+        if (intersects[0]) {
+            actualCoors.x = Math.floor((intersects[0].point.x + 2.5) / 5);
+            actualCoors.y = Math.floor((intersects[0].point.y + 1.5) / 5);
+            difference.x = (x - actualCoors.x) * 5;
+            difference.y = (y - actualCoors.y) * 5;
+            camera.position.x += difference.x;
+            camera.position.z -= difference.y;
+            controls.target.x += difference.x;
+            controls.target.z -= difference.y;
+            controls.update();
+            // todo: fix rotations
+        }
+    };
 
     function zoomTo() {
         mapOn = false;
@@ -572,9 +618,15 @@ function Mapa(map){
 
     // MAINTENANCE
 
+    /**
+     * Delete block from Map
+     * TODO: implementation
+     * @param x
+     * @param y
+     */
     function hideBlock(x, y) {
-        scene.remove(groundList.x.y);
-        scene.update();
+        //scene.remove(groundList.x.y);
+        //scene.update();
     }
 
     function onWindowResize() {
@@ -589,13 +641,16 @@ function Mapa(map){
         renderer.setSize(w, h);
     }
 
+    /**
+     * Fix controls and camera position if needed.
+     */
     function cameraCron() {
         setInterval(function () {
             var targetPosition = controls.target,
-                cameraPosition;
-
-            if (controls.target.y != 0) {
                 cameraPosition = camera.position;
+
+            // fix controls target
+            if (controls.target.y != 0) {
                 var k = cameraPosition.y / (cameraPosition.y - targetPosition.y);
 
                 controls.target.x = cameraPosition.x - k * (cameraPosition.x - targetPosition.x);
@@ -605,18 +660,25 @@ function Mapa(map){
                 controls.update();
             }
 
-            var actualBlock = {
+            if (cameraPosition.y < 100) {
+                camera.position.x += cameraPosition.x - targetPosition.x;
+                camera.position.y += cameraPosition.y - targetPosition.y;
+                camera.position.z += cameraPosition.z - targetPosition.z;
+            }
+
+            //
+            p.actualBlock = {
                 x: Math.floor((targetPosition.x + 2.5) / 50),
                 z: Math.floor((-targetPosition.z + 1.5) / 50)
             };
 
-            checkVisibleBlock(actualBlock);
+            checkVisibleBlock(p.actualBlock);
         }, 200);
         setInterval(checkBlocks,1000);
     }
 
     /**
-     * Check if all wanted blocks are loaded.
+     * Check if wanted block is loaded.
      * @param {Object} actualBlock
      */
     function checkVisibleBlock(actualBlock) {
@@ -628,6 +690,9 @@ function Mapa(map){
         }
     }
 
+    /**
+     * Compute all visible blocks
+     */
     function checkBlocks() {
         var intersects,
             xl,
