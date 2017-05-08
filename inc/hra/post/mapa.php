@@ -29,12 +29,8 @@ if($mapa){
                 $data[$b[0]][$b[1]][] = $a;
             }
             $data[$b[0]][$b[1]][] = $verze[$b[0]][$b[1]];
-        }else{
-            $data[$b[0]][$b[1]][] = [];
         }
-
-    }
-    
+    }  
     echo json_encode([$data,$map->nactistatyjmena($staty)]);
 }
 

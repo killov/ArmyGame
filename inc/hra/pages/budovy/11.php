@@ -8,7 +8,7 @@ if($vyzkum){
             if($s["typ"] == 4){
                 $d = false;
                 $c = $s["cas"];
-                $h = "<td class=\"odpocet\" t=\"".$s["dokonceni"]."\">".cas($s["cas"]-time())."</td>";
+                $h = "<td class=\"odpocet2\" t=\"".$s["cas"]."\">".cas($s["cas"]-time())."</td>";
                 $x = 1;
                 echo "<tr><td>".$lang_jednotky[$s["jednotka"]-1]." (Vyzkum)</td>".$h."<td>".Date("d.m.Y H:i:s", $s["cas"])."</td></tr>";
             }else{
@@ -75,7 +75,7 @@ for($key=5;$key<=8;$key++){
             echo "<span class=\"bunka cas\">".cas($mesto->jednotky_vyzkum_cas($key,$mesto->data["b10"]))."</span></td><td>";
             if($mesto->jednotky_vyzkum_pozadavky($key,$user)){
                 if($surovina1 <= $mesto->surovina1 && $surovina2 <= $mesto->surovina2 && $surovina3 <= $mesto->surovina3 && $surovina4 <= $mesto->surovina4){
-                    echo "<a href=\"#\" class=\"postav\" onclick=\"jednotky_vyzkum(".$key.");return false\">".$lang[109]."</a>";
+                    echo "<a href=\"#\" class=\"postav\" onclick=\"game.jednotky_vyzkum(".$key.");return false\">".$lang[109]."</a>";
                 }else{
                     
                 }
@@ -84,8 +84,9 @@ for($key=5;$key<=8;$key++){
             }
         }else{
             echo "</td><td colspan=2>".$lang[107];
-        }
-        echo "</td>";
+        } 
+        echo "</td></tr>";
+
     }else{
         ?>
             
@@ -114,13 +115,8 @@ for($key=5;$key<=8;$key++){
             
                 <input type="submit">
                 </form>
-                
-            
-        <?php
-     }
-    echo "</td></tr>";
-    ?>
-           <script type="text/javascript">
+            </td></tr>
+        <script type="text/javascript">
                     game.formular_upload("#rek<?=$key?>","index.php?post=jednotky_stavba",function(data){
                         game.page_refresh();
                         game.data_load();
@@ -137,8 +133,12 @@ for($key=5;$key<=8;$key++){
                         }
                         game.jednotky(<?=$key?>,<?=$surovina1?>,<?=$surovina2?>,<?=$surovina3?>,<?=$surovina4?>,<?=$mesto->jednotky_vyzkum_cas($key,$mesto->data["b10"])?>,<?=$hodnoty["jednotky"][$key]["spotreba"]?>);
                     });
-                </script>     
-                <?php
+                </script>         
+            
+        <?php
+     }
+    
+
 
 }
 echo "</table>";

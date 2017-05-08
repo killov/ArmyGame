@@ -313,7 +313,7 @@ $hodnoty = array(
                 
             ],
             "vyzkum_pozadavky_vyzkum" => [
-                
+                1 => 1
             ],
             "surovina1" => 0,
             "surovina2" => 100,

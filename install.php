@@ -177,22 +177,7 @@ if($pocet != 0){
             $y--;
     }
 }
-info("Kreslim obrazky:");
-$map = new Mapa();
-$image = imagecreatefrompng($dir.$cfg["imagemap"]);
-for($y=19;$y>=-20;$y--){
-    for($x=-20;$x<=19;$x++){
-        if(!file_exists($dir."www/mapacache/".$x."_".$y."_0.jpg")){
-            $mapa = $map->nacti2([[$x,$y]]);         
-            $map->rendermap($image,$mapa,$x,$y,0,$dir);
-            
-            echo "X";
-        }else{
-            echo 0;
-        }
-    }
-    echo "\n";
-}
+
 
 $db->query("SELECT COUNT(*) as `pocet` FROM `mapa_bloky`",[]);
 $pocet = $db->data[0]["pocet"];
@@ -207,6 +192,25 @@ if($pocet==0){
         }
     }
     $db->multi_insert("mapa_bloky", $ins);
+}
+
+info("Kreslim obrazky:");
+
+$map = new Mapa();
+$verze = $map->nacti_verze_all();
+$image = imagecreatefrompng($dir.$cfg["imagemap"]);
+for($y=19;$y>=-20;$y--){
+    for($x=-20;$x<=19;$x++){
+        if(!file_exists($dir."www/mapacache/".$x."_".$y."_".$verze[$x][$y].".jpg")){
+            $mapa = $map->nacti2([[$x,$y]]);         
+            $map->rendermap($image,$mapa,$x,$y,$verze[$x][$y],$dir);
+            
+            echo "X";
+        }else{
+            echo 0;
+        }
+    }
+    echo "\n";
 }
 
 

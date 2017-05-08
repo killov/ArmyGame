@@ -34,7 +34,9 @@ class Db{
             }
             $sql = vsprintf($sql,$args);
         }
-        Tracy\Debugger::barDump($sql);
+        if(class_exists("Tracy\Debugger")){
+            Tracy\Debugger::barDump($sql);
+        }
         if($query = $this->db->query($sql)){
             if($b){
                 if($query->num_rows > 0){
@@ -59,6 +61,9 @@ class Db{
         $p = implode(",",$p);
         $v = implode(",",$v);
         $this->db->query("INSERT INTO `".$table."`(".$p.") VALUES (".$v.")");
+        if(class_exists("Tracy\Debugger")){
+            Tracy\Debugger::barDump("INSERT INTO `".$table."`(".$p.") VALUES (".$v.")");
+        }
         //echo "INSERT INTO `".$table."`(".$p.") VALUES (".$v.")";
         return $this->db->insert_id;
     }
@@ -79,6 +84,9 @@ class Db{
         $p = implode(",",$p);
         $d = implode(",",$d);
         $this->db->query("INSERT INTO `".$table."`(".$p.") VALUES ".$d);
+        if(class_exists("Tracy\Debugger")){
+            Tracy\Debugger::barDump("INSERT INTO `".$table."`(".$p.") VALUES ".$d);
+        }
     }
 
     public function update($table,$id,$arr){
@@ -110,10 +118,16 @@ class Db{
         }
         $this->db->query("UPDATE `".$table."` SET ".implode(",",$m)." WHERE id IN (".implode(",",array_keys($arr)).")");        
         //echo "UPDATE `".$table."` SET ".implode(",",$m)." WHERE id IN (".implode(",",array_keys($arr)).")";
+        if(class_exists("Tracy\Debugger")){
+            Tracy\Debugger::barDump("UPDATE `".$table."` SET ".implode(",",$m)." WHERE id IN (".implode(",",array_keys($arr)).")");
+        }
     }
     
     public function multi_delete($table,$keys){
         $this->retry();
         $this->db->query("DELETE FROM `".$table."` WHERE id IN (".implode(",",$keys).")"); 
+        if(class_exists("Tracy\Debugger")){
+            Tracy\Debugger::barDump("DELETE FROM `".$table."` WHERE id IN (".implode(",",$keys).")");
+        }
     }
 }

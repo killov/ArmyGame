@@ -1,3 +1,3 @@
 <?php
 $map = new Mapa;
-print_r($map->nactistatyjmena([3,5]));
+print_r($map->nacti_verze_all()[0][0]);

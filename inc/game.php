@@ -259,6 +259,11 @@
         var game = new Game();
         $(function () {
             game.dir = "<?=$cfg["dir"]?>";
+            game.lang = <?=json_encode([
+                "game" => $lang,
+                "jednotky" => $lang_jednotky,
+                "vyzkum" => $lang_vyzkum
+            ])?>;
             game.mesto.surovina1 = <?=$mesto->surovina1?>;
             game.mesto.surovina1_p = <?=$mesto->data["surovina1_produkce"]?>;
             game.mesto.surovina2 = <?=$mesto->surovina2?>;
@@ -271,6 +276,7 @@
             game.mesto.id = <?=$mesto->data["id"]?>;
             game.mesto.x = <?=$mesto->data["x"]?>;
             game.mesto.y = <?=$mesto->data["y"]?>;
+            game.mesto.jednotky = <?=json_encode($mesto->jednotky())?>;
             game.stat = <?=$user->data["stat"]?>;
             game.wsUri = "ws://<?=$cfg["wsexhost"] . ":" . $cfg["wsport"]?>/";
 
@@ -549,7 +555,17 @@
         </div>
     </div>
     <div id="cont" class="jednotky">
-
+        <form>
+            <table>
+                <?php for($i = 1;$i<=8;$i++){ ?>
+                <tr>
+                    <td><?=$lang_jednotky[$i-1]?></td>
+                    <td><input id="pj<?=$i?>" size="5"></td>
+                    <td><a href="#" id="pjk<?=$i?>"><?=$mesto->data["j".$i]?></a></td>
+                </tr>
+                <?php } ?>
+            </table>
+        </form>
     </div>
 </div>
 

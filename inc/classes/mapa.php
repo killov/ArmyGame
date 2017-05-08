@@ -65,6 +65,19 @@ class Mapa extends Base{
 	}
     }
     
+    function nacti_verze_all(){
+        $this->db->query("SELECT * FROM `mapa_bloky`");
+        if(!$this->db->data){
+            return false;
+        }else{
+            $data = array();
+            foreach($this->db->data as $p){
+                $data[$p["x"]][$p["y"]] = $p["verze"];
+            }
+            return $data;
+	}
+    }
+    
     function nacti2($c){
 	$sql = "";
 	$k = [];

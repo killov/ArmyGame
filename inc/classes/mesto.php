@@ -601,6 +601,14 @@ class Mesto extends Base{
         return false;
     }
     
+    public function jednotky(){
+        $j = [];
+        for($i=1;$i<=8;$i++){
+            $j[$i] = intval($this->data["j".$i]);
+        }
+        return $j;
+    }
+    
     public function refresh_time(){
         $mesto = $this->data["id"];
 	$this->db->query("SELECT `cas` FROM `akce` WHERE `mesto` = %s ORDER BY `cas` ASC LIMIT 1",[$mesto]);
@@ -613,9 +621,8 @@ class Mesto extends Base{
     }
     
     public function dostupnost_surovin($surovina){
- 
         $max = 0;
-        $min = 999999999999;
+        $min = INF;
         for($i=1;$i<=4;$i++){
             if($surovina[$i-1] == 0) 
                 continue;

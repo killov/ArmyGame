@@ -12,7 +12,7 @@ if($vyzkum){
     <script type="text/javascript">
         game.timelooppage = function(time){
             var t = Math.round(time/1000);
-            $(".odpocet2").each(function(){
+            $(".odpocet").each(function(){
                 var $this = $(this);
                 var zb = $this.attr("t") - t;
                 if(zb>=0){
@@ -20,13 +20,6 @@ if($vyzkum){
                 }else{
                     game.data_load();
                     game.page_refresh();
-                }
-            });
-            $(".odpocet").each(function(){
-                var $this = $(this);
-                var zb = $this.attr("t") - t;
-                if(zb>=0){
-                    $this.html(cas(zb));
                 }
             });
         };

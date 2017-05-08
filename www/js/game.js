@@ -12,9 +12,10 @@ function Game(){
         surovina2_p: 0,
         surovina3_p: 0,
         surovina4_p: 0,
-        sklad: 0
+        sklad: 0,
+        jednotky: []
     };
-    
+    this.lang = {};
     this.stat = 0;    
     this.dir = "";
     this.url = "";
@@ -24,6 +25,7 @@ function Game(){
     this.wsUri = "";
     this.ws;
     this.rtime;
+    
     this.faq_load = function(x){
         if(!this.faq){
             $("#faq").fadeIn(500);
@@ -210,6 +212,7 @@ function Game(){
             self.mesto.surovina3_p = json["surovina3_produkce"];
             self.mesto.surovina4_p = json["surovina4_produkce"];
             self.mesto.sklad = json["sklad"];
+            self.mesto.jednotky = json["jednotky"];
             $("#surovina0").text(penize.toString());
             $("#surovina1").text(self.mesto.surovina1.toString());
             $("#surovina2").text(self.mesto.surovina2.toString());
@@ -222,7 +225,22 @@ function Game(){
             $("#sklad").text(self.mesto.sklad.toString());
             $("#jednotky").html(json["jednotky"]);
             self.rtime = setTimeout(function(){self.data_load();}, json["refresh"]*1000);
+            self.renderJednotky();
         }});
+    };
+    
+    this.renderJednotky = function(){
+        var str = "";
+        for (var i = 1; i <= 8; i++) {
+            if (this.mesto.jednotky[i]) {
+                str += "<tr><td>"+this.lang.jednotky[i-1]+"</td><td>"+this.mesto.jednotky[i]+"</td></tr>";
+            }
+        }
+        if(str == ""){
+            str = "<tr><td>Žádné</td></tr>";
+        }
+        str = "<table>"+str+"</table>";
+        $("#jednotky").html(str);
     };
     
     this.produkce = function(){
