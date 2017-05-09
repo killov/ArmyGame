@@ -25,33 +25,34 @@ function Mapa(map){
 
 
     this.map = map;
-    
+
     //Startování mapy, [x,y] výchozí pozice
     this.init = function(x,y){
         p.init2();
         clicking();
         animate();
         cameraCron();
+        p.centerMapToCoors(x, y);
     };
-    
+
     //Mapa se vycentruje na pole [x,y]
     this.map.pozice = function(x,y){
         p.centerMapToCoors(x, y);
     };
-    
+
     //Bloky která se mají překreslit
     //bloky - seznam bloků [[x1,y1],[x2,y2],...,[xn,yn]]
     this.map.obnovit = function(bloky){
-        
+
     };
-    
+
     //Vykreslení cesty
     //počátek - pole [x,y]
     //cesta - seznam polí [[x1,y1],[x2,y2],...,[xn,yn]]
     this.map.renderCesta = function(pocatek,cesta){
-        
+
     };
-    
+
     //funkce
     //arg1 - seznam bloků, které chci načíst
     //arg2 - callback, provede se na každém bloku
@@ -76,23 +77,23 @@ function Mapa(map){
         //                                              9 - jméno hráče
         //[x,y] - souřadnice bloku                
     });
-    
+
     //získání jednoho pole
     this.map.getPole(5,5);
-    
+
     //získání jména státu
     //arg1 - id státu
     this.map.getStat(5);
-    
+
     //id aktuálního města
     this.map.game.mesto.id;
-    
+
     //id aktuálního státu
     this.map.game.stat;
-    
+
     //zobrazení náhledu aktivního města
     this.map.game.page_go("mesto");
-    
+
     //zobrazení políčka s id 5
     this.map.game.page_go("mestoinfo/5");
 
@@ -555,11 +556,11 @@ function Mapa(map){
             difference = {x: 0, y: 0},
             intersects;
 
-        raycaster.setFromCamera({x: 0, y: 0}, camera);
+        raycaster.setFromCamera(new THREE.Vector2(0, 0), camera);
         intersects = raycaster.intersectObjects([p.settings.backgroundPlane]);
         if (intersects[0]) {
             actualCoors.x = Math.floor((intersects[0].point.x + 2.5) / 5);
-            actualCoors.y = Math.floor((intersects[0].point.y + 1.5) / 5);
+            actualCoors.y = Math.floor((intersects[0].point.z - 1) / -5);
             difference.x = (x - actualCoors.x) * 5;
             difference.y = (y - actualCoors.y) * 5;
             camera.position.x += difference.x;
@@ -567,7 +568,6 @@ function Mapa(map){
             controls.target.x += difference.x;
             controls.target.z -= difference.y;
             controls.update();
-            // todo: fix rotations
         }
     };
 
@@ -674,7 +674,7 @@ function Mapa(map){
 
             checkVisibleBlock(p.actualBlock);
         }, 200);
-        setInterval(checkBlocks,1000);
+        setInterval(checkBlocks,500);
     }
 
     /**
@@ -695,40 +695,39 @@ function Mapa(map){
      */
     function checkBlocks() {
         var intersects,
+            x = [],
+            y = [],
             xl,
             xr,
             yt,
             yb,
-            toLoad = [];
+            toLoad = [],
+            loadRation = 1.2;
 
-        raycaster.setFromCamera({x: -1, y: 1}, camera);
+        raycaster.setFromCamera({x: -loadRation, y: loadRation}, camera);
         intersects = raycaster.intersectObjects([p.settings.backgroundPlane]);
         if (intersects[0]) {
-            xl = Math.floor((intersects[0].point.x + 2.5) / 50);
-            yt = Math.floor((intersects[0].point.y + 1.5) / 50);
+            x.push(Math.floor((intersects[0].point.x + 2.5) / 50));
+            y.push(Math.floor((intersects[0].point.z + 1.5) / -50));
 
-            raycaster.setFromCamera({x: 1, y: 1}, camera);
+            raycaster.setFromCamera({x: loadRation, y: loadRation}, camera);
             intersects = raycaster.intersectObjects([p.settings.backgroundPlane]);
-            xr = Math.floor((intersects[0].point.x + 2.5) / 50);
-            if (yt < Math.floor((intersects[0].point.y + 1.5) / 50)) {
-                yt = Math.floor((intersects[0].point.y + 1.5) / 50);
-            }
+            x.push(Math.floor((intersects[0].point.x + 2.5) / 50));
+            y.push(Math.floor((intersects[0].point.z + 1.5) / -50));
 
-            raycaster.setFromCamera({x: 1, y: -1}, camera);
+            raycaster.setFromCamera({x: loadRation, y: -loadRation}, camera);
             intersects = raycaster.intersectObjects([p.settings.backgroundPlane]);
-            if (xr < Math.floor((intersects[0].point.x + 2.5) / 50)) {
-                xr = Math.floor((intersects[0].point.x + 2.5) / 50);
-            }
-            yb = Math.floor((intersects[0].point.y + 1.5) / 50);
+            x.push(Math.floor((intersects[0].point.x + 2.5) / 50));
+            y.push(Math.floor((intersects[0].point.z + 1.5) / -50));
 
-            raycaster.setFromCamera({x: 1, y: -1}, camera);
+            raycaster.setFromCamera({x: -loadRation, y: -loadRation}, camera);
             intersects = raycaster.intersectObjects([p.settings.backgroundPlane]);
-            if (xl > Math.floor((intersects[0].point.x + 2.5) / 50)) {
-                xl = Math.floor((intersects[0].point.x + 2.5) / 50);
-            }
-            if (yb > Math.floor((intersects[0].point.y + 1.5) / 50)) {
-                yb = Math.floor((intersects[0].point.y + 1.5) / 50);
-            }
+            x.push(Math.floor((intersects[0].point.x + 2.5) / 50));
+            y.push(Math.floor((intersects[0].point.z + 1.5) / -50));
+            xl = Math.min.apply(null, x);
+            xr = Math.max.apply(null, x);
+            yt = Math.max.apply(null, y);
+            yb = Math.min.apply(null, y);
 
             if (xl > xr) {
                 var a = xl;
@@ -762,10 +761,12 @@ function Mapa(map){
      */
     function makeBackground() {
         var backgroundGeo = new THREE.PlaneGeometry(10000, 10000, 1, 1);
-        var ground = new THREE.Mesh(backgroundGeo, new THREE.MeshBasicMaterial());
+        var material = new THREE.MeshBasicMaterial({color: 0xdd5555, visible: false});
+        var ground = new THREE.Mesh(backgroundGeo, material);
         ground.rotation.x = -Math.PI / 2;
-        ground.position.y = 0;
+        ground.position.y = -3;
         p.settings.backgroundPlane = ground;
+        scene.add(ground);
     }
 
     // MAP
