@@ -165,6 +165,9 @@
 		float rand(vec2 co){
             return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
         }
+		float rand2(vec2 co){
+            return fract(sin(dot(co.xy ,co.xy)) * 43758.0);
+        }
 		void main(){
 			float x = offset.x + offset.y;
 			x = x * 64.0;
@@ -172,10 +175,8 @@
 			mat3 mn = mat3(cos(-x), 0, -sin(-x), 0, 1, 0, sin(-x), 0, cos(-x));
 		    vNormal = mn * normal;
 			vec3 vPosition = m * position;
-			float koef = 0.2;
-            vPosition.y += koef * sin(time*(rand(position.xz) * 0.2));
-            vPosition.x += koef * sin(time*(rand(position.yz) * 0.2));
-            vPosition.z += koef * sin(time*(rand(position.yx) * 1.0));
+			float koef = 0.14;
+            vPosition.z += koef * sin(time*(rand2(position.yx) * 1.0));
 		    light2 = light;
 		    light2 = normalize(light);
 		    float d = clamp(dot(light2, vNormal), 0.0, 1.0);

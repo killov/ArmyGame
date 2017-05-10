@@ -1,4 +1,4 @@
-function Mapa(map){
+function Mapa(map) {
     var p = Mapa.prototype;
 
     /**
@@ -8,7 +8,8 @@ function Mapa(map){
     p.settings = {
         parentElement: $("#back"),
         showDebugPanel: true,
-        backgroundPlane: null
+        backgroundPlane: null,
+        defaultCoors: [0, 0]
     };
 
     /**
@@ -23,33 +24,35 @@ function Mapa(map){
      */
     p.actualBlock = null;
 
+    p.road = new THREE.Group();
 
     this.map = map;
 
     //Startování mapy, [x,y] výchozí pozice
-    this.init = function(x,y){
+    this.init = function (x, y) {
         p.init2();
         clicking();
         animate();
         cameraCron();
         p.centerMapToCoors(x, y);
+        p.settings.defaultCoors = [x, y];
     };
 
     //Mapa se vycentruje na pole [x,y]
-    this.map.pozice = function(x,y){
+    this.map.pozice = function (x, y) {
         p.centerMapToCoors(x, y);
     };
 
     //Bloky která se mají překreslit
     //bloky - seznam bloků [[x1,y1],[x2,y2],...,[xn,yn]]
-    this.map.obnovit = function(bloky){
+    this.map.obnovit = function (bloky) {
 
     };
 
     //Vykreslení cesty
     //počátek - pole [x,y]
     //cesta - seznam polí [[x1,y1],[x2,y2],...,[xn,yn]]
-    this.map.renderCesta = function(pocatek,cesta){
+    this.map.renderCesta = function (pocatek, cesta) {
 
     };
 
@@ -57,7 +60,7 @@ function Mapa(map){
     //arg1 - seznam bloků, které chci načíst
     //arg2 - callback, provede se na každém bloku
 
-    this.map.load([[0,0],[1,1]],function(json,x,y){
+    this.map.load([[0, 0], [1, 1]], function (json, x, y) {
         //json - seznam políček v bloku, seřazené zleva od vrchu,
         //       každé políčko je seznam a obsahuje:    0 - souřadnice x
         //                                              1 - souřadnice y
@@ -79,7 +82,7 @@ function Mapa(map){
     });
 
     //získání jednoho pole
-    this.map.getPole(5,5);
+    this.map.getPole(5, 5);
 
     //získání jména státu
     //arg1 - id státu
@@ -100,8 +103,8 @@ function Mapa(map){
     // ALOUSH
 
     var toLoad = {
-        t1 : 'tt1_4',
-        t2 : 'tt2_7',
+        t1: 'tt1_10',
+        t2: 'tt2_9',
         cxs: 'cities/beta02_01_xs',
         cs: 'cities/beta02_01_s',
         cm: 'cities/beta02_01_m',
@@ -110,7 +113,7 @@ function Mapa(map){
     };
     var renderer, camera, scene, controls, dirLight, pointLight, h = new Date().getHours(), mapOn, camPosition, animation, animationBack;
     var loader, tt1i = [], tt2i = [], waterMaterial;
-    var groundGeo, groundList = [], blokx, bloky, actualRequest, blokHills, treesForInstance = [];
+    var groundGeo, groundList = [], blokx, bloky, actualRequest, blokHills, blockWater, blockForests, treesForInstance = [];
     mapOn = true;
     var mujStat = 23, stateLines, myLines, bigGrid, line, cityLights, cityLightsShown = false;
     var myStateColor, otherStateColor;
@@ -122,7 +125,7 @@ function Mapa(map){
 
     // BASE
 
-    p.init2 = function() {
+    p.init2 = function () {
         var ws = p.settings.parentElement.width(),
             hs = p.settings.parentElement.height();
 
@@ -141,7 +144,6 @@ function Mapa(map){
         p.settings.parentElement.append(renderer.domElement);
 
         // stats
-
         if (p.settings.showDebugPanel) {
             debuggerBar();
         }
@@ -250,8 +252,8 @@ function Mapa(map){
             scene.remove(hemiLight);
             makeLights();
             updateLighting();
-            setTimeout(function(){
-                testingAnimateTime( x + 1 );
+            setTimeout(function () {
+                testingAnimateTime(x + 1);
             }, 100);
         };
 
@@ -278,7 +280,7 @@ function Mapa(map){
     function animate(time) {
         requestAnimationFrame(animate);
 
-        if(camera.zoom > 0.2){
+        if (camera.zoom > 0.2) {
             forestWind(time);
             animateBorders(time);
             waterAnimation(time);
@@ -322,31 +324,31 @@ function Mapa(map){
     /**
      * Updating loader for 3d models
      */
-    function synchronizeLoader(){
+    function synchronizeLoader() {
         var percentage = Object.keys(models).length / Object.keys(toLoad).length * 100;
-        if(percentage == 100){
-            $('.bar .progress').animate({width: percentage+'%'}, 150);
+        if (percentage == 100) {
+            $('.bar .progress').animate({width: percentage + '%'}, 150);
             $('.loader').delay(200).fadeOut();
             //drawBlock(dotaz2);
             console.log("todo - load map");
-        } else{
-            $('.bar .progress').animate({width: percentage+'%'}, 150);
+        } else {
+            $('.bar .progress').animate({width: percentage + '%'}, 150);
         }
     }
 
     function loadModels() {
-        for(var model in toLoad){
-            if(!toLoad.hasOwnProperty(model)) continue;
+        for (var model in toLoad) {
+            if (!toLoad.hasOwnProperty(model)) continue;
             loadModel(model, toLoad[model]);
         }
     }
 
-    function loadModel(key, name){
+    function loadModel(key, name) {
         loader = new THREE.ColladaLoader();
         loader.options.convertUpAxis = true;
         loader.load(
             // resource URL
-            '../models/'+name+'.dae',
+            '../models/' + name + '.dae',
             // Function when resource is loaded
             function (collada) {
                 models[key] = collada.scene.children[0].children[0];
@@ -365,8 +367,8 @@ function Mapa(map){
         //    }
         //}
         makeBlock(x, y);
-        makeForest(models.t1, [x, y]);
-        makeForest(models.t2, [x, y]);
+        makeForest(models.t1, [x, y], 1);
+        makeForest(models.t2, [x, y], 2);
         treesForInstance = [];
     }
 
@@ -382,28 +384,28 @@ function Mapa(map){
 
         // TODO: vars
 
-        var dirX = -6/15*h + 5.4;
-        if(h > 8 && h < 19){
+        var dirX = -6 / 15 * h + 5.4;
+        if (h > 8 && h < 19) {
             var hemiColor = new THREE.Color(1, 1, 1);
             var hemiIntensity = 0.5;
 
             var dirColor = new THREE.Color(1, 0.95, 0.9);
             var dirIntensity = 0.6;
-        } else if (h > 5 && h < 9){
+        } else if (h > 5 && h < 9) {
             // východ
             var hemiColor = new THREE.Color(1, 1, 0.5);
             var hemiIntensity = (h / 16) - 0.1;
 
             var dirColor = new THREE.Color(1, 0.95, 0.8);
             var dirIntensity = h / 12 - 0.1;
-        } else if(h > 18 && h < 23){
+        } else if (h > 18 && h < 23) {
             //západ
             var hemiColor = new THREE.Color(1, 1, 0.6);
             var hemiIntensity = (28 - h) / 16 - 0.05;
 
             var dirColor = new THREE.Color(1, 0.95, 0.8);
-            var dirIntensity = (28 - h)/ 12 - 0.05;
-        } else{
+            var dirIntensity = (28 - h) / 12 - 0.05;
+        } else {
             // noc
             var hemiColor = new THREE.Color(1, 1, 1);
             var hemiIntensity = 0.2;
@@ -425,38 +427,39 @@ function Mapa(map){
         dirLight.position.multiplyScalar(100);
         scene.add(dirLight);
         dirLight.castShadow = true;
-        dirLight.shadow.mapSize.width = 512;
-        dirLight.shadow.mapSize.height = 512;
+        dirLight.shadow.mapSize.width = 2048;
+        dirLight.shadow.mapSize.height = 2048;
 
-        var d = 50;
+        var d = 150;
+        console.log(dirLight.shadow);
         dirLight.shadow.camera.left = -d;
         dirLight.shadow.camera.right = d;
         dirLight.shadow.camera.top = d;
         dirLight.shadow.camera.bottom = -d;
 
         dirLight.shadow.camera.far = 2500;
-        dirLight.shadow.bias = -0.0003;
+        dirLight.shadow.bias = -0.0001;
 
     }
 
-    function updateLighting(){
+    function updateLighting() {
         var i;
 
         if (h > 20 && !cityLightsShown) {
             cityLightsShown = true;
             scene.add(cityLights);
-        } else if (h > 6 && h < 20 && cityLightsShown){
+        } else if (h > 6 && h < 20 && cityLightsShown) {
             cityLightsShown = false;
             scene.remove(cityLights);
         }
 
-        for(i = 0; i < tt1i.length; i++){
+        for (i = 0; i < tt1i.length; i++) {
             tt1i[i].material.uniforms.dirIntensity.value = dirLight.intensity;
             tt1i[i].material.uniforms.hemiIntensity.value = hemiLight.intensity;
             tt1i[i].material.uniforms.light.value = dirLight.position;
             tt1i[i].material.uniforms.dirColor.value = dirLight.color;
         }
-        for(i = 0; i < tt2i.length; i++){
+        for (i = 0; i < tt2i.length; i++) {
             tt2i[i].material.uniforms.dirIntensity.value = dirLight.intensity;
             tt2i[i].material.uniforms.hemiIntensity.value = hemiLight.intensity;
             tt2i[i].material.uniforms.light.value = dirLight.position;
@@ -483,19 +486,19 @@ function Mapa(map){
 
     // *ANIMATION*
 
-    function animateBorders(time){
-        myLines.position.y = Math.sin(time*0.002)/8 - 1.5;
+    function animateBorders(time) {
+        myLines.position.y = Math.sin(time * 0.002) / 8 - 1.5;
     }
 
     function waterAnimation(t) {
         waterMaterial.uniforms.time.value = t * 0.0030;
     }
 
-    function forestWind(t){
-        for(var i = 0; i < tt1i.length; i++){
+    function forestWind(t) {
+        for (var i = 0; i < tt1i.length; i++) {
             tt1i[i].material.uniforms.time.value = t * 0.0033;
         }
-        for(var i = 0; i < tt2i.length; i++){
+        for (var i = 0; i < tt2i.length; i++) {
             tt2i[i].material.uniforms.time.value = t * 0.0030;
         }
     }
@@ -534,14 +537,14 @@ function Mapa(map){
         var x, y, pole;
         x = Math.floor((point.x + 2.5) / 5);
         y = Math.floor((-point.z + 1.5) / 5);
-        pole = map.getPole(x,y);
+        pole = map.getPole(x, y);
 
         // city
         if (pole[2] == 1) {
-            if(map.game.mesto.id == pole[3]){
+            if (map.game.mesto.id == pole[3]) {
                 map.game.page_go("mesto");
-            }else{
-                map.game.page_go("mestoinfo/"+pole[3]);
+            } else {
+                map.game.page_go("mestoinfo/" + pole[3]);
             }
         }
     }
@@ -674,7 +677,7 @@ function Mapa(map){
 
             checkVisibleBlock(p.actualBlock);
         }, 200);
-        setInterval(checkBlocks,500);
+        setInterval(checkBlocks, 500);
     }
 
     /**
@@ -682,9 +685,11 @@ function Mapa(map){
      * @param {Object} actualBlock
      */
     function checkVisibleBlock(actualBlock) {
-        if ($.grep(p.loadedBlocks, function(n){return n.x == actualBlock.x && n.z == actualBlock.z}).length == 0) {
+        if ($.grep(p.loadedBlocks, function (n) {
+                return n.x == actualBlock.x && n.z == actualBlock.z
+            }).length == 0) {
             p.loadedBlocks.push(actualBlock);
-            map.load([[actualBlock.x, actualBlock.z]], function(json,x,y){
+            map.load([[actualBlock.x, actualBlock.z]], function (json, x, y) {
                 drawBlock(json, x, y);
             });
         }
@@ -742,14 +747,16 @@ function Mapa(map){
 
             for (var i = xl; i <= xr; i++) {
                 for (var j = yb; j <= yt; j++) {
-                    if ($.grep(p.loadedBlocks, function(n){return n.x == i && n.z == j}).length == 0) {
+                    if ($.grep(p.loadedBlocks, function (n) {
+                            return n.x == i && n.z == j
+                        }).length == 0) {
                         p.loadedBlocks.push({x: i, z: j});
                         toLoad.push([i, j]);
                     }
                 }
             }
             if (toLoad.length > 0) {
-                map.load(toLoad, function(json,x,y){
+                map.load(toLoad, function (json, x, y) {
                     drawBlock(json, x, y);
                 });
             }
@@ -780,14 +787,16 @@ function Mapa(map){
             if (potype == 1) {
                 placeVillage(el)
             } else if (potype == 2) {
+                //blockForests.push(rx * 1024 + ry);
                 //placeTree(el[0], el[1]);
             } else if (potype == 3) {
                 blokHills.push(rx * 1024 + ry);
                 buildHill(el, rx, ry);
             } else if (potype == 4) {
+                blockWater.push(rx * 1024 + ry);
                 makeWater(el, rx, ry);
             }
-            if(el[8]){
+            if (el[6]) {
                 makeLine(el);
             }
         }
@@ -795,16 +804,16 @@ function Mapa(map){
 
     // MODEL - GROUND
 
-    function makeGrid(){
+    function makeGrid() {
         var mgi, line;
         var myBorderMaterial = new THREE.LineBasicMaterial({color: 0x010101, opacity: 0.15, transparent: true});
-        for(mgi = -20; mgi < 20; mgi++){
+        for (mgi = -20; mgi < 20; mgi++) {
             line = new THREE.Shape();
             line.moveTo(-1000, mgi * 50 + 2.5);
             line.lineTo(1000, mgi * 50 + 2.5);
             bigGrid.add(new THREE.Line(line.createPointsGeometry(), myBorderMaterial));
         }
-        for(mgi = -20; mgi < 20; mgi++){
+        for (mgi = -20; mgi < 20; mgi++) {
             line = new THREE.Shape();
             line.moveTo(mgi * 50 - 2.5, -1000);
             line.lineTo(mgi * 50 - 2.5, 1000);
@@ -822,6 +831,8 @@ function Mapa(map){
 
         // ukládání souřadnic hor, aby mohl být "fancované" :D
         blokHills = [];
+        blockWater = [];
+        blockForests = [];
 
         countTrees();
 
@@ -829,6 +840,7 @@ function Mapa(map){
         actualRequest.forEach(placeObject);
 
         fancyHills();
+        fancyLakes();
         colorHills();
 
         // materiál se bere z faces
@@ -858,7 +870,9 @@ function Mapa(map){
     function colorHills() {
         for (var i = 0; i < groundGeo.faces.length; i++) {
             var face = groundGeo.faces[i], ri = Math.floor(i / 1.9511);
-            if (groundGeo.vertices[ri].z < 0.1) {
+            if (groundGeo.vertices[ri].z < -0.5) {
+                face.color.setHex(0x518423);
+            } else if (groundGeo.vertices[ri].z < 0.1) {
                 face.color.setHex(0x72A645);
             } else if (groundGeo.vertices[ri].z > 2.5) {
                 face.color.setHex(0xABABAB);
@@ -895,7 +909,29 @@ function Mapa(map){
         rx = (input - ry) / 1024;
         rp = (ry * 164) - ((rx + 0) * 4) - 1 + 41;
         z = 1600 - rp;
-        if (haveBL(rx, ry) && haveL(rx, ry) && haveB(rx, ry)) {
+        if (haveL(rx, ry, blokHills)) {
+            sez[z - 1] = 1.2;
+            sez[z - 2] = 1.4;
+            sez[z - 3] = 1.2;
+            sez[z - 42] = 1;
+            sez[z - 43] = 1.2;
+            sez[z - 44] = 1;
+            sez[z + 38] = 1;
+            sez[z + 39] = 1.2;
+            sez[z + 40] = 1;
+        }
+        if (haveB(rx, ry, blokHills)) {
+            sez[z + 41] = 1.2;
+            sez[z + 82] = 1.4;
+            sez[z + 123] = 1.0;
+            sez[z + 83] = 1.2;
+            sez[z + 81] = 1.2;
+            sez[z + 40] = 1.0;
+            sez[z + 42] = 1.0;
+            sez[z + 122] = 1.0;
+            sez[z + 124] = 0.5;
+        }
+        if (haveBL(rx, ry, blokHills) && haveL(rx, ry, blokHills) && haveB(rx, ry, blokHills)) {
             sez[z - 1] = 1.3;
             sez[z - 2] = 1.3;
             sez[z - 3] = 1.3;
@@ -921,7 +957,7 @@ function Mapa(map){
             sez[z - 42] = 0.2;
             sez[z - 40] = 0.05;
             sez[z - 40] = 0.05;
-        } else if (haveL(rx, ry) && haveB(rx, ry)) {
+        } else if (haveL(rx, ry, blokHills) && haveB(rx, ry, blokHills)) {
             sez[z - 1] = 1.2;
             sez[z - 2] = 1.4;
             sez[z - 3] = 1.1;
@@ -941,26 +977,44 @@ function Mapa(map){
             sez[z + 42] = 1.0;
             sez[z + 122] = 1.0;
             sez[z + 124] = 1.0;
-        } else if (haveL(rx, ry)) {
-            sez[z - 1] = 1.2;
-            sez[z - 2] = 1.4;
-            sez[z - 3] = 1.2;
-            sez[z - 42] = 1;
-            sez[z - 43] = 1.2;
-            sez[z - 44] = 1;
-            sez[z + 38] = 1;
-            sez[z + 39] = 1.2;
-            sez[z + 40] = 1;
-        } else if (haveB(rx, ry)) {
-            sez[z + 41] = 1.2;
-            sez[z + 82] = 1.4;
-            sez[z + 123] = 1.0;
-            sez[z + 83] = 1.2;
-            sez[z + 81] = 1.2;
-            sez[z + 40] = 1.0;
-            sez[z + 42] = 1.0;
-            sez[z + 122] = 1.0;
-            sez[z + 124] = 0.5;
+        }
+        sez.forEach(editGround);
+    }
+
+    function fancyLakes() {
+        blockWater.forEach(fancyLake);
+    }
+
+    function fancyLake(input) {
+        var rx, ry, rp, z, sez = [];
+        ry = input % 1024;
+        rx = (input - ry) / 1024;
+        rp = (ry * 164) - ((rx + 0) * 4) - 1 + 41;
+        z = 1600 - rp;
+        if (haveL(rx, ry, blockWater)) {
+            sez[z - 1] = -1.2;
+            sez[z - 2] = -1.4;
+            sez[z - 3] = -1.2;
+            sez[z - 42] = -1;
+            sez[z - 43] = -1.2;
+            sez[z - 44] = -1;
+            sez[z + 38] = -1;
+            sez[z + 39] = -1.2;
+            sez[z + 40] = -1;
+        }
+        if (haveB(rx, ry, blockWater)) {
+            sez[z + 41] = -1.2;
+            sez[z + 82] = -1.4;
+            sez[z + 123] = -1.0;
+            sez[z + 83] = -1.2;
+            sez[z + 81] = -1.2;
+            sez[z + 40] = -1.0;
+            sez[z + 42] = -1.0;
+            sez[z + 122] = -1.0;
+            sez[z + 124] = -0.5;
+        }
+        if (haveBL(rx, ry, blockWater)) {
+            sez[z + 80] = -1;
         }
         sez.forEach(editGround);
     }
@@ -969,24 +1023,25 @@ function Mapa(map){
         groundGeo.vertices[i].z = v * (1.1 * (Math.random() + 0.9));
     }
 
-    function haveBL(rx, ry) {
-        return ($.inArray((rx - 1) * 1024 + (ry - 1), blokHills) > -1);
+    function haveBL(rx, ry, block) {
+        return ($.inArray((rx - 1) * 1024 + (ry - 1), block) > -1);
     }
 
-    function haveB(rx, ry) {
-        return ($.inArray(rx * 1024 + (ry - 1), blokHills) > -1);
+    function haveB(rx, ry, block) {
+        return ($.inArray(rx * 1024 + (ry - 1), block) > -1);
     }
 
-    function haveL(rx, ry) {
-        return ($.inArray((rx - 1) * 1024 + ry, blokHills) > -1);
+    function haveL(rx, ry, block) {
+        return ($.inArray((rx - 1) * 1024 + ry, block) > -1);
     }
 
     // MODEL - FOREST
 
-    function countTrees() {
+    function countTrees(type) {
         for (var i = 0; i < actualRequest.length; i++) {
             if (actualRequest[i][2] == 2) {
-                treesForInstance.push([actualRequest[i][0], actualRequest[i][1]]);
+                treesForInstance.push([actualRequest[i][0]+0.1, actualRequest[i][1]+0.1]);
+                //treesForInstance.push([actualRequest[i][0]-0.1, actualRequest[i][1]-0.1]);
             }
         }
     }
@@ -1009,13 +1064,13 @@ function Mapa(map){
         scene.add(mesh);
     }
 
-    function makeForest(tree, blockPosition) {
+    function makeForest(tree, blockPosition, type) {
         var object = tree;
         var vlength = object.geometry.vertices.length;
         var faces = object.geometry.faces;
         var cvertices = object.geometry.vertices;
         var flength = object.geometry.faces.length;
-        var instances = treesForInstance.length;
+        var instances = treesForInstance.length * 2;
         var material;
         //var instances = 2500;
 
@@ -1033,17 +1088,23 @@ function Mapa(map){
         // set colors
         var color = new THREE.BufferAttribute(new Float32Array(flength * 3 * 3), 3);
         var materials = object.material.materials;
-        for (var i = 0; i < flength; i++) {
-            color.setXYZ(i * 3, materials[faces[i].materialIndex].color.r, materials[faces[i].materialIndex].color.g,materials[faces[i].materialIndex].color.b);
-            color.setXYZ(i * 3 + 1, materials[faces[i].materialIndex].color.r, materials[faces[i].materialIndex].color.g,materials[faces[i].materialIndex].color.b);
-            color.setXYZ(i * 3 + 2, materials[faces[i].materialIndex].color.r, materials[faces[i].materialIndex].color.g,materials[faces[i].materialIndex].color.b);
+        for (i = 0; i < flength; i++) {
+            color.setXYZ(i * 3, materials[faces[i].materialIndex].color.r, materials[faces[i].materialIndex].color.g, materials[faces[i].materialIndex].color.b);
+            color.setXYZ(i * 3 + 1, materials[faces[i].materialIndex].color.r, materials[faces[i].materialIndex].color.g, materials[faces[i].materialIndex].color.b);
+            color.setXYZ(i * 3 + 2, materials[faces[i].materialIndex].color.r, materials[faces[i].materialIndex].color.g, materials[faces[i].materialIndex].color.b);
         }
         geometry.addAttribute('color', color);
 
         // set positions
         var offsets = new THREE.InstancedBufferAttribute(new Float32Array(instances * 3), 3, 1);
-        for (var i = 0, ul = (offsets.count); i < ul; i++) {
-            offsets.setXYZ(i,(treesForInstance[i][0] * 5) + 2 - (4 * Math.random()), -0.2 * Math.random() - 1.9, (-treesForInstance[i][1] * 5 ) + 2 - (4 * Math.random()));
+        var randomMultiplier = 1.5;
+        for (i = 0, ul = (offsets.count); i < ul; i++) {
+            offsets.setXYZ(i,
+                (treesForInstance[
+                    Math.floor(i/2)][0] * 5) + (type * 2.5 - 4) - (randomMultiplier * Math.random()) + randomMultiplier/2 - ((i%2 == 0) ? (type * 2 - 3)*2.5 : 0),
+                -0.2 * Math.random() - 1.9,
+                (-treesForInstance[
+                    Math.floor(i/2)][1] * 5 ) + (i%2 * 2.5 - 0.5) - (randomMultiplier * Math.random()) + randomMultiplier/2); // todo: random
         }
         geometry.addAttribute('offset', offsets);
 
@@ -1055,8 +1116,8 @@ function Mapa(map){
         material = new THREE.RawShaderMaterial({
             uniforms: {
                 light: {value: dirLight.position},
-                time : {value: Math.random()},
-                dirColor : {value: dirLight.color},
+                time: {value: Math.random()},
+                dirColor: {value: dirLight.color},
                 dirIntensity: {value: dirLight.intensity},
                 hemiIntensity: {value: hemiLight.intensity}
             },
@@ -1069,9 +1130,9 @@ function Mapa(map){
         var mesh = new THREE.Mesh(geometry, material);
         mesh.frustumCulled = false;
 
-        if(tree == models.t1){
+        if (tree == models.t1) {
             tt1i.push(mesh);
-        } else if(tree == models.t2){
+        } else if (tree == models.t2) {
             tt2i.push(mesh);
         }
         scene.add(mesh);
@@ -1079,12 +1140,12 @@ function Mapa(map){
 
     // MODEL - WATER
 
-    function makeWaterMaterial(){
+    function makeWaterMaterial() {
         waterMaterial = new THREE.RawShaderMaterial({
             uniforms: {
                 light: {value: dirLight.position},
-                time : {value: Math.random()},
-                dirColor : {value: dirLight.color},
+                time: {value: Math.random()},
+                dirColor: {value: dirLight.color},
                 dirIntensity: {value: dirLight.intensity},
                 hemiIntensity: {value: hemiLight.intensity}
             },
@@ -1105,7 +1166,7 @@ function Mapa(map){
         scene.add(ground);
     }
 
-    function makeWater(el, rx, ry){
+    function makeWater(el, rx, ry) {
         // todo: ?
         var rp = (ry * 164) - ((rx + 0) * 4) - 1 + 41;
         var z = 1600 - rp, sez = [];
@@ -1116,121 +1177,141 @@ function Mapa(map){
         sez[z - 41] = -1.1;
         sez[z + 42] = -0.5;
         sez[z - 42] = -0.5;
-        sez[z - 40] = -0.2;
-        sez[z - 40] = -0.2;
+        sez[z - 40] = -0.1;
+        sez[z + 40] = -0.1;
         sez.forEach(editGround);
         makeWaterBlock(rx, ry);
     }
 
     // MODEL - CITY / ZONE
 
-    function makeLine(el){
+    function makeLine(el) {
         var line = new THREE.Shape();
-        if(el[10] == 1){
+        if (el[6] == 1) {
             line.moveTo(2.45, 2.45);
             line.lineTo(2.45, -2.45);
         }
-        else if(el[10] == 2){
+        else if (el[6] == 2) {
             line.moveTo(2.45, 2.45);
             line.lineTo(-2.45, 2.45);
         }
-        else if(el[10] == 3){
+        else if (el[6] == 3) {
             line.moveTo(-2.45, 2.45);
             line.quadraticCurveTo(2.45, 2.45, 2.45, -2.45);
         }
-        else if(el[10] == 4){
-            line.moveTo(- 2.45,- 2.45);
-            line.lineTo(- 2.45, 2.45);
+        else if (el[6] == 4) {
+            line.moveTo(-2.45, -2.45);
+            line.lineTo(-2.45, 2.45);
         }
-        else if(el[10] == 5){
+        else if (el[6] == 5) {
             line.moveTo(0, 0);
             var e1 = el;
-            e1[10] = 1;
+            e1[6] = 1;
             makeLine(e1);
             var e2 = el;
-            e2[10] = 4;
+            e2[6] = 4;
             makeLine(e2);
         }
-        else if(el[10] == 6){
-            line.moveTo(-2.45,-2.45);
+        else if (el[6] == 6) {
+            line.moveTo(-2.45, -2.45);
             line.quadraticCurveTo(-2.45, 2.45, 2.45, 2.45);
         }
-        else if(el[10] == 7){
-            line.moveTo(-2.45,-2.45);
+        else if (el[6] == 7) {
+            line.moveTo(-2.45, -2.45);
             line.quadraticCurveTo(-2.45, 2.45, 0, 2.45);
             line.quadraticCurveTo(2.45, 2.45, 2.45, -2.45);
         }
-        else if(el[10] == 8){
-            line.moveTo(-2.45,-2.45);
-            line.lineTo(2.45,- 2.45);
+        else if (el[6] == 8) {
+            line.moveTo(-2.45, -2.45);
+            line.lineTo(2.45, -2.45);
         }
-        else if(el[10] == 9){
-            line.moveTo(-2.45,-2.45);
+        else if (el[6] == 9) {
+            line.moveTo(-2.45, -2.45);
             line.quadraticCurveTo(2.45, -2.45, 2.45, 2.45);
         }
-        else if(el[10] == 10){
+        else if (el[6] == 10) {
             line.moveTo(0, 0);
             var e1 = el;
-            e1[10] = 2;
+            e1[6] = 2;
             makeLine(e1);
             var e2 = el;
-            e2[10] = 8;
+            e2[6] = 8;
             makeLine(e2);
         }
-        else if(el[10] == 11){
-            line.moveTo(-2.45,-2.45);
+        else if (el[6] == 11) {
+            line.moveTo(-2.45, -2.45);
             line.quadraticCurveTo(2.45, -2.45, 2.45, 0);
             line.quadraticCurveTo(2.45, 2.45, -2.45, 2.45);
         }
-        else if(el[10] == 12){
-            line.moveTo(2.45,-2.45);
+        else if (el[6] == 12) {
+            line.moveTo(2.45, -2.45);
             line.quadraticCurveTo(-2.45, -2.45, -2.45, 2.45);
         }
-        else if(el[10] == 13){
-            line.moveTo(2.45,2.45);
+        else if (el[6] == 13) {
+            line.moveTo(2.45, 2.45);
             line.quadraticCurveTo(2.45, -2.45, 0, -2.45);
             line.quadraticCurveTo(-2.45, -2.45, -2.45, 2.45);
         }
-        else if(el[10] == 14){
-            line.moveTo(2.45,2.45);
+        else if (el[6] == 14) {
+            line.moveTo(2.45, 2.45);
             line.quadraticCurveTo(-2.45, 2.45, -2.45, 0);
             line.quadraticCurveTo(-2.45, -2.45, 2.45, -2.45);
         }
-        else if(el[10] == 15){
-            line.moveTo(0,2.45);
+        else if (el[6] == 15) {
+            line.moveTo(0, 2.45);
             line.quadraticCurveTo(2.45, 2.45, 2.45, 0);
             line.quadraticCurveTo(+2.45, -2.45, 0, -2.45);
             line.quadraticCurveTo(-2.45, -2.45, -2.45, 0);
             line.quadraticCurveTo(-2.45, 2.45, 0.04, 2.45);
         }
-        if(el[10] < 16 && el[10] != 0){
+        if (el[6] < 16 && el[6] != 0) {
             var points = line.createPointsGeometry();
-            if(el[8] == mujStat){
-                var myBorderMaterial = new THREE.LineBasicMaterial({color: h > 20 || h < 6 ? 0x050555 : 0x2222ee, opacity: 0.6, transparent: true});
+            if (el[8] == mujStat) {
+                var myBorderMaterial = new THREE.LineBasicMaterial({
+                    color: h > 20 || h < 6 ? 0x050555 : 0x2222ee,
+                    opacity: 0.6,
+                    transparent: true
+                });
                 var border = new THREE.Line(points, myBorderMaterial);
                 border.position.y = 0.1;
                 border.position.x = el[0] * 5;
                 border.position.z = -(el[1] * 5);
                 border.rotation.set(1.57, 0, 0);
                 myLines.add(border);
-                var shborder = new THREE.Line(points, new THREE.LineBasicMaterial({color: 0x2222bb, opacity: 0.4, transparent: true}));
+                var shborder = new THREE.Line(points, new THREE.LineBasicMaterial({
+                    color: 0x2222bb,
+                    opacity: 0.4,
+                    transparent: true
+                }));
                 shborder.position.x = el[0] * 5;
                 shborder.position.y = -0.05;
                 shborder.position.z = -(el[1] * 5);
                 shborder.rotation.set(1.57, 0, 0);
                 myLines.add(shborder);
-                var shborder = new THREE.Line(points, new THREE.LineBasicMaterial({color: 0x222222, opacity: 0.3, transparent: true}));
+                var shborder = new THREE.Line(points, new THREE.LineBasicMaterial({
+                    color: 0x222222,
+                    opacity: 0.3,
+                    transparent: true
+                }));
                 shborder.position.x = el[0] * 5;
                 shborder.position.y = -0.2;
                 shborder.position.z = -(el[1] * 5);
                 shborder.rotation.set(1.57, 0, 0);
                 myLines.add(shborder);
-            } else{
+            } else {
                 var intensity = h > 20 || h < 5 ? 0.5 : 1;
-                var enemyColor = new THREE.Color(1 * intensity, el[8]*51%21/51 * intensity, el[8]*51%21/51 * intensity);
-                var otherBorderMaterial = new THREE.LineBasicMaterial({color: enemyColor, opacity: 0.5, transparent: true});
+                var enemyColor = new THREE.Color(1 * intensity, el[8] * 51 % 21 / 51 * intensity, el[8] * 51 % 21 / 51 * intensity);
+                var otherBorderMaterial = new THREE.LineDashedMaterial({
+                    color: enemyColor,
+                    opacity: 0.7,
+                    transparent: true
+                });
                 var border = new THREE.Line(points, otherBorderMaterial);
-                var shborder = new THREE.Line(points, new THREE.LineBasicMaterial({color: 0x222222, opacity: 0.3, transparent: true}));
+                var shborder = new THREE.Line(points, new THREE.LineDashedMaterial({
+                    color: 0x222222,
+                    opacity: 0.3,
+                    transparent: true
+                }));
                 border.position.x = el[0] * 5;
                 border.position.z = -(el[1] * 5);
                 border.rotation.set(1.57, 0, 0);
@@ -1246,19 +1327,19 @@ function Mapa(map){
 
     function placeVillage(el) {
         var size = 'xl';
-        if(el[6] < 20){
+        if (el[6] < 20) {
             size = 'xs';
-        } else if(el[6] < 50){
+        } else if (el[6] < 50) {
             size = 's';
-        } else if(el[6] < 80){
+        } else if (el[6] < 80) {
             size = 'm';
-        } else if(el[6] < 115){
+        } else if (el[6] < 115) {
             size = 'l';
         }
-        var build = models['c'+size];
+        var build = models['c' + size];
         var materials = clone(build.material.materials);
         materials[2].shininess = 10;
-        if(el[8] == mujStat){
+        if (el[9] == mujStat) {
             materials[0] = myStateColor;
             materials[2] = myStateColor;
         } else {

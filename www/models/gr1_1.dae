@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 2.76.0 commit date:2015-09-30, commit time:16:05, hash:fb78f6d</authoring_tool>
+    </contributor>
+    <created>2017-05-10T01:38:00</created>
+    <modified>2017-05-10T01:38:00</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_images/>
+  <library_effects>
+    <effect id="travaMat-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.3075366 0.5173332 0.1037447 1</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.1289474 0.1289474 0.1289474 1</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">50</float>
+            </shininess>
+            <index_of_refraction>
+              <float sid="index_of_refraction">1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_materials>
+    <material id="travaMat-material" name="travaMat">
+      <instance_effect url="#travaMat-effect"/>
+    </material>
+  </library_materials>
+  <library_geometries>
+    <geometry id="Cube-mesh" name="Cube">
+      <mesh>
+        <source id="Cube-mesh-positions">
+          <float_array id="Cube-mesh-positions-array" count="72">-0.02722138 -0.05667871 -0.08240652 -0.01193141 -0.04441136 0.1200525 -0.02722138 0.05667871 -0.08240652 -0.01193141 0.04441136 0.1054627 0.02722138 -0.05667871 -0.08240652 0.03129959 -0.04441136 0.1200525 0.02722138 0.05667871 -0.08240652 0.03129959 0.04441136 0.1054627 -0.02529627 0.01108074 0.24858 -0.02438372 0.08079278 0.2381271 0.008433461 0.01108074 0.2515246 0.009346008 0.08079278 0.2410717 -0.1310568 0.1873446 -0.04670161 -0.1289817 0.1801686 0.1142442 -0.05388545 0.1408135 -0.04670161 -0.06851309 0.1437085 0.102646 -0.1534045 0.1502811 -0.04670161 -0.1467272 0.1507379 0.1142442 -0.07623326 0.10375 -0.04670161 -0.08625864 0.1142778 0.102646 -0.08325976 0.1425474 0.2159764 -0.04313981 0.117635 0.2088959 -0.09505742 0.1229812 0.217971 -0.05493748 0.09806871 0.2108904</float_array>
+          <technique_common>
+            <accessor source="#Cube-mesh-positions-array" count="24" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Cube-mesh-normals">
+          <float_array id="Cube-mesh-normals-array" count="114">-0.9967046 0 0.08111816 0 0.997875 0.06515866 0.9997958 -0.003275334 -0.01994067 0 -0.9981694 0.06048113 0 0 -1 0.9875379 0.01061761 0.1570226 -0.08600038 0.1488383 0.9851148 -0.9951936 -0.01587253 -0.09663188 0 -0.9212956 0.3888631 0.02290743 0.9646866 -0.2624023 0.5160603 0.8558791 0.03395366 0.8526235 -0.514097 0.09347438 -0.5128734 -0.8581367 0.02371335 -0.8558769 0.5160581 0.03404438 -0.5242769 -0.8512029 0.02423924 0.171869 -0.003205955 0.9851146 0.5256222 0.8472196 0.07707417 -0.723322 0.4861257 0.4903947 0.8129401 -0.4901697 -0.3144234 -0.9971411 0.01224756 0.07456338 0 0.997875 0.06515878 0.9997645 0 -0.02170246 0 -0.9981694 0.06048101 0.9866868 0.02636027 0.1604818 -0.08600193 0.1488384 0.9851146 -0.9956473 -9.41175e-4 -0.09319692 -0.03432112 -0.9188372 0.3931417 0 0.9658455 -0.2591189 0.5205052 0.8532835 0.0313341 0.8526234 -0.5140972 0.0934745 -0.5161875 -0.8560901 0.02569681 -0.8558759 0.5160596 0.0340442 0 0 -1 -0.5125735 -0.8582598 0.02566474 0.1718665 -0.003206014 0.9851151 0.5358433 0.8406755 0.07833707 -0.742127 0.4474725 0.4990149 0.8003501 -0.5140339 -0.3085598</float_array>
+          <technique_common>
+            <accessor source="#Cube-mesh-normals-array" count="38" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Cube-mesh-vertices">
+          <input semantic="POSITION" source="#Cube-mesh-positions"/>
+        </vertices>
+        <polylist material="travaMat-material" count="40">
+          <input semantic="VERTEX" source="#Cube-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Cube-mesh-normals" offset="1"/>
+          <vcount>3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 </vcount>
+          <p>3 0 2 0 0 0 3 1 7 1 6 1 7 2 5 2 4 2 1 3 0 3 4 3 2 4 6 4 4 4 7 5 11 5 10 5 10 6 11 6 9 6 3 7 1 7 8 7 1 8 5 8 10 8 3 9 9 9 11 9 15 10 14 10 12 10 15 11 19 11 18 11 19 12 17 12 16 12 13 13 12 13 16 13 14 4 18 4 16 4 19 14 23 14 22 14 23 15 21 15 20 15 15 16 13 16 20 16 17 17 22 17 20 17 19 18 15 18 21 18 1 19 3 19 0 19 2 20 3 20 6 20 6 21 7 21 4 21 5 22 1 22 4 22 0 4 2 4 4 4 5 23 7 23 10 23 8 24 10 24 9 24 9 25 3 25 8 25 8 26 1 26 10 26 7 27 3 27 11 27 13 28 15 28 12 28 14 29 15 29 18 29 18 30 19 30 16 30 17 31 13 31 16 31 12 32 14 32 16 32 17 33 19 33 22 33 22 34 23 34 20 34 21 35 15 35 20 35 13 36 17 36 20 36 23 37 19 37 21 37</p>
+        </polylist>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="Grass" name="Grass" type="NODE">
+        <matrix sid="transform">1 0 0 0 0 1 0 1.695318 0 0 1 0 0 0 0 1</matrix>
+        <translate sid="location">0 1.695318 0</translate>
+        <rotate sid="rotationZ">0 0 1 0</rotate>
+        <rotate sid="rotationY">0 1 0 0</rotate>
+        <rotate sid="rotationX">1 0 0 0</rotate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="#Cube-mesh" name="Grass">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="travaMat-material" target="#travaMat-material"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>
