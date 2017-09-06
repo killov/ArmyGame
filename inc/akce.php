@@ -55,7 +55,18 @@ if($b->db->data){
                 $m["cas"] = $r["cas"]+$r["delka"];
                 $akce->vloz($m);
             }
-            
+        }
+        if($r["typ"] == 6){
+            if($r["typ_jednotky"] == 1){
+                $p = new Podpory();
+                $p->vytvor($r["mesto"], $r["cil"], $r["j1"], $r["j2"], $r["j3"], $r["j4"], $r["j5"], $r["j6"], $r["j7"], $r["j8"]);
+                $m1 = new Mesto();
+                $m1->nacti($r["mesto"]);
+                $m1->suroviny_refresh($r["cas"]);
+                $m2 = new Mesto();
+                $m2->nacti($r["cil"]);
+                $m2->suroviny_refresh($r["cas"]);
+            }
         }
     }
 }

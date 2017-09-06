@@ -23,7 +23,7 @@ function login_load(x){
 
 function cas(time){
     var h,m,s;
-    h = Math.floor(time/3600);
+    h = Math.floor(time/3600)%24;
     m = Math.floor(time%3600/60);
     s = time%60;
     if(h<10){

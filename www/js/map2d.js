@@ -40,6 +40,10 @@ function Mapa(map){
         t.renderCesta(pocatek,cesta);
     };
     
+    this.map.deleteCesta = function(pocatek,cesta){
+        t.deleteCesta();
+    };
+    
     this.mapload();
     
     this.tahni = function(e){
@@ -381,7 +385,11 @@ function Mapa(map){
         }
         
         $("#map_svg").html(ct+'<path d="M'+(50+(pocatek[0]+200)*100)+','+(-50+(-pocatek[1]+190)*100)+' '+body+'" stroke="red" stroke-width="3" fill="none" />');           
-    }
+    };
+    
+    this.deleteCesta = function(){
+        $("#map_svg").html('');           
+    };
     
     
     $('#back').mousewheel(function (e) {

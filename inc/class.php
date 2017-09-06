@@ -27,6 +27,10 @@ function cas($s){
 }
 
 class Base{
+    /**
+     *
+     * @var Db
+     */
     public $db;
     function __construct() {
         global $cfg,$db;

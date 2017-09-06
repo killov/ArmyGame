@@ -32,7 +32,6 @@
         <menu>
             <li><a class="active" href="#" onclick="login_load('login');return false"><?php echo $lang[0]; ?></a></li>
             <li><a href="#" onclick="login_load('register');return false"><?php echo $lang[1]; ?></a></li>
-            <li><a href="#" onclick="login_load('changelog');return false">Changelog</a></li>
         </menu>
 
     </div>

@@ -4,6 +4,7 @@ function Game(){
     this.mesto = {
         x: 0,
         y: 0,
+        jmeno: "",
         surovina1: 0,
         surovina2: 0,
         surovina3: 0,
@@ -19,6 +20,7 @@ function Game(){
     this.stat = 0;    
     this.dir = "";
     this.url = "";
+    this.timeZone = 0;
     this.time_rozdil = 0;
     this.map = false;
     this.faq = false;
@@ -46,6 +48,7 @@ function Game(){
         this.ws_connect();
         this.mapControl = new Map(this);
         this.chat = new Chat(this);
+        this.sendUnits = new SendUnits(this);
         this.data_load();
     };
     
@@ -57,6 +60,7 @@ function Game(){
         var d = new Date();
         var time = this.time_rozdil+d.getTime();
         this.timelooppage(time);
+        this.sendUnits.timer(time);
         this.produkce();
     };
     
@@ -272,12 +276,11 @@ function Game(){
     
     this.jednotky_poslat = function(x){
         $.ajax({url: this.dir+"index.php?post=jednotky_poslat&id="+x, success: function(result){
-            $("#cont").show()
-                    .html(result);
+            $("#cont").show();
             $("#jed").hide();
         }});
     };
-
+    
     this.postav = function(x){
         var self = this;
         $.post(this.dir+"index.php?post=postav",{bid: x},function(){
@@ -378,14 +381,7 @@ function Game(){
     };
     
     this.cesta = function(x){
-        var self = this;
-        $.ajax({url: game.dir+"index.php?post=cesta&id="+x, success: function(result){
-            $("#cont").show()
-                    .html(result);
-            $("#jed").hide();
-            var cesta = JSON.parse(result);
-            self.mapControl.renderCesta([self.mesto.x,self.mesto.y], cesta);
-        }});
+        this.sendUnits.start(x);
     };
     
     

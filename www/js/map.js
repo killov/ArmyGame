@@ -62,4 +62,8 @@ function Map(game){
     this.renderCesta = function(){
         console.log("map.renderCesta callback is missing");
     };
+    
+    this.deleteCesta = function(){
+        console.log("map.deleteCesta callback is missing");
+    };
 }

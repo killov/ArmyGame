@@ -34,16 +34,16 @@
             
             $(function(){
                 $("#sur1").keyup(function(){
-                    trh.prepocet()
+                    trh.prepocet();
                 });
                 $("#sur2").keyup(function(){
-                    trh.prepocet()
+                    trh.prepocet();
                 });
                 $("#sur3").keyup(function(){
-                    trh.prepocet()
+                    trh.prepocet();
                 });
                 $("#sur4").keyup(function(){
-                    trh.prepocet()
+                    trh.prepocet();
                 });
                 game.formular_upload("#trhprodat","index.php?post=trh",function(data){
                     if(data[0] == 1)
@@ -72,14 +72,14 @@
         echo "<table class=\"prehled\">";
         foreach($transport as $t){           
             if($t["budova"] == 2){
-                echo "<tr><td>".$lang[131]." <span class=\"odpocet\" t=\"".$s["cas"]."\">".cas($t["cas"]-time())."</span></td>";
+                echo "<tr><td>".$lang[131]." <span class=\"odpocet\" t=\"".$t["cas"]."\">".cas($t["cas"]-time())."</span></td>";
                 echo "<td><span class=\"bunka surovina1\">".$t["surovina1"]."</span>
                     <span class=\"bunka surovina2\">".$t["surovina2"]."</span>
                     <span class=\"bunka surovina3\">".$t["surovina3"]."</span>
                     <span class=\"bunka surovina4\">".$t["surovina4"]."</span></td></tr>";
             }
             if($t["budova"] == 1){
-                echo "<tr><td>".$lang[132]." <span class=\"odpocet\" t=\"".$s["cas"]."\">".cas($t["cas"]-time())."</span>";
+                echo "<tr><td>".$lang[132]." <span class=\"odpocet\" t=\"".$t["cas"]."\">".cas($t["cas"]-time())."</span>";
                 echo "<td><span class=\"bunka surovina0\">".$t["surovina1"]."</span></td></tr>";
             }
         }

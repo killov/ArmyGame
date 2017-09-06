@@ -83,7 +83,7 @@ function Chat(game){
     }
     this.nacist = function(chat){
         var self = this;
-        $.post(this.game.dir+"index.php?post=chat",{id: chat, od: chatl[chat]},function(data){            
+        $.post(this.game.dir+"index.php?post=chat",{id: chat, od: this.chatl[chat]},function(data){            
             var d = JSON.parse(data);
             self.chatl[chat] = d[2];
             var lastelm = $("#mess"+chat+" div:first");

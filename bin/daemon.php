@@ -52,7 +52,6 @@ while(true){
                 }
                 else if($p["typ"] == 3){
                     $mapa = $map->nacti2([[$p["x"],$p["y"]]]);   
-                    echo count($mapa);
                     $v = $map->nacti_verze([[$p["x"],$p["y"]]]);
                     $v = $v[$p["x"]][$p["y"]];
                     $map->rendermap($image,$mapa,$p["x"],$p["y"],$v+1,$dir);

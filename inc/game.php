@@ -14,6 +14,7 @@
     <script type="text/javascript" src="<?= $cfg["dir"] ?>js/game.js"></script>
     <script type="text/javascript" src="<?= $cfg["dir"] ?>js/chat.js"></script>
     <script type="text/javascript" src="<?= $cfg["dir"] ?>js/map.js"></script>
+    <script type="text/javascript" src="<?= $cfg["dir"] ?>js/sendUnits.js"></script>
     <?php if ($cfg["map"] == 1) { ?>
         <script type="text/javascript" src="<?= $cfg["dir"] ?>js/map2d.js"></script>
     <?php }else{ ?>
@@ -265,6 +266,7 @@
                 "jednotky" => $lang_jednotky,
                 "vyzkum" => $lang_vyzkum
             ])?>;
+            game.timeZone = <?=(new DateTime())->getOffset()?>;
             game.mesto.surovina1 = <?=$mesto->surovina1?>;
             game.mesto.surovina1_p = <?=$mesto->data["surovina1_produkce"]?>;
             game.mesto.surovina2 = <?=$mesto->surovina2?>;
@@ -277,12 +279,14 @@
             game.mesto.id = <?=$mesto->data["id"]?>;
             game.mesto.x = <?=$mesto->data["x"]?>;
             game.mesto.y = <?=$mesto->data["y"]?>;
+            game.mesto.jmeno = "<?=htmlspecialchars($mesto->data["jmeno"])?>";
             game.mesto.jednotky = <?=json_encode($mesto->jednotky())?>;
             game.stat = <?=$user->data["stat"]?>;
             game.wsUri = "ws://<?=$cfg["wsexhost"] . ":" . $cfg["wsport"]?>/";
 
 
             game.init();
+            game.sendUnits.data = <?=json_encode($hodnoty["jednotky"])?>;
             new Mapa(game.mapControl).init(<?php echo $mesto->data["x"] . "," . $mesto->data["y"];?>);
         });
     </script>
@@ -538,7 +542,7 @@
 </div>
 <div id="levo">
     <div class="jednotky" id="jed">
-        <h2>Jednotky</h2>
+        <h2 onClick="game.page_go('jednotky')"><?=$lang[147]?></h2>
         <div id="jednotky">
             <?php
             if ($mesto->jednotky_e()) {
@@ -556,16 +560,31 @@
         </div>
     </div>
     <div id="cont" class="jednotky">
-        <form>
+        <h2 onClick="game.page_go('jednotky')"><?=$lang[137]?></h2>
+        <form id="su_form">
+            
+            <table>
+                <tr><td><?=$lang[25]?></td><td id="su_city"></td></tr>
+                <tr><td><?=$lang[32]?></td><td id="su_user"></td></tr>
+                <tr><td><?=$lang[89]?></td><td id="su_stat"></td></tr>
+                <tr><td><?=$lang[138]?></td><td id="su_distance"></td></tr>
+                <tr><td><?=$lang[139]?></td><td id="su_time"></td></tr>
+                <tr><td><?=$lang[80]?></td><td id="su_coming_time"></td></tr>
+                <tr><td><?=$lang[140]?></td><td id="su_capacity"></td></tr>
+            </table>
+            <select style="width: 100%" id="su_source">
+                <option value="0">Město</option>
+            </select>
             <table>
                 <?php for($i = 1;$i<=8;$i++){ ?>
                 <tr>
                     <td><?=$lang_jednotky[$i-1]?></td>
                     <td><input id="pj<?=$i?>" size="5"></td>
-                    <td><a href="#" id="pjk<?=$i?>"><?=$mesto->data["j".$i]?></a></td>
+                    <td><a href="#" id="pjk<?=$i?>" class="pjk" j="<?=$i?>"><?=$mesto->data["j".$i]?></a></td>
                 </tr>
                 <?php } ?>
             </table>
+            <input type="submit">
         </form>
     </div>
 </div>

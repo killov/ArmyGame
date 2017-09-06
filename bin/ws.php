@@ -30,18 +30,18 @@ function auth($hash){
 function napoj($id,$socket){
     global $users, $s_users;
     $users[$id][] = $socket;
-    $s_users[$socket] = $id;
+    $s_users[intval($socket)] = $id;
 }
 
 function odpoj($socket){
     global $users, $s_users;
     if(isset($s_users[$socket])){
-        $id = $s_users[$socket];
-        unset($s_users[$socket]);
+        $id = $s_users[intval($socket)];
+        unset($s_users[intval($socket)]);
         $s = array_search($socket, $users[$id]);
         unset($s_users[$id][$s]);
         if(isset($s_users[$id]) && !$s_users[$id]){
-            unset($s_users[$id]);
+            unset($s_users[intval($id)]);
         }
     }
 }
@@ -97,11 +97,11 @@ while (true) {
                         echo $received_text."\n";
 			if($rec = json_decode($received_text,true)){
                             
-                            if(isset($s_users[$changed_socket])){
+                            if(isset($s_users[intval($changed_socket)])){
                                 if(isset($rec["typ"])){
                                     if($rec["typ"] == "chat" && isset($rec["pro"]) && isset($rec["text"])){
                                         //echo $rec["text"]."\n";
-                                        send_message_user($s_users[$changed_socket], [
+                                        send_message_user($s_users[intval($changed_socket)], [
                                             "typ" => "chatme",
                                             "pro" => intval($rec["pro"]),
                                             "text" => $rec["text"],
@@ -109,11 +109,11 @@ while (true) {
                                         ]);
                                         send_message_user($rec["pro"], [
                                             "typ" => "chat",
-                                            "od" => intval($s_users[$changed_socket]),
+                                            "od" => intval($s_users[intval($changed_socket)]),
                                             "text" => $rec["text"],
                                             "time" => date("d.m.Y H:i:s",time())
                                         ]);
-                                        $chat->pridej($s_users[$changed_socket], $rec["pro"], $rec["text"]);
+                                        $chat->pridej($s_users[intval($changed_socket)], $rec["pro"], $rec["text"]);
                                     }
                                 }
                             }else if(in_array($changed_socket, $sv)){
