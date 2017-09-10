@@ -64,6 +64,11 @@ function Game(){
         this.produkce();
     };
     
+    this.getTime = function(){
+        var d = new Date();
+        return this.time_rozdil+d.getTime();
+    };
+    
     this.timelooppage = function(time){
         
     };
@@ -248,19 +253,19 @@ function Game(){
     };
     
     this.produkce = function(){
-        this.mesto.surovina1 = this.mesto.surovina1+this.mesto.surovina1_p/3600;
+        this.mesto.surovina1 = this.mesto.surovina1+this.mesto.surovina1_p/7200;
         if(this.mesto.surovina1>this.mesto.sklad){
             this.mesto.surovina1 = this.mesto.sklad;
         }
-        this.mesto.surovina2 = this.mesto.surovina2+this.mesto.surovina2_p/3600;			
+        this.mesto.surovina2 = this.mesto.surovina2+this.mesto.surovina2_p/7200;			
         if(this.mesto.surovina2>this.mesto.sklad){
             this.mesto.surovina2 = this.mesto.sklad;
         }
-        this.mesto.surovina3 = this.mesto.surovina3+this.mesto.surovina3_p/3600;
+        this.mesto.surovina3 = this.mesto.surovina3+this.mesto.surovina3_p/7200;
         if(this.mesto.surovina3>this.mesto.sklad){
             this.mesto.surovina3 = this.mesto.sklad;
         }
-        this.mesto.surovina4 = this.mesto.surovina4+this.mesto.surovina4_p/3600;
+        this.mesto.surovina4 = this.mesto.surovina4+this.mesto.surovina4_p/7200;
         if(this.mesto.surovina4>this.mesto.sklad){
             this.mesto.surovina4 = this.mesto.sklad;
         }

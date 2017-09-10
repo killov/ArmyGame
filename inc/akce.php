@@ -59,7 +59,7 @@ if($b->db->data){
         if($r["typ"] == 6){
             if($r["typ_jednotky"] == 1){
                 $p = new Podpory();
-                $p->vytvor($r["mesto"], $r["cil"], $r["j1"], $r["j2"], $r["j3"], $r["j4"], $r["j5"], $r["j6"], $r["j7"], $r["j8"]);
+                $p->vytvor($r["mesto"], $r["cil"], $r["j1"], $r["j2"], $r["j3"], $r["j4"], $r["j5"], $r["j6"], $r["j7"], $r["j8"], $r["surovina1"], $r["surovina2"], $r["surovina3"], $r["surovina4"]);
                 $m1 = new Mesto();
                 $m1->nacti($r["mesto"]);
                 $m1->suroviny_refresh($r["cas"]);
@@ -79,16 +79,28 @@ if($b->db->data){
         $m->data = $r;
         $m->zpr();
         
-        $jednotky = [1=>$m->data["j1"],$m->data["j2"],$m->data["j3"],$m->data["j4"]];
-        $j = array_search(max($jednotky), $jednotky);
-        $zabit = min(ceil(-$m->surovina4/$hodnoty["jednotky"][$j]["surovina4"]),$jednotky[$j]);
-        $m->data["j".$j] = $m->data["j".$j]-$zabit;
-        $m->nastav($r["id"], [
-            "j".$j=>$m->data["j".$j],
-            "smrt" => 0
-        ]);
-        $m->suroviny_refresh(time());
-        $m->suroviny_pricti($r["id"], 0, 0, 0, $zabit*$hodnoty["jednotky"][$j]["surovina4"]);
+        if($podpory = $m->jednotky_podpory_soucet()){
+            $jednotky = [1=>$podpory["j1"],$podpory["j2"],$podpory["j3"],$podpory["j4"]];
+            $j = array_search(max($jednotky), $jednotky);
+            $podpory = $m->jednotky_podpora_nejvic($j);      
+            $jednotky = [1=>$podpory["j1"],$podpory["j2"],$podpory["j3"],$podpory["j4"]];
+            $zabit = min(ceil(-$m->surovina4/$hodnoty["jednotky"][$j]["surovina4"]),$jednotky[$j]);
+            $podpory["j".$j] = $podpory["j".$j]-$zabit;
+            (new Podpory())->uprav($podpory["id"], ["j".$j=>$podpory["j".$j]]);
+            $m->suroviny_refresh(time());
+            $m->suroviny_pricti($r["id"], 0, 0, 0, $zabit*$hodnoty["jednotky"][$j]["surovina4"]);
+        }else{
+            $jednotky = [1=>$m->data["j1"],$m->data["j2"],$m->data["j3"],$m->data["j4"]];
+            $j = array_search(max($jednotky), $jednotky);
+            $zabit = min(ceil(-$m->surovina4/$hodnoty["jednotky"][$j]["surovina4"]),$jednotky[$j]);
+            $m->data["j".$j] = $m->data["j".$j]-$zabit;
+            $m->nastav($r["id"], [
+                "j".$j=>$m->data["j".$j],
+                "smrt" => 0
+            ]);
+            $m->suroviny_refresh(time());
+            $m->suroviny_pricti($r["id"], 0, 0, 0, $zabit*$hodnoty["jednotky"][$j]["surovina4"]);
+        }
     }
 }
 

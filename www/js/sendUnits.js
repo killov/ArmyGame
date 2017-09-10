@@ -7,7 +7,8 @@ function SendUnits(game){
     
     var self = this;
     
-    this.podpory;
+    this.rdy = false;
+    this.podpory = null;
     this.source = 0;
     
     this.start = function(target){
@@ -15,10 +16,9 @@ function SendUnits(game){
         $("#jed").hide();
         this.source = 0;
         this.getData(target);
-        
-        
+        this.getPodpory();     
         this.resetUnits();
-        this.getPodpory();
+        this.rdy = false;
     };
     
     this.getData = function(target){
@@ -32,6 +32,10 @@ function SendUnits(game){
                 self.game.mapControl.renderCesta([self.podpory[self.source].x,self.podpory[self.source].y], data.cesta);
             }
             self.drawTarget();
+            if(!self.rdy){
+                self.updateSource();
+                self.rdy = true;
+            }
         }});
     };
     
@@ -68,31 +72,38 @@ function SendUnits(game){
         }});
     };
     
-    this.updateSource = function(podpory){
-        var c = "<option value='0'>"+self.game.mesto.jmeno+" ("+self.game.mesto.x+"|"+self.game.mesto.y+")</option>";
-        for(var i in podpory){
-
-            c += "<option value='"+i+"'>"+podpory[i].jmeno+" ("+podpory[i].x+"|"+podpory[i].y+")</option>";
-        }
-        $("#su_source").html(c);
-        $("#su_source").change(function(){
+    this.updateSource = function(){
+        if(this.podpory){
+            var c = "<option value='0'>"+this.game.mesto.jmeno+" ("+this.game.mesto.x+"|"+this.game.mesto.y+")</option>";
+            for(var i in this.podpory){
+                if(this.target.id != this.podpory[i].kde){
+                     c += "<option value='"+i+"'>"+this.podpory[i].jmeno+" ("+this.podpory[i].x+"|"+this.podpory[i].y+")</option>";
+                }
+            }
+            $("#su_source").html(c);
+            
+        }     
+    };
+    
+    $("#su_source").change(function(){
         self.source = $(this).val();
         self.resetUnits();
         self.getData(self.target.id);
     });
-    };
     
     this.recalculate = function(){
         var nosnostPechoty = 0,
             infantry = 0;
             slowestUnit = 0,
             slowestVehicle = 0,
+            nosnost = 0,
             unit = false;
         for(var i in this.data){
             var info = this.data[i];
             var count = parseInt($("#pj"+i).val());
             count = isNaN(count) ? 0 : count;
             if(count > 0){
+                nosnost += info.nosnost*count;
                 if(i < 5){
                     infantry += count;
                     if(slowestUnit < info.rychlost){
@@ -117,6 +128,15 @@ function SendUnits(game){
             this.timer();
             $("#su_time").html("");
         }
+        var surovin = 0;
+        for(var i = 1; i<=4;i++){
+            var count = parseInt($("#su_sur"+i).val());
+            count = isNaN(count) ? 0 : count;
+            if(count > 0){
+                surovin += count;
+            }
+        }
+        $("#su_nosnost").html(surovin+"/"+nosnost);
     };
     
     this.timer = function(time){
@@ -156,18 +176,30 @@ function SendUnits(game){
             j6: $("#pj6").val(),
             j7: $("#pj7").val(),
             j8: $("#pj8").val(),
-            target: this.target.id
+            surovina1: $("#su_sur1").val(),
+            surovina2: $("#su_sur2").val(),
+            surovina3: $("#su_sur3").val(),
+            surovina4: $("#su_sur4").val(),
+            target: this.target.id,
+            source: this.source
         }, function(data){ 
             var json = JSON.parse(data);
             if(json[0] == 0){
                 self.cancel();
                 self.game.data_load();
+                self.rdy = false;
             }
         });
     };
     
     for(var i = 1;i<=8;i++){
         $("#pj"+i).keyup(function(){
+            self.recalculate();
+        });
+    }
+    
+    for(var i = 1;i<=4;i++){
+        $("#su_sur"+i).keyup(function(){
             self.recalculate();
         });
     }
@@ -181,12 +213,16 @@ function SendUnits(game){
     
     $(".pjk").click(function(){
         var j = $(this).attr("j");
-
         var input = $("#pj"+j);
-        if(parseInt(input.val()) === self.game.mesto.jednotky[j]){
+        if(self.source == 0){
+            var jed = self.game.mesto.jednotky[j];
+        }else{
+            var jed = self.podpory[self.source].j[j];
+        }
+        if(parseInt(input.val()) == jed){
             input.val("");
         }else{
-            input.val(self.game.mesto.jednotky[j].toString());
+            input.val(jed.toString());
         }
         self.recalculate();
         return false;

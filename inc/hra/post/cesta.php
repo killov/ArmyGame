@@ -9,7 +9,7 @@ if($source == 0){
 }else{
     $p = new Podpory();
     $podpora = $p->nacti($source, $mesto->data["id"]);
-    if(!$podpora){
+    if(!$podpora || $podpora["kde"] == $id){
         exit;
     }
     
@@ -35,6 +35,8 @@ if($m->nacti($id)){
     
     $return["cesta"] = $pohyb->cesta(intval($x1), intval($y1), intval($x2), intval($y2));
     
+    $distance = $return["cesta"][count($return["cesta"])-1][2];
+    
     $return["city"] = [
         "x" => intval($x2),
         "y" => intval($y2),
@@ -44,7 +46,7 @@ if($m->nacti($id)){
         "userjmeno" => htmlspecialchars($m->data["userjmeno"]),
         "stat" => intval($m->data["stat"]),
         "statjmeno" => htmlspecialchars($m->data["statjmeno"]),
-        "distance" => $pohyb->distance
+        "distance" => $distance
     ];
     
     echo json_encode($return);

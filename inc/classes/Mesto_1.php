@@ -609,8 +609,21 @@ class Mesto extends Base{
         return $this->db->data ? $this->db->data : [];
     }
     
+    public function jednotky_podpory_soucet(){
+        $this->db->query("SELECT sum(j1) as j1, sum(j2) as j2, sum(j3) as j3, sum(j4) as j4, sum(j5) as j5, sum(j6) as j6, sum(j7) as j7, sum(j8) as j8 FROM podpory WHERE kde = %s",[$this->data["id"]]);
+        if($this->jednotky_podpory()){
+            return $this->db->data[0];
+        }
+        return false;
+    }
+    
+    public function jednotky_podpora_nejvic($jednotka){
+        $this->db->query("SELECT * FROM `podpory` WHERE kde = %s ORDER BY j".$jednotka." DESC LIMIT 1", [$this->data["id"]]);
+        return $this->db->data[0];
+    }
+    
     public function jednotky_podpory_jinde(){
-        $this->db->query("SELECT podpory.id, podpory.kde, podpory.j1, podpory.j2, podpory.j3, podpory.j4, podpory.j5, podpory.j6, podpory.j7, podpory.j8, mesto.jmeno, mesto.x, mesto.y FROM podpory LEFT JOIN mesto ON podpory.kde = mesto.id WHERE mesto = %s",[$this->data["id"]]);
+        $this->db->query("SELECT podpory.id, podpory.kde, podpory.j1, podpory.j2, podpory.j3, podpory.j4, podpory.j5, podpory.j6, podpory.j7, podpory.j8, podpory.surovina1, podpory.surovina2, podpory.surovina3, podpory.surovina4, mesto.jmeno, mesto.x, mesto.y FROM podpory LEFT JOIN mesto ON podpory.kde = mesto.id WHERE mesto = %s",[$this->data["id"]]);
         $ret = [];
         if ($this->db->data){
             foreach ($this->db->data as $row) {
@@ -713,7 +726,7 @@ class Mesto extends Base{
         return true; 
     } 
     
-    public function jednotky_poslat($cil, $typ, $cesta, $j1, $j2, $j3, $j4, $j5, $j6, $j7, $j8){
+    public function jednotky_poslat($cil, $typ, $cesta, $j1, $j2, $j3, $j4, $j5, $j6, $j7, $j8, $surovina1, $surovina2, $surovina3, $surovina4){
         global $hodnoty;
         $p = new Pohyb();
         $m = new Mesto();
@@ -721,8 +734,7 @@ class Mesto extends Base{
             return 2;
         }
  
-        $c = $p->cesta(intval($this->data["x"]), intval($this->data["y"]), intval($m->data["x"]), intval($m->data["y"]));
-        $distance = array_pop($c)[2];
+        
         
         $j = [1 => $j1, $j2, $j3, $j4, $j5, $j6, $j7, $j8];
         
@@ -730,6 +742,7 @@ class Mesto extends Base{
         $slowestVehicle = 0;
         $nosnostPechoty = 0;
         $infantry = 0;
+        $nostnostSurovin = 0;
         
         $unit = false;
         for($i = 1;$i<=8;$i++){
@@ -738,6 +751,7 @@ class Mesto extends Base{
             $count = $count > intval($this->data["j".$i]) ? intval($this->data["j".$i]) : $count;
             $j[$i] = $count;
             if($count > 0){
+                $nostnostSurovin += $info["nosnost"]*$count;
                 if($i < 5){
                     $infantry += $count;
                     if($slowestUnit < $info["rychlost"]){
@@ -756,6 +770,19 @@ class Mesto extends Base{
         if(!$unit){
             return 1;
         }
+        
+        $surovina1 = $this->surovina1 < $surovina1 ? $this->surovina1 : $surovina1;
+        $surovina2 = $this->surovina2 < $surovina2 ? $this->surovina2 : $surovina2;
+        $surovina3 = $this->surovina3 < $surovina3 ? $this->surovina3 : $surovina3;
+        $surovina4 = $this->surovina4 < $surovina4 ? $this->surovina4 : $surovina4;
+        
+        if($surovina1 + $surovina2 + $surovina3 + $surovina4 > $nostnostSurovin){
+            return 3;
+        }
+        
+        $c = $p->cesta(intval($this->data["x"]), intval($this->data["y"]), intval($m->data["x"]), intval($m->data["y"]));
+        $distance = array_pop($c)[2];
+        
         $speed = ($nosnostPechoty >= $infantry) ? $slowestVehicle : $slowestUnit;
         
         $this->db->update("mesto", $this->data["id"], [
@@ -768,6 +795,10 @@ class Mesto extends Base{
             "j7" => $this->data["j7"] - $j[7],
             "j8" => $this->data["j8"] - $j[8]    
         ]);
+        
+        $this->suroviny_refresh(time());
+        
+        $this->suroviny_odecti($surovina1, $surovina2, $surovina3, $surovina4);
 
         $akce = $this->db->insert("akce",[
             "mesto" => $this->data["id"],
@@ -783,6 +814,10 @@ class Mesto extends Base{
             "j6" => $j[6],
             "j7" => $j[7],
             "j8" => $j[8],
+            "surovina1" => $surovina1,
+            "surovina2" => $surovina2,
+            "surovina3" => $surovina3,
+            "surovina4" => $surovina4
         ]);
         
         $pohyb = [];

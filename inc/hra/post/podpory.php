@@ -3,6 +3,7 @@ $podpory = $mesto->jednotky_podpory_jinde();
 $ret = [];
 foreach($podpory as $p){
     $ret[$p["id"]] = [
+        "kde" => $p["kde"],
         "jmeno" => $p["jmeno"],
         "x" => intval($p["x"]),
         "y" => intval($p["y"]),

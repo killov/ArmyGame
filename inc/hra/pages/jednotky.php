@@ -25,7 +25,7 @@ if($jednotky["prichozi"]){
     echo "<tr><th>".$lang[143]."</th><th>".$lang[79]."</th><th>".$lang[80]."</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>";
     foreach($jednotky["odchozi"] as $s){
         $h = "<td class=\"odpocet\" t=\"".$s["cas"]."\">".cas($s["cas"]-time())."</td><td>".Date("H:i:s", $s["cas"])."</td>";
-        echo "<tr><td>Podpora</td>".$h."<td>".$s["j1"]."</td><td>".$s["j2"]."</td><td>".$s["j3"]."</td><td>".$s["j4"]."</td><td>".$s["j5"]."</td><td>".$s["j6"]."</td><td>".$s["j7"]."</td><td>".$s["j8"]."</td></tr>";
+        echo "<tr><td>Podpora</td>".$h."<td>".$s["j1"]."</td><td>".$s["j2"]."</td><td>".$s["j3"]."</td><td>".$s["j4"]."</td><td>".$s["j5"]."</td><td>".$s["j6"]."</td><td>".$s["j7"]."</td><td>".$s["j8"]."</td><td>".$s["surovina1"]."</td><td>".$s["surovina2"]."</td><td>".$s["surovina3"]."</td><td>".$s["surovina4"]."</td></tr>";
     }
     echo "</table><br>";
     }
@@ -43,11 +43,11 @@ echo "</table>";
 
 
 echo "<br><table class=\"dorucene\">";
-echo "<tr><th>".$lang[146]."</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>";
+echo "<tr><th>".$lang[146]."</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th><img src='".$cfg["dir"]."svg/wall.svg' width='16'></th><th><img src='".$cfg["dir"]."svg/brick.svg' width='16'></th><th><img src='".$cfg["dir"]."svg/gasoline-pump.svg' width='16'></th><th><img src='".$cfg["dir"]."svg/hamburger.svg' width='16'></th></tr>";
 $podpory = $mesto->jednotky_podpory_jinde();
 
 foreach($podpory as $s){
-    echo "<tr><td><a href='#' h='mestoinfo/".$s["kde"]."' class='link'>".$s["jmeno"]."</a></td><td>".$s["j1"]."</td><td>".$s["j2"]."</td><td>".$s["j3"]."</td><td>".$s["j4"]."</td><td>".$s["j5"]."</td><td>".$s["j6"]."</td><td>".$s["j7"]."</td><td>".$s["j8"]."</td></tr>";
+    echo "<tr><td><a href='#' h='mestoinfo/".$s["kde"]."' class='link'>".$s["jmeno"]."</a></td><td>".$s["j1"]."</td><td>".$s["j2"]."</td><td>".$s["j3"]."</td><td>".$s["j4"]."</td><td>".$s["j5"]."</td><td>".$s["j6"]."</td><td>".$s["j7"]."</td><td>".$s["j8"]."</td><td>".$s["surovina1"]."</td><td>".$s["surovina2"]."</td><td>".$s["surovina3"]."</td><td>".$s["surovina4"]."</td></tr>";
 }
 
 echo "</table>";

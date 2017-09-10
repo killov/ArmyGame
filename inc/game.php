@@ -570,6 +570,7 @@
                 <tr><td><?=$lang[138]?></td><td id="su_distance"></td></tr>
                 <tr><td><?=$lang[139]?></td><td id="su_time"></td></tr>
                 <tr><td><?=$lang[80]?></td><td id="su_coming_time"></td></tr>
+                <tr><td><?=$lang[148]?></td><td id="su_nosnost"></td></tr>
                 <tr><td><?=$lang[140]?></td><td id="su_capacity"></td></tr>
             </table>
             <select style="width: 100%" id="su_source">
@@ -584,6 +585,26 @@
                 </tr>
                 <?php } ?>
             </table>
+            <table>
+                <tr>
+                    <th><img src="<?=$cfg["dir"]?>svg/wall.svg" width="20"></th>
+                    <th><img src="<?=$cfg["dir"]?>svg/brick.svg" width="20"></th>
+                </tr>
+                <tr>
+                    <th><input id="su_sur1" size="7"></th>
+                    <th><input id="su_sur2" size="7"></th>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <th><img src="<?=$cfg["dir"]?>svg/gasoline-pump.svg" width="20"></th>
+                    <th><img src="<?=$cfg["dir"]?>svg/hamburger.svg" width="20"></th>
+                </tr>
+                <tr>
+                    <th><input id="su_sur3" size="7"></th>
+                    <th><input id="su_sur4" size="7"></th>
+                </tr>
+            </table>       
             <input type="submit">
         </form>
     </div>

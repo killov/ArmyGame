@@ -39,7 +39,28 @@ class Pohyb extends Base{
         return sqrt(pow($x1-$x2,2)+pow($y1-$y2,2));
     }
     
-    public function cesta($x1,$y1,$x2,$y2){       
+    public function getFromCache($x1,$y1,$x2,$y2){
+        $this->db->query("SELECT * FROM cesta WHERE start_x = %s AND start_y = %s AND target_x = %s AND target_y = %s", [$x1, $y1, $x2, $y2]);
+        if($this->db->data){
+            return json_decode($this->db->data[0]["cesta"], false);
+        }
+        return false;
+    }
+    
+    public function saveToCache($x1,$y1,$x2,$y2, $cesta){
+        $this->db->insert("cesta", [
+            "start_x" => $x1,
+            "start_y" => $y1,
+            "target_x" => $x2,
+            "target_y" => $y2,
+            "cesta" => json_encode($cesta)
+        ]);
+    }
+    
+    public function cesta($x1,$y1,$x2,$y2){  
+        if($cache = $this->getFromCache($x1, $y1, $x2, $y2)){
+            return $cache;
+        }
         $this->projito = [];
         $this->nodes = [];
         $this->nodelist = [];
@@ -94,7 +115,9 @@ class Pohyb extends Base{
             if($x == $x1 && $y == $y1) break;
             $cesta[] = [$next[0],$next[1], $next[2]];
         }
-        return array_reverse($cesta);
+        $ret = array_reverse($cesta);
+        $this->saveToCache($x1, $y1, $x2, $y2, $ret);
+        return $ret;
     }
     
     public function cesticka($start,$arr){

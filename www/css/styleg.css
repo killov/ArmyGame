@@ -125,14 +125,20 @@ h3 {
     background: none;
     border-radius: 5px;
     background: rgba(255, 255, 255, 0.5);
+    font-size: 20px;
+    padding: 2px;
+    padding-top: 5px;
+    padding-left: 8px;
 }
 
 .jednotky table{
     width: 100%;
 }
-.jednotky td{
+
+.jednotky td, .jednotky th{
     background: rgba(255, 255, 255, 0.5);
     padding: 5px;
+    font-size: 14px;
 }
 
 h2>i.faq{

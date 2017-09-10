@@ -145,7 +145,8 @@
     "Ve městě",
     "Vlastní",
     "V jiných městech",
-    "Jednotky"
+    "Jednotky",
+    "Nosnost surovin"
 );
 $lang_budova = [
     "Hlavní budova",
@@ -173,8 +174,8 @@ $lang_jednotky = [
     "Speciální jednotka",
     "Špión",
     "Nákladní vozidlo",
+    "Obrněné vozidlo",
     "Trasportér",
-    "Tank",
-    "Jednotka8"
+    "Tank"
 ];
 ?>
