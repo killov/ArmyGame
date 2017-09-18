@@ -156,6 +156,18 @@ function SendUnits(game){
                 $("#pjk"+i).text(this.podpory[this.source].j[i].toString());
             }
         }
+        if(this.source == 0){
+            for(var i = 1;i<=4;i++){
+                $("#su_sur"+i).val("");
+            }  
+        }else{
+            $("#su_sur1").val(this.podpory[this.source].surovina1.toString());
+            $("#su_sur2").val(this.podpory[this.source].surovina2.toString());
+            $("#su_sur3").val(this.podpory[this.source].surovina3.toString());
+            $("#su_sur4").val(this.podpory[this.source].surovina4.toString());
+        }
+        
+        
         this.recalculate();
     };
     

@@ -19,12 +19,14 @@ if(!empty($_SESSION["userid"])){
     if(isset($_GET["odhlas"])){
 	session_destroy();
 	header("location: ./");
+        exit;
     }
     $user = new User();
     $user->nacti($_SESSION["userid"]);
     if(!$user->data){
         session_destroy();
         header("location: index.php");
+        exit;
     }
     $mesto = new Mesto();
     $mesto->nacti($user->data["mesto"]);
@@ -58,12 +60,7 @@ if(!empty($_SESSION["userid"])){
                 include "../inc/hra/pages/mesto.php"; 
             }
         }else{
-            if(isset($_GET["p"])){
-                $p = explode("/", $_GET["p"]);
-            }
-            if(!isset($p[0])){
-                $p[0] = "mesto";
-            }
+            $p = isset($_GET["p"]) ? explode("/", $_GET["p"]) : ["mesto"];
             include "../inc/game.php";
         }
     }else{
