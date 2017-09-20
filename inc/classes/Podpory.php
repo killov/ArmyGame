@@ -188,4 +188,16 @@ class Podpory extends Base{
     public function uprav($id,$data){
         $this->db->update("podpory", $id, $data);
     }
+    
+    public function podpory_clear($id){
+        $this->db->query("SELECT * FROM podpory WHERE j1 = 0 AND j2 = 0 AND j3 = 0 AND j4 = 0 AND j5 = 0 AND j6 = 0 AND j7 = 0 AND j8 = 0 AND id = %s",[$id]);
+        if($this->db->data){
+            foreach($this->db->data as $p){
+                $mesto = new Mesto();
+                $mesto->nacti($p["kde"]);
+                $mesto->suroviny_pricti($p["surovina1"],$p["surovina2"],$p["surovina3"],$p["surovina4"]);
+                $this->db->query("DELETE FROM podpory WHERE id = %s",[$id],false);
+            }
+        }
+    }
 }

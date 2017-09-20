@@ -1,11 +1,12 @@
 <h2><?=$lang[141];?></h2>
 
-
 <?php
 
 
 
 $jednotky = $mesto->jednotky_cesty();
+
+\Tracy\Debugger::barDump($jednotky);
 if($jednotky["prichozi"]){
     echo "<table class=\"dorucene\">";
     echo "<tr><th>".$lang[142]."</th><th>".$lang[79]."</th><th>".$lang[80]."</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>";
@@ -16,19 +17,15 @@ if($jednotky["prichozi"]){
     echo "</table><br>";
     }
     
-    
-    
-    
-    
  if($jednotky["odchozi"]){
     echo "<table class=\"dorucene\">";
-    echo "<tr><th>".$lang[143]."</th><th>".$lang[79]."</th><th>".$lang[80]."</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>";
+    echo "<tr><th>".$lang[143]."</th><th>".$lang[79]."</th><th>".$lang[80]."</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th><img src='".$cfg["dir"]."svg/wall.svg' width='16'></th><th><img src='".$cfg["dir"]."svg/brick.svg' width='16'></th><th><img src='".$cfg["dir"]."svg/gasoline-pump.svg' width='16'></th><th><img src='".$cfg["dir"]."svg/hamburger.svg' width='16'></th></tr>";
     foreach($jednotky["odchozi"] as $s){
         $h = "<td class=\"odpocet\" t=\"".$s["cas"]."\">".cas($s["cas"]-time())."</td><td>".Date("H:i:s", $s["cas"])."</td>";
         echo "<tr><td>Podpora</td>".$h."<td>".$s["j1"]."</td><td>".$s["j2"]."</td><td>".$s["j3"]."</td><td>".$s["j4"]."</td><td>".$s["j5"]."</td><td>".$s["j6"]."</td><td>".$s["j7"]."</td><td>".$s["j8"]."</td><td>".$s["surovina1"]."</td><td>".$s["surovina2"]."</td><td>".$s["surovina3"]."</td><td>".$s["surovina4"]."</td></tr>";
     }
     echo "</table><br>";
-    }
+}
 
 echo "<table class=\"dorucene\">";
 echo "<tr><th>".$lang[144]."</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>";
