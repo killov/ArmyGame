@@ -36,6 +36,7 @@ function Mapa(map) {
         cameraCron();
         p.centerMapToCoors(x, y);
         p.settings.defaultCoors = [x, y];
+        // todo: set user id and state
     };
 
     //Mapa se vycentruje na pole [x,y]
@@ -53,7 +54,10 @@ function Mapa(map) {
     //počátek - pole [x,y]
     //cesta - seznam polí [[x1,y1],[x2,y2],...,[xn,yn]]
     this.map.renderCesta = function (pocatek, cesta) {
-
+        debugger;
+    };
+    this.map.deleteCesta = function () {
+        // todo
     };
 
     //funkce
@@ -82,11 +86,11 @@ function Mapa(map) {
     });
 
     //získání jednoho pole
-    this.map.getPole(5, 5);
+    // this.map.getPole(5, 5);
 
     //získání jména státu
     //arg1 - id státu
-    this.map.getStat(5);
+    // this.map.getStat(5);
 
     //id aktuálního města
     this.map.game.mesto.id;
@@ -128,6 +132,8 @@ function Mapa(map) {
     p.init2 = function () {
         var ws = p.settings.parentElement.width(),
             hs = p.settings.parentElement.height();
+
+        this.dataGrid = new GridData();
 
         scene = new THREE.Scene();
         //scene.fog = new THREE.FogExp2(0xCCDAF0, 2.75, 2000);
@@ -198,7 +204,6 @@ function Mapa(map) {
     };
 
     function debuggerBar() {
-
         stats = new Stats();
         stats.domElement.style.position = 'absolute';
         stats.domElement.style.top = '50px';
@@ -260,6 +265,36 @@ function Mapa(map) {
         $('#animate-time').click(function () {
             testingAnimateTime(0);
         });
+    }
+
+    function GridData(p) {
+        p = GridData.prototype;
+
+        this.data = [];
+        /**
+         * Get data on specific chords
+         * @param {number} x
+         * @param {number} y
+         */
+        p.getDataOnChords = function (x, y) {
+            var found = null;
+
+            $.forEach(this.data, function (item) {
+                if (item.x === x && item.y === y) {
+                    found = item;
+                }
+            });
+
+            if (!found) {
+                found = {
+                    x: x,
+                    y: y,
+                    data: []
+                };
+                this.data.push(found);
+            }
+            return found;
+        }
     }
 
     /**
@@ -506,15 +541,24 @@ function Mapa(map) {
     // INTERACTION
 
     function clicking() {
-        var dragging = false;
-        $("canvas").mousedown(function () {
+        var dragging = false,
+            debouncer;
+
+        $("canvas").on("mousedown", function () {
+                clearTimeout(debouncer);
                 dragging = false;
             })
-            .mousemove(function () {
-                dragging = true;
+            .on("mousemove", function () {
+                if (dragging) return;
+                clearTimeout(debouncer);
+                debouncer = setTimeout(function () {
+                    dragging = true;
+                }, 250);
             })
             .mouseup(function (ev) {
                 var notClick = dragging;
+
+                clearTimeout(debouncer);
                 dragging = false;
                 if (!notClick) {
                     if (mapOn) {
@@ -757,7 +801,9 @@ function Mapa(map) {
             }
             if (toLoad.length > 0) {
                 map.load(toLoad, function (json, x, y) {
-                    drawBlock(json, x, y);
+                    if (Math.abs(x) < 20 && Math.abs(y) < 20) {
+                        drawBlock(json, x, y);
+                    }
                 });
             }
         }
@@ -768,7 +814,7 @@ function Mapa(map) {
      */
     function makeBackground() {
         var backgroundGeo = new THREE.PlaneGeometry(10000, 10000, 1, 1);
-        var material = new THREE.MeshBasicMaterial({color: 0xdd5555, visible: false});
+        var material = new THREE.MeshBasicMaterial({color: 0xdddddd, visible: false});
         var ground = new THREE.Mesh(backgroundGeo, material);
         ground.rotation.x = -Math.PI / 2;
         ground.position.y = -3;
@@ -1039,9 +1085,9 @@ function Mapa(map) {
 
     function countTrees(type) {
         for (var i = 0; i < actualRequest.length; i++) {
-            if (actualRequest[i][2] == 2) {
+            if (actualRequest[i][2] === 2) {
                 treesForInstance.push([actualRequest[i][0]+0.1, actualRequest[i][1]+0.1]);
-                //treesForInstance.push([actualRequest[i][0]-0.1, actualRequest[i][1]-0.1]);
+                // treesForInstance.push([actualRequest[i][0]-0.1, actualRequest[i][1]-0.1]);
             }
         }
     }
