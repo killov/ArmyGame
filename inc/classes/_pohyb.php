@@ -2,6 +2,7 @@
 
 class Pohyb extends Base{
     private $projito, $nodes, $mapa, $nodelist;
+    public $distance;
     public function __construct() {
         parent::__construct();
     }
@@ -38,10 +39,32 @@ class Pohyb extends Base{
         return sqrt(pow($x1-$x2,2)+pow($y1-$y2,2));
     }
     
-    public function cesta($x1,$y1,$x2,$y2){       
+    public function getFromCache($x1,$y1,$x2,$y2){
+        $this->db->query("SELECT * FROM cesta WHERE start_x = %s AND start_y = %s AND target_x = %s AND target_y = %s", [$x1, $y1, $x2, $y2]);
+        if($this->db->data){
+            return json_decode($this->db->data[0]["cesta"], false);
+        }
+        return false;
+    }
+    
+    public function saveToCache($x1,$y1,$x2,$y2, $cesta){
+        $this->db->insert("cesta", [
+            "start_x" => $x1,
+            "start_y" => $y1,
+            "target_x" => $x2,
+            "target_y" => $y2,
+            "cesta" => json_encode($cesta)
+        ]);
+    }
+    
+    public function cesta($x1,$y1,$x2,$y2){  
+        if($cache = $this->getFromCache($x1, $y1, $x2, $y2)){
+            return $cache;
+        }
         $this->projito = [];
         $this->nodes = [];
         $this->nodelist = [];
+        $this->distance = 0;
         
         $obejit = [[0,1,10],[0,-1,10],[1,0,10],[-1,0,10],[1,1,14],[1,-1,14],[-1,1,14],[-1,-1,14]];
         $mapa = new Mapa();
@@ -71,11 +94,11 @@ class Pohyb extends Base{
         $x = $x2;
         $y = $y2;
         $cesta = [];
-        $cesta[] = [$x,$y];
+        $cesta[] = [$x,$y, $g];
+        $this->distance = $g;
         while(true){
             $f = INF;
             $g = INF;
-            Tracy\Debugger::barDump($this);
             foreach($obejit as $o){
                 if(isset($this->projito[$x+$o[0]][$y+$o[1]])){
                     $node = $this->projito[$x+$o[0]][$y+$o[1]];
@@ -90,10 +113,11 @@ class Pohyb extends Base{
             $x = $next[0];
             $y = $next[1];
             if($x == $x1 && $y == $y1) break;
-            $cesta[] = [$next[0],$next[1]];
-            
+            $cesta[] = [$next[0],$next[1], $next[2]];
         }
-        return array_reverse($cesta);
+        $ret = array_reverse($cesta);
+        $this->saveToCache($x1, $y1, $x2, $y2, $ret);
+        return $ret;
     }
     
     public function cesticka($start,$arr){
@@ -105,5 +129,6 @@ class Pohyb extends Base{
         array_pop($ret);
         return $ret;
     }
+    
 }
 
