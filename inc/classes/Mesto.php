@@ -280,7 +280,7 @@ class Mesto extends Base{
 	$this->db->query("UPDATE `mesto` SET `surovina1` = `surovina1`-".$surovina1.", `surovina2` = `surovina2`-".$surovina2.", `surovina3` = `surovina3`-".$surovina3.", `surovina4` = `surovina4`-".$surovina4." WHERE `id` = '".$id."'",[],false);
     }
 
-    public function suroviny_pricti($id,$surovina1,$surovina2,$surovina3,$surovina4){
+    public function suroviny_pricti($surovina1,$surovina2,$surovina3,$surovina4){
         $id = $this->data["id"];
 	$this->db->query("UPDATE `mesto` SET `surovina1` = `surovina1`+".$surovina1.", `surovina2` = `surovina2`+".$surovina2.", `surovina3` = `surovina3`+".$surovina3.", `surovina4` = `surovina4`+".$surovina4." WHERE `id` = '".$id."'",[],false);
     }
@@ -655,6 +655,14 @@ class Mesto extends Base{
             }
         }
         return $ret;
+    }
+    
+    public function jednotky_cesty_soucet(){
+        $this->db->query("SELECT sum(j1) as j1, sum(j2) as j2, sum(j3) as j3, sum(j4) as j4, sum(j5) as j5, sum(j6) as j6, sum(j7) as j7, sum(j8) as j8 FROM akce WHERE typ = 6 AND mesto = %s",[$this->data["id"]]);
+        if($this->jednotky_moje_cesty()){
+            return $this->db->data[0];
+        }
+        return false;
     }
     
     public function jednotky_e(){

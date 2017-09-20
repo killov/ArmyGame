@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.14
--- http://www.phpmyadmin.net
+-- version 4.7.0
+-- https://www.phpmyadmin.net/
 --
 -- Počítač: 127.0.0.1
--- Vytvořeno: Pon 01. kvě 2017, 14:14
--- Verze serveru: 5.6.26
--- Verze PHP: 5.6.12
+-- Vytvořeno: Čtv 21. zář 2017, 00:45
+-- Verze serveru: 10.1.24-MariaDB
+-- Verze PHP: 7.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -26,20 +28,45 @@ SET time_zone = "+00:00";
 -- Struktura tabulky `akce`
 --
 
-CREATE TABLE IF NOT EXISTS `akce` (
+CREATE TABLE `akce` (
   `id` int(11) NOT NULL,
   `user` int(11) DEFAULT NULL,
   `mesto` int(11) DEFAULT NULL,
+  `cil` int(11) NOT NULL,
   `budova` int(11) DEFAULT NULL,
   `delka` int(11) DEFAULT NULL,
   `cas` int(11) DEFAULT NULL,
   `dokonceni` int(11) NOT NULL,
   `typ` int(11) DEFAULT NULL,
+  `typ_jednotky` int(11) NOT NULL,
   `obchodniku` int(11) DEFAULT NULL,
   `surovina1` int(11) DEFAULT NULL,
   `surovina2` int(11) DEFAULT NULL,
   `surovina3` int(11) DEFAULT NULL,
-  `surovina4` int(11) DEFAULT NULL
+  `surovina4` int(11) DEFAULT NULL,
+  `j1` int(11) NOT NULL,
+  `j2` int(11) NOT NULL,
+  `j3` int(11) NOT NULL,
+  `j4` int(11) NOT NULL,
+  `j5` int(11) NOT NULL,
+  `j6` int(11) NOT NULL,
+  `j7` int(11) NOT NULL,
+  `j8` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `cesta`
+--
+
+CREATE TABLE `cesta` (
+  `id` int(11) NOT NULL,
+  `start_x` int(11) NOT NULL,
+  `start_y` int(11) NOT NULL,
+  `target_x` int(11) NOT NULL,
+  `target_y` int(11) NOT NULL,
+  `cesta` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -48,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `akce` (
 -- Struktura tabulky `chat`
 --
 
-CREATE TABLE IF NOT EXISTS `chat` (
+CREATE TABLE `chat` (
   `id` int(11) NOT NULL,
   `u1` int(11) NOT NULL,
   `u2` int(11) NOT NULL,
@@ -62,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `chat` (
 -- Struktura tabulky `mapa`
 --
 
-CREATE TABLE IF NOT EXISTS `mapa` (
+CREATE TABLE `mapa` (
   `id` int(11) NOT NULL,
   `x` int(11) NOT NULL,
   `y` int(11) NOT NULL,
@@ -81,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `mapa` (
 -- Struktura tabulky `mapa_bloky`
 --
 
-CREATE TABLE IF NOT EXISTS `mapa_bloky` (
+CREATE TABLE `mapa_bloky` (
   `id` int(11) NOT NULL,
   `x` int(11) NOT NULL,
   `y` int(11) NOT NULL,
@@ -94,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `mapa_bloky` (
 -- Struktura tabulky `mesto`
 --
 
-CREATE TABLE IF NOT EXISTS `mesto` (
+CREATE TABLE `mesto` (
   `id` int(11) NOT NULL DEFAULT '0',
   `x` int(11) NOT NULL,
   `y` int(11) NOT NULL,
@@ -148,10 +175,48 @@ CREATE TABLE IF NOT EXISTS `mesto` (
 -- --------------------------------------------------------
 
 --
+-- Struktura tabulky `podpory`
+--
+
+CREATE TABLE `podpory` (
+  `id` int(11) NOT NULL,
+  `mesto` int(11) NOT NULL,
+  `kde` int(11) NOT NULL,
+  `j1` int(11) NOT NULL,
+  `j2` int(11) NOT NULL,
+  `j3` int(11) NOT NULL,
+  `j4` int(11) NOT NULL,
+  `j5` int(11) NOT NULL,
+  `j6` int(11) NOT NULL,
+  `j7` int(11) NOT NULL,
+  `j8` int(11) NOT NULL,
+  `surovina1` int(11) NOT NULL,
+  `surovina2` int(11) NOT NULL,
+  `surovina3` int(11) NOT NULL,
+  `surovina4` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `pohyb`
+--
+
+CREATE TABLE `pohyb` (
+  `id` int(11) NOT NULL,
+  `akce` int(11) NOT NULL,
+  `x` int(11) NOT NULL,
+  `y` int(11) NOT NULL,
+  `cas` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabulky `stat`
 --
 
-CREATE TABLE IF NOT EXISTS `stat` (
+CREATE TABLE `stat` (
   `id` int(11) NOT NULL,
   `jmeno` varchar(20) NOT NULL,
   `clenu` int(11) NOT NULL,
@@ -165,7 +230,7 @@ CREATE TABLE IF NOT EXISTS `stat` (
 -- Struktura tabulky `stat_pozvanky`
 --
 
-CREATE TABLE IF NOT EXISTS `stat_pozvanky` (
+CREATE TABLE `stat_pozvanky` (
   `id` int(11) NOT NULL,
   `stat` int(11) NOT NULL,
   `statjmeno` varchar(20) NOT NULL,
@@ -179,7 +244,7 @@ CREATE TABLE IF NOT EXISTS `stat_pozvanky` (
 -- Struktura tabulky `tasks`
 --
 
-CREATE TABLE IF NOT EXISTS `tasks` (
+CREATE TABLE `tasks` (
   `id` int(11) NOT NULL,
   `pro` int(11) NOT NULL,
   `typ` int(11) NOT NULL,
@@ -193,7 +258,7 @@ CREATE TABLE IF NOT EXISTS `tasks` (
 -- Struktura tabulky `users`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
+CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `jmeno` varchar(20) NOT NULL,
   `heslo` varchar(32) NOT NULL,
@@ -221,7 +286,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Struktura tabulky `uzi`
 --
 
-CREATE TABLE IF NOT EXISTS `uzi` (
+CREATE TABLE `uzi` (
   `dada` int(11) NOT NULL,
   `asad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -232,7 +297,7 @@ CREATE TABLE IF NOT EXISTS `uzi` (
 -- Struktura tabulky `ws_auth`
 --
 
-CREATE TABLE IF NOT EXISTS `ws_auth` (
+CREATE TABLE `ws_auth` (
   `id` int(11) NOT NULL,
   `user` int(11) NOT NULL,
   `hash` varchar(32) NOT NULL,
@@ -248,6 +313,16 @@ CREATE TABLE IF NOT EXISTS `ws_auth` (
 --
 ALTER TABLE `akce`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Klíče pro tabulku `cesta`
+--
+ALTER TABLE `cesta`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `start_x` (`start_x`),
+  ADD KEY `start_y` (`start_y`),
+  ADD KEY `target_x` (`target_x`),
+  ADD KEY `target_y` (`target_y`);
 
 --
 -- Klíče pro tabulku `chat`
@@ -278,6 +353,18 @@ ALTER TABLE `mapa_bloky`
 -- Klíče pro tabulku `mesto`
 --
 ALTER TABLE `mesto`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Klíče pro tabulku `podpory`
+--
+ALTER TABLE `podpory`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Klíče pro tabulku `pohyb`
+--
+ALTER TABLE `pohyb`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -318,22 +405,37 @@ ALTER TABLE `ws_auth`
 -- AUTO_INCREMENT pro tabulku `akce`
 --
 ALTER TABLE `akce`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT pro tabulku `cesta`
+--
+ALTER TABLE `cesta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT pro tabulku `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 --
 -- AUTO_INCREMENT pro tabulku `mapa`
 --
 ALTER TABLE `mapa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=160001;
 --
 -- AUTO_INCREMENT pro tabulku `mapa_bloky`
 --
 ALTER TABLE `mapa_bloky`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1601;
+--
+-- AUTO_INCREMENT pro tabulku `podpory`
+--
+ALTER TABLE `podpory`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+--
+-- AUTO_INCREMENT pro tabulku `pohyb`
+--
+ALTER TABLE `pohyb`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 --
 -- AUTO_INCREMENT pro tabulku `stat`
 --
@@ -348,17 +450,18 @@ ALTER TABLE `stat_pozvanky`
 -- AUTO_INCREMENT pro tabulku `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT pro tabulku `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pro tabulku `ws_auth`
 --
 ALTER TABLE `ws_auth`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
