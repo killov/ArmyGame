@@ -47,17 +47,29 @@ function Mapa(map) {
     //Bloky která se mají překreslit
     //bloky - seznam bloků [[x1,y1],[x2,y2],...,[xn,yn]]
     this.map.obnovit = function (bloky) {
+        var dataForBlock;
 
+        $.each(bloky, function (block) {
+            dataForBlock = p.gridData.getDataForBlock(block[0], block[1]);
+            $.each(dataForBlock.data, function (o) {
+                this.scene.delete(o); //delete object from scene
+            });
+            // todo: delete from loadedBlocks ?
+            this.drawBlock(block[0], block[1]); // load new blocks
+        });
     };
 
     //Vykreslení cesty
     //počátek - pole [x,y]
     //cesta - seznam polí [[x1,y1],[x2,y2],...,[xn,yn]]
     this.map.renderCesta = function (pocatek, cesta) {
-        debugger;
+        var fullPath = cesta;
+
+        fullPath.unshift(pocatek);
+        p.pathRender.makePath(fullPath);
     };
     this.map.deleteCesta = function () {
-        // todo
+        p.pathRender.deletePath();
     };
 
     //funkce
@@ -126,6 +138,134 @@ function Mapa(map) {
     var stats;
     var screenMultiplier = 100;
 
+    /**
+    * Class GridData
+    */
+    function GridData(p) {
+        p = GridData.prototype;
+
+        p.data = [];
+        /**
+         * Get data on specific chords
+         * @param {number} x
+         * @param {number} y
+         */
+        p.getDataForBlock = function (x, y) {
+            var found = null;
+
+            $.each(p.data, function (item) {
+                if (item.x === x && item.y === y) {
+                    found = item;
+                }
+            });
+
+            if (!found) {
+                found = {
+                    x: x,
+                    y: y,
+                    data: []
+                };
+                p.data.push(found);
+            }
+            return found;
+        }
+
+        /**
+         * Add data to specific block
+         * @param {number} x
+         * @param {number} y
+         * @param {Object} data
+         */
+        p.addDataToBlock = function (x, y, data) {
+            var blockData = p.getDataForBlock(x, y);
+
+            blockData.data.push(data);
+        }
+
+        /**
+         * Delete data for specific block
+         * @param {number} x
+         * @param {number} y
+         */
+        p.deleteBlock = function (x, y) {
+            var foundIndex = null;
+
+            $.each(p.data, function (item, index) {
+                if (item.x === x && item.y === y) {
+                    foundIndex = index;
+                }
+            });
+
+            if (foundIndex) {
+                p.data.splice(foundIndex, 1);
+            }
+
+        }
+    }
+
+    /**
+    * Class PathRender
+    */
+    function PathRender(p) {
+        p = PathRender.prototype;
+
+        p.data = [];
+
+        /**
+        * Draw path based on chords
+        * @param {array} path
+        */
+        p.makePath = function (path) {
+            var i = 0;
+
+            p.deletePath();
+
+            for (i; i < path.length - 1; i++) {
+                makeLine(path[i], path[i+1]);
+            }
+        }
+
+        p.deletePath = function () {
+            var i = 0;
+
+            for(i; i < p.data.length; i++) {
+                scene.remove(p.data[i]);
+            }
+        }
+
+        /**
+        * @param {[number, number]} from
+        * @param {[number, number]} to
+        */
+        function makeLine (from, to) {
+            var line = new THREE.Shape(),
+                points;
+
+            console.log(from, to);
+
+            line.moveTo(from[0] * 5, -from[1] * 5);
+            line.lineTo(to[0] * 5, -to[1] * 5);
+
+
+            points = line.createPointsGeometry();
+
+            var intensity = h > 20 || h < 5 ? 0.5 : 1;
+            var enemyColor = new THREE.Color(1 * intensity, 1 * 51 % 21 / 51 * intensity, 1 * 51 % 21 / 51 * intensity);
+            var otherBorderMaterial = new THREE.LineDashedMaterial({
+                color: enemyColor,
+                transparent: false
+            });
+            var border = new THREE.Line(points, otherBorderMaterial);
+            //border.position.x = from[0] * 5;
+            //border.position.z = -(from[1] * 5);
+            border.position.y = -1.95;
+            border.rotation.set(1.57, 0, 0);
+            scene.add(border);
+
+            p.data.push(border);
+        }
+    }
+
 
     // BASE
 
@@ -133,7 +273,8 @@ function Mapa(map) {
         var ws = p.settings.parentElement.width(),
             hs = p.settings.parentElement.height();
 
-        this.dataGrid = new GridData();
+        p.gridData = new GridData();
+        p.pathRender = new PathRender();
 
         scene = new THREE.Scene();
         //scene.fog = new THREE.FogExp2(0xCCDAF0, 2.75, 2000);
@@ -267,36 +408,6 @@ function Mapa(map) {
         });
     }
 
-    function GridData(p) {
-        p = GridData.prototype;
-
-        this.data = [];
-        /**
-         * Get data on specific chords
-         * @param {number} x
-         * @param {number} y
-         */
-        p.getDataOnChords = function (x, y) {
-            var found = null;
-
-            $.forEach(this.data, function (item) {
-                if (item.x === x && item.y === y) {
-                    found = item;
-                }
-            });
-
-            if (!found) {
-                found = {
-                    x: x,
-                    y: y,
-                    data: []
-                };
-                this.data.push(found);
-            }
-            return found;
-        }
-    }
-
     /**
      * Set basic map control
      */
@@ -394,13 +505,6 @@ function Mapa(map) {
 
     function drawBlock($a, x, y) {
         actualRequest = $a;
-        //var xs = Object.keys($a), xy;
-        //for (var i = 0; i < xs.length; i++) {
-        //    xy = Object.keys($a[xs[i]]);
-        //    for (var j = 0; j < xy.length; j++) {
-        //        makeBlock(xs[i], xy[j]);
-        //    }
-        //}
         makeBlock(x, y);
         makeForest(models.t1, [x, y], 1);
         makeForest(models.t2, [x, y], 2);
@@ -461,7 +565,7 @@ function Mapa(map) {
         dirLight.position.set(dirX, 1.5, 1.5);
         dirLight.position.multiplyScalar(100);
         scene.add(dirLight);
-        dirLight.castShadow = true;
+        dirLight.castShadow = false;
         dirLight.shadow.mapSize.width = 2048;
         dirLight.shadow.mapSize.height = 2048;
 
@@ -908,8 +1012,11 @@ function Mapa(map) {
         ground.castShadow = true;
 
 
-        //models.push(ground);
+        // raytracing object
         groundList.push(ground);
+
+        p.gridData.addDataToBlock(x, y, ground) //todo
+
         scene.add(ground);
     }
 
@@ -1421,5 +1528,4 @@ function Mapa(map) {
         }
         return copy;
     }
-
 }
