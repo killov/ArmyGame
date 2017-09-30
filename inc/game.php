@@ -215,48 +215,7 @@
     <meta charset="UTF-8">
     <script>
         d = new Date();
-        $(function () {
 
-            game.time_rozdil = <?php echo microtime(true) * 1000;?>-d.getTime();
-
-            $(document).tooltip({
-                track: true,
-                show: {easing: "easeInExpo", duration: 100}
-            });
-            $("#surovina1c").tooltip({
-                track: true,
-                content: function () {
-                    return $("#surovina1c div.hidden").html();
-                }
-            });
-            $("#surovina2c").tooltip({
-                track: true,
-                content: function () {
-                    return $("#surovina2c div.hidden").html();
-                }
-            });
-            $("#surovina3c").tooltip({
-                track: true,
-                content: function () {
-                    return $("#surovina3c div.hidden").html();
-                }
-            });
-            $("#surovina4c").tooltip({
-                track: true,
-                content: function () {
-                    return $("#surovina4c div.hidden").html();
-                }
-            });
-            $("#map_svg").tooltip({
-                track: true,
-                content: function () {
-                    return "d";
-                },
-                hide: {effect: "blind", duration: 0}
-            });
-
-
-        });
 
         var game = new Game();
         $(function () {
@@ -266,6 +225,7 @@
                 "jednotky" => $lang_jednotky,
                 "vyzkum" => $lang_vyzkum
             ])?>;
+            game.time_rozdil = <?php echo microtime(true) * 1000;?>-d.getTime();
             game.timeZone = <?=(new DateTime())->getOffset()?>;
             game.mesto.surovina1 = <?=$mesto->surovina1?>;
             game.mesto.surovina1_p = <?=$mesto->data["surovina1_produkce"]?>;
@@ -369,29 +329,6 @@
             <label><i class="icon-home"></i></label>
         </div>
     </div>
-    <script type="text/javascript">
-        $("#ren").click(function () {
-            $("#ren").hide();
-            $("#reg").css("display", "inline-block");
-            $("#in").focus().val($("#ren").text());
-        });
-
-        game.formular_upload("#reg", "index.php?post=rename", function (data) {
-            if (data[0] == 1) {
-                $("#ren").text(data[1]);
-                $("#reg").hide();
-                $("#ren").fadeIn(1000);
-            } else {
-                $("#reg").hide();
-                $("#ren").fadeIn(1000);
-            }
-        });
-
-        $("#in").blur(function () {
-            $("#reg").hide();
-            $("#ren").fadeIn(1000);
-        })
-    </script>
 
     <div id="suroviny">
         <div class="surovina" id="surovina0c" title="">
@@ -504,29 +441,11 @@
         <div id="obsah_h">
 
             <?php
-            if (isset($p[0])) {
-                $cesta = "../inc/hra/pages/" . $p[0] . ".php";
-                $cesta = strtr($cesta, './', '');
-                if (file_exists($cesta)) {
-                    include $cesta;
-                }
-                ?>
-                <script type="text/javascript">
-
-                    game.url = "<?php
-                        if (isset($_GET["p"])) {
-                            echo $_GET["p"];
-                        }
-
-
-
-                        ?>";
-                </script>
-                <?php
-            }
-
-
+                include $cesta;               
             ?>
+                <script type="text/javascript">
+                    game.url = "<?= implode("/", $p)?>";
+                </script>
 
 
         </div>

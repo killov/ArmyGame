@@ -111,10 +111,10 @@ function Mapa(map) {
     this.map.game.stat;
 
     //zobrazení náhledu aktivního města
-    this.map.game.page_go("mesto");
+    //this.map.game.page_go("mesto");
 
     //zobrazení políčka s id 5
-    this.map.game.page_go("mestoinfo/5");
+    //this.map.game.page_go("mestoinfo/5");
 
     // ALOUSH
 

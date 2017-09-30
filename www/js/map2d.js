@@ -87,15 +87,7 @@ function Mapa(map){
             y = -Math.floor(y/100)-1;
             var z = y*10+x;
 
-            var data = this.map.getPole(x,y);
-            if(data){
-                var st = data[5]!=0?"<br>Stát: "+map.getStat(data[5]):"";
-                if(data[2] == 1){
-                    $("#map_svg").tooltip("option", "content", "<b>"+data[8]+" ("+data[0]+"/"+data[1]+")</b><br>Hráč: "+data[9]+"<br>Počet obyvatel: "+data[7]+st);
-                }else{
-                    $("#map_svg").tooltip("option", "content", "<b>Volné pole ("+data[0]+"/"+data[1]+")</b>"+st);
-                }
-            }
+            this.map.setTooltip(x,y);
         }
     };
     

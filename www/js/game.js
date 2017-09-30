@@ -37,11 +37,63 @@ function Game(){
     };   
     
     this.init = function(){
-        var self = this;
+        var self = this
+        
+        $(document).tooltip({
+                track: true,
+                show: {easing: "easeInExpo", duration: 100}
+        });
+        $("#surovina1c").tooltip({
+            track: true,
+            content: function () {
+                return $("#surovina1c div.hidden").html();
+            }
+        });
+        $("#surovina2c").tooltip({
+            track: true,
+            content: function () {
+                return $("#surovina2c div.hidden").html();
+            }
+        });
+        $("#surovina3c").tooltip({
+            track: true,
+            content: function () {
+                return $("#surovina3c div.hidden").html();
+            }
+        });
+        $("#surovina4c").tooltip({
+            track: true,
+            content: function () {
+                return $("#surovina4c div.hidden").html();
+            }
+        });
+        
+        $("#ren").click(function () {
+            $("#ren").hide();
+            $("#reg").css("display", "inline-block");
+            $("#in").focus().val($("#ren").text());
+        });
+
+        game.formular_upload("#reg", "index.php?post=rename", function (data) {
+            if (data[0] == 1) {
+                $("#ren").text(data[1]);
+                $("#reg").hide();
+                $("#ren").fadeIn(1000);
+            } else {
+                $("#reg").hide();
+                $("#ren").fadeIn(1000);
+            }
+        });
+
+        $("#in").blur(function () {
+            $("#reg").hide();
+            $("#ren").fadeIn(1000);
+        })
+        
         window.onpopstate = function(e) {
             self.page_gog(location.pathname.replace(self.dir,"")? location.pathname.replace(self.dir,"") : "mesto");
         };    
-        $( "#faq" ).draggable({ 
+        $("#faq").draggable({ 
             handle: "h2",
             cancel: "i.close"
         });

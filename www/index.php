@@ -48,20 +48,23 @@ if(!empty($_SESSION["userid"])){
             if(file_exists($cesta)){
                 include $cesta;
             }
-        }elseif(isset($_GET["a"])){
-            if(isset($_GET["p"])){
-                $p = explode("/", $_GET["p"]);
-                $cesta = "../inc/hra/pages/".$p[0].".php";
-                $cesta = strtr($cesta, './', '');
-                if(file_exists($cesta)){
-                    include $cesta;
-                }
-            }else{
-                include "../inc/hra/pages/mesto.php"; 
-            }
         }else{
-            $p = isset($_GET["p"]) ? explode("/", $_GET["p"]) : ["mesto"];
-            include "../inc/game.php";
+            if(isset($_GET["p"]) and preg_replace("/[^a-z\d_-]+/i", "", $_GET["p"])){
+                $p = explode("/", $_GET["p"]); 
+            }else{
+                $p = ["mesto"];
+            }     
+            $cesta = "../inc/hra/pages/".$p[0].".php";
+            $cesta = strtr($cesta, './', '');
+            if(!file_exists($cesta)){
+                exit;
+            }
+            if(isset($_GET["a"])){
+                include $cesta;
+            }else{
+                include "../inc/game.php";
+            }
+
         }
     }else{
         if(isset($_GET["ok"])){

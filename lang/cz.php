@@ -146,7 +146,8 @@
     "Vlastní",
     "V jiných městech",
     "Jednotky",
-    "Nosnost surovin"
+    "Nosnost surovin",
+    "Volné pole"
 );
 $lang_budova = [
     "Hlavní budova",
