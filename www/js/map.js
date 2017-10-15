@@ -5,15 +5,7 @@ function Map(game){
     this.staty = [];
     for(i=-20;i<20;i++) this.cache[i] = [];
     for(i=-200;i<199;i++) this.pole[i] = [];
-    var $tooltip = $("#back");
-
-    $tooltip.tooltip({
-        track: true,
-        content: function () {
-            return "Tooltip";
-        },
-        hide: {effect: "blind", duration: 0}
-    });
+    this.$tooltip;
 
     this.load = function(bloky, callback){
         var t = this;
@@ -60,14 +52,25 @@ function Map(game){
         this.obnovit(bloky);
     };
     
+    this.tooltipInit = function($element){
+        this.$tooltip = $element;
+        this.$tooltip.tooltip({
+            track: true,
+            content: function () {
+                return "Tooltip";
+            },
+            hide: {effect: "blind", duration: 0}
+        });
+    };
+    
     this.setTooltip = function(x,y){
         var data = this.getPole(x,y);
         if(data){
             var st = data[5]!=0?"<br>"+this.game.lang.game[59]+": "+this.getStat(data[5]):"";
             if(data[2] == 1){
-                $tooltip.tooltip("option", "content", "<b>"+data[8]+" ("+data[0]+"/"+data[1]+")</b><br>"+this.game.lang.game[32]+": "+data[9]+"<br>"+this.game.lang.game[36]+": "+data[7]+st);
+                this.$tooltip.tooltip("option", "content", "<b>"+data[8]+" ("+data[0]+"/"+data[1]+")</b><br>"+this.game.lang.game[32]+": "+data[9]+"<br>"+this.game.lang.game[36]+": "+data[7]+st);
             }else{
-                $tooltip.tooltip("option", "content", "<b>"+this.game.lang.game[149]+" ("+data[0]+"/"+data[1]+")</b>"+st);
+                this.$tooltip.tooltip("option", "content", "<b>"+this.game.lang.game[149]+" ("+data[0]+"/"+data[1]+")</b>"+st);
             }
         }
     };

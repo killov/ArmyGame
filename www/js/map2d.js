@@ -16,6 +16,7 @@ function Mapa(map){
     
     this.init = function(x,y){
         t.pozices(x,y,0);
+        this.map.tooltipInit($("#back"));
     };
     
     window.onresize = function(event) {

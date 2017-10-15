@@ -39,7 +39,7 @@ class Base{
     }
 }
 
-foreach (glob(__DIR__."/classes/[!^_]*.php") as $filename)
+foreach (glob(__DIR__."/classes/*.php") as $filename)
 {
     include $filename;
 }

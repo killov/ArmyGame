@@ -37,6 +37,8 @@ function Mapa(map) {
         p.centerMapToCoors(x, y);
         p.settings.defaultCoors = [x, y];
         // todo: set user id and state
+        var self = this;
+        self.map.tooltipInit($("#back"));
     };
 
     //Mapa se vycentruje na pole [x,y]
@@ -494,7 +496,7 @@ function Mapa(map) {
         loader.options.convertUpAxis = true;
         loader.load(
             // resource URL
-            '../models/' + name + '.dae',
+            'models/' + name + '.dae',
             // Function when resource is loaded
             function (collada) {
                 models[key] = collada.scene.children[0].children[0];

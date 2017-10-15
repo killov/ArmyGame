@@ -252,7 +252,7 @@
     </script>
 </head>
 <body>
-<div id="back">
+<div id="back" title="">
     <?php if ($cfg["map"] == 1) { ?>
         <div id="move" style="position:absolute;top:20px;left:20px;width:1000px;height:1000px;">
             <svg id="map_svg" viewBox="0 0 40000 40000" title></svg>
